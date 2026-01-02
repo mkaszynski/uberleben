@@ -15,6 +15,8 @@ function resize() {
   ctx.setTransform(scale, 0, 0, scale, 0, 0);
 }
 
+ctx.imageSmoothingEnabled = false;
+
 let AIR = 0;
 let GRASS = 1;
 let LOG = 2;
@@ -37,7 +39,13 @@ let colors = {0: [0, 200, 0], 1: [0, 150, 0], 2: [100, 64, 0], 3: [128, 128, 128
 
 let hardness = {1: 10, 2: 100, 3: 500, 4: 1000, 5: 100, 6: 20, 7: 600, 8: 550, 9: 50, 10: 250, 11: 1000, 12:1, 13:20, 14: 300}
 
-let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "stick", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flames", 13: "compressed grass", 14: "coal"}
+let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper_ore", 8: "tin_ore", 9: "workbench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed_grass", 14: "coal"}
+
+const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png"].map(src => {
+  const img = new Image();
+  img.src = src;
+  return img;
+});
 
 let collide = {0: 0, 1: 0.4, 4: 0.7, 12: 0.85}
 
@@ -245,9 +253,9 @@ function loop() {
             if (craft[i][j] > 0) {no_craft = false;}
           }
         }
-        if (no_craft) open_inventory = false;
-        craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
-        craft_bar = 0;
+        if (no_craft) {open_inventory = false;
+          craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
+          craft_bar = 0;}
       }
       held = true;
     }
@@ -355,13 +363,15 @@ function loop() {
       for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 3; j++) {
           if (mouse.x > i*70 + 70 && mouse.x < i*70 + 140 && mouse.y > j*70 + 70 && mouse.y < j*70 + 140) {
-            if (mouse.held[0] && courser == 0) {
+            if (courser == 0 && !held && mouse.held[0]) {
               courser = inventory[i][j];
               inventory[i][j] = 0;
+              held = true;
             }
-            if (mouse.held[2] && courser > 0 && inventory[i][j] == 0) {
+            if (courser > 0 && inventory[i][j] == 0 && !held && mouse.held[0]) {
               inventory[i][j] = courser;
               courser = 0;
+              held = true;
             }
           }
         }
@@ -369,13 +379,15 @@ function loop() {
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
           if (mouse.x > i*70 + 490 && mouse.x < i*70 + 560 && mouse.y > j*70 + 70 && mouse.y < j*70 + 140 && craft2[i][j] == 1) {
-            if (mouse.held[0] && courser == 0) {
+            if (courser == 0 && !held && mouse.held[0]) {
               courser = craft[i][j];
               craft[i][j] = 0;
+              held = true;
             }
-            if (mouse.held[2] && courser > 0 && craft[i][j] == 0) {
+            if (courser > 0 && craft[i][j] == 0 && !held && mouse.held[0]) {
               craft[i][j] = courser;
               courser = 0;
+              held = true;
             }
           }
         }
@@ -412,12 +424,15 @@ function loop() {
     
     ctx.fillStyle = "rgb(" + (time1 % 174)/174*255 + "," + (time1 % 152)/152*255 + ","  + (time1 % 197)/197*255 + ")";
     ctx.font = "125px Arial";          // font size and family
-    ctx.fillText("Conquest of Power", 150, 200);
+    ctx.fillText("UBERLEBEN", 250, 200);
 
     ctx.fillStyle = "rgb(128, 0, 255)";          // text color
     ctx.font = "30px Arial";          // font size and family
     ctx.fillText("By Michael Alexander Kaszynski", 400, 350);
-
+    
+    ctx.fillStyle = "white";          // text color
+    ctx.font = "12px Arial";          // font size and family
+    ctx.fillText("Version 0.3.0", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -439,8 +454,11 @@ function loop() {
         let i = land[u % MAP_SIZE][v % MAP_SIZE];
         color1 = ((i[0] + i[1]) % ((i[0]**2 - i[1]**2 + 0.14) % 1.1))*0.125 + 0.75;
         color1 = 1/2 + color1/2;
-        ctx.fillStyle = "rgb(" + colors[i[2]][0]*color1 + "," + colors[i[2]][1]*color1 + "," + colors[i[2]][2]*color1 + ")";
+        ctx.fillStyle = "rgb(" + colors[0][0]*color1 + "," + colors[0][1]*color1 + "," + colors[0][2]*color1 + ")";
         ctx.fillRect(u*SIZE - posx + 600, v*SIZE - posy + 300, SIZE + 1, SIZE + 1);
+
+        const img = images[i[2]];
+        ctx.drawImage(img, u*SIZE - posx + 600 - 1, v*SIZE - posy + 300 - 1, SIZE + 2, SIZE + 2);
       }
     }
 
@@ -464,8 +482,8 @@ function loop() {
         ctx.fillStyle = "rgb(200, 100, 0)";
         ctx.fillRect(70 + i*70 - 5, 70 + j*70 - 5, SIZE + 10, SIZE + 10);
         if (inventory[i][j] > 0) {
-          ctx.fillStyle = "rgb(" + colors[inventory[i][j]][0] + "," + colors[inventory[i][j]][1] + "," + colors[inventory[i][j]][2] + ")";
-          ctx.fillRect(70 + i*70, 70 + j*70, SIZE, SIZE);
+          const img = images[inventory[i][j]];
+          ctx.drawImage(img, 70 + i*70, 70 + j*70, SIZE, SIZE);
         }
       }
     }
@@ -475,8 +493,8 @@ function loop() {
           ctx.fillStyle = "rgb(200, 100, 0)";
           ctx.fillRect(490 + i*70 - 5, 70 + j*70 - 5, SIZE + 10, SIZE + 10);
           if (craft[i][j] > 0) {
-            ctx.fillStyle = "rgb(" + colors[craft[i][j]][0] + "," + colors[craft[i][j]][1] + "," + colors[craft[i][j]][2] + ")";
-            ctx.fillRect(490 + i*70, 70 + j*70, SIZE, SIZE);
+            const img = images[craft[i][j]];
+            ctx.drawImage(img, 490 + i*70, 70 + j*70, SIZE, SIZE);
           }
         }
       }
@@ -501,8 +519,8 @@ function loop() {
     }
 
     if (courser > 0) {
-      ctx.fillStyle = "rgb(" + colors[courser][0] + "," + colors[courser][1] + "," + colors[courser][2] + ")";
-      ctx.fillRect(mouse.x - SIZE/2, mouse.y - SIZE/2, SIZE, SIZE);
+      const img = images[courser];
+      ctx.drawImage(img, mouse.x - SIZE/2, mouse.y - SIZE/2, SIZE, SIZE);
     }
     
     if (stage == "play") {
