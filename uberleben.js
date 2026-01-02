@@ -45,7 +45,7 @@ let COPPER_PICKAXE = 24;
 
 let MAP_SIZE = 300;
 
-let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 15: 50, 16: 50}
+let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300}
 
 let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe"}
 
@@ -298,10 +298,10 @@ function loop() {
     }
     slow = 1 - slow;    
     let lposy = posy;    
-    if (keys["w"]) {
+    if (keys["w"] && !open_inventory) {
         posy -= 3*slow;
     }
-    if (keys["s"]) {
+    if (keys["s"] && !open_inventory) {
         posy += 3*slow;
     }
     block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
@@ -312,10 +312,10 @@ function loop() {
     }
     if (back) {posy = lposy;} 
     let lposx = posx;    
-    if (keys["a"]) {
+    if (keys["a"] && !open_inventory) {
         posx -= 3*slow;
     }
-    if (keys["d"]) {
+    if (keys["d"] && !open_inventory) {
         posx += 3*slow;
     }    
     block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
@@ -327,7 +327,7 @@ function loop() {
     if (back) {posx = lposx;}
 
     if (!open_inventory) {
-      if (mouse.held[2] && courser == 0) {
+      if (mouse.held[2] && courser == 0 && dis([mouse.x, mouse.y], [600, 300]) < 100) {
         block_posx = Math.floor((posx - 600 + mouse.x)/SIZE) % MAP_SIZE;
         block_posy = Math.floor((posy - 300 + mouse.y)/SIZE) % MAP_SIZE;
         if (land[block_posx][block_posy][2] == WORKBENCH) {
@@ -344,7 +344,7 @@ function loop() {
         }
       }
 
-      if (mouse.held[0]) {
+      if (mouse.held[0] && dis([mouse.x, mouse.y], [600, 300]) < 100) {
         block_posx = Math.floor((posx - 600 + mouse.x)/SIZE) % MAP_SIZE;
         block_posy = Math.floor((posy - 300 + mouse.y)/SIZE) % MAP_SIZE;
         if (!(hit_spot[0] == block_posx && hit_spot[1] == block_posy)) {hit_bar = 0;}
@@ -380,7 +380,7 @@ function loop() {
           }
         }
       }
-      if (mouse.held[2] && courser > 0) {
+      if (mouse.held[2] && courser > 0 && dis([mouse.x, mouse.y], [600, 300]) < 100) {
         block_posx = Math.floor((posx - 600 + mouse.x)/SIZE % MAP_SIZE);
         block_posy = Math.floor((posy - 300 + mouse.y)/SIZE % MAP_SIZE);
         let cur_type = courser;
@@ -472,7 +472,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.4.0", 20, 50);
+    ctx.fillText("Version 0.4.1", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
