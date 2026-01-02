@@ -32,16 +32,24 @@ let FORGE = 11;
 let FLAME = 12;
 let COMPRESSED_GRASS = 13;
 let COAL = 14;
+let TIN = 15;
+let COPPER = 16;
+let WOODEN_AXE = 17;
+let STONE_AXE = 18;
+let TIN_AXE = 19;
+let COPPER_AXE = 20;
+let WOODEN_PICKAXE = 21;
+let STONE_PICKAXE = 22;
+let TIN_PICKAXE = 23;
+let COPPER_PICKAXE = 24;
 
 let MAP_SIZE = 300;
 
-let colors = {0: [0, 200, 0], 1: [0, 150, 0], 2: [100, 64, 0], 3: [128, 128, 128], 4: [0, 0, 255], 5: [200, 128, 0], 6: [150, 50, 0], 7: [200, 150, 75], 8: [175, 175, 150], 9: [150, 100, 0], 10: [100, 100, 100], 11: [60, 60, 60], 12: [255, 128, 0], 13: [0, 100, 0], 14: [0, 0, 0]}
+let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 15: 50, 16: 50}
 
-let hardness = {1: 10, 2: 100, 3: 500, 4: 1000, 5: 100, 6: 20, 7: 600, 8: 550, 9: 50, 10: 250, 11: 1000, 12:1, 13:20, 14: 300}
+let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe"}
 
-let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper_ore", 8: "tin_ore", 9: "workbench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed_grass", 14: "coal"}
-
-const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png"].map(src => {
+const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png"].map(src => {
   const img = new Image();
   img.src = src;
   return img;
@@ -194,7 +202,6 @@ function same(recipy, craft1) {
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
       if (recipy[i][j] != craft1[i][j]) same1 = false;
-      console.log(i, j);
     }
   }
   return same1;
@@ -209,6 +216,26 @@ crafts.push([[[GRASS, GRASS, 0], [GRASS, GRASS, 0], [0, 0, 0]], [[COMPRESSED_GRA
 crafts.push([[[0, 0, 0], [PLANKS, 0, PLANKS], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[0, 0, 0], [COMPRESSED_GRASS, 0, COMPRESSED_GRASS], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[0, 0, 0], [0, 0, COAL], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, FLAME], [0, 0, 0]], 50]);
+crafts.push([[[0, 0, 0], [TIN_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [TIN, 0, 0], [0, 0, 0]], 200]);
+crafts.push([[[0, 0, 0], [COPPER_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [COPPER, 0, 0], [0, 0, 0]], 300]);
+
+crafts.push([[[PLANKS, STICKS, 0], [PLANKS, PLANKS, 0], [0, 0, 0]], [[WOODEN_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+crafts.push([[[STONE, STICKS, 0], [STONE, STONE, 0], [0, 0, 0]], [[STONE_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+crafts.push([[[TIN, STICKS, 0], [TIN, TIN, 0], [0, 0, 0]], [[TIN_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+crafts.push([[[COPPER, STICKS, 0], [COPPER, COPPER, 0], [0, 0, 0]], [[COPPER_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+
+crafts.push([[[0, STICKS, 0], [PLANKS, PLANKS, 0], [0, 0, 0]], [[WOODEN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+crafts.push([[[0, STICKS, 0], [STONE, STONE, 0], [0, 0, 0]], [[STONE_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+crafts.push([[[0, STICKS, 0], [TIN, TIN, 0], [0, 0, 0]], [[TIN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+crafts.push([[[0, STICKS, 0], [COPPER, COPPER, 0], [0, 0, 0]], [[COPPER_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+
+let woods = [LOG, PLANKS, WORKBENCH];
+let stones = [STONE, FURNACE, COAL, TIN_ORE, COPPER_ORE];
+
+let axes = [WOODEN_AXE, STONE_AXE, TIN_AXE, COPPER_AXE];
+let pickaxes = [WOODEN_PICKAXE, STONE_PICKAXE, TIN_PICKAXE, COPPER_PICKAXE];
+
+let strengths = [2, 3, 4, 4.5];
 
 let hit_bar = 0;
 let hit_spot = [-1, -1];
@@ -336,7 +363,20 @@ function loop() {
             hit_bar = 0;
             hit_spot = [-1, -1];
           } else {
-            hit_bar += 100/hardness[land[block_posx][block_posy][2]];
+            if (land[block_posx][block_posy][2] in hardness) {
+              let u2 = false;
+              if (stones.includes(land[block_posx][block_posy][2]) && pickaxes.includes(courser)) {
+                let power = strengths[pickaxes.indexOf(courser)];
+                hit_bar += 100/(hardness[land[block_posx][block_posy][2]]/power);
+                u2 = true;
+              }
+              if (woods.includes(land[block_posx][block_posy][2]) && axes.includes(courser)) {
+                let power1 = strengths[axes.indexOf(courser)];
+                hit_bar += 100/(hardness[land[block_posx][block_posy][2]]/power1);
+                u2 = true;
+              }
+              if (!u2) {hit_bar += 100/hardness[land[block_posx][block_posy][2]];}
+            } else {hit_bar += 50;}
           }
         }
       }
@@ -432,7 +472,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.3.0", 20, 50);
+    ctx.fillText("Version 0.4.0", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -454,7 +494,7 @@ function loop() {
         let i = land[u % MAP_SIZE][v % MAP_SIZE];
         color1 = ((i[0] + i[1]) % ((i[0]**2 - i[1]**2 + 0.14) % 1.1))*0.125 + 0.75;
         color1 = 1/2 + color1/2;
-        ctx.fillStyle = "rgb(" + colors[0][0]*color1 + "," + colors[0][1]*color1 + "," + colors[0][2]*color1 + ")";
+        ctx.fillStyle = "rgb(0," + 200*color1 + ", 0)";
         ctx.fillRect(u*SIZE - posx + 600, v*SIZE - posy + 300, SIZE + 1, SIZE + 1);
 
         const img = images[i[2]];
@@ -505,15 +545,6 @@ function loop() {
       ctx.fillRect(430, 150, 50, 10);
       ctx.fillStyle = "rgb(255, 0, 0)";
       ctx.fillRect(430, 150, craft_bar/2, 10);
-    }
-
-    if (craft[0] > 0) {
-      ctx.fillStyle = "rgb(" + colors[craft[0]][0] + "," + colors[craft[0]][1] + "," +colors[craft[0]][2] + ")";
-      ctx.fillRect(490 - 5, 140 - 5, SIZE + 10, SIZE + 10);
-    }
-    if (craft[1] > 0) {
-      ctx.fillStyle = "rgb(" + colors[craft[1]][0] + "," + colors[craft[1]][1] + "," +colors[craft[1]][2] + ")";
-      ctx.fillRect(595 - 5, 140 - 5, SIZE + 10, SIZE + 10);
     }
     
     }
