@@ -67,7 +67,7 @@ const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "pl
   return img;
 });
 
-const animal_imgs = ["chicken.png", "rabbit.png"].map(src => {
+const animal_imgs = ["chicken.png", "rabbit.png", "fox.png", "deer.png", "wolf.png"].map(src => {
   const img2 = new Image();
   img2.src = src;
   return img2;
@@ -253,6 +253,7 @@ crafts.push([[[0, STICKS, 0], [COPPER, COPPER, 0], [0, 0, 0]], [[COPPER_AXE, 0, 
 crafts.push([[[PLANKS, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[WOODEN_SWORD, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
 crafts.push([[[STONE, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[STONE_SWORD, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
 crafts.push([[[TIN, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[TIN_SWORD, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+
 crafts.push([[[COPPER, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[COPPER_SWORD, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
 
 let woods = [LOG, PLANKS, WORKBENCH];
@@ -264,7 +265,7 @@ let swords = [WOODEN_SWORD, STONE_SWORD, TIN_SWORD, COPPER_SWORD];
 
 let strengths = [2, 3, 4, 5];
 
-let durrability = [10, 20, 50, 30];
+let durrability = [20, 40, 70, 50];
 
 let hit_bar = 0;
 let hit_spot = [-1, -1];
@@ -305,15 +306,32 @@ function loop() {
     render1 = true;
 
     hunger -= 0.002;
-    if (hunger <= 0) {hunger = 0; health -= 0.1;}
+    if (hunger <= 0) {hunger = 0; health -= 0.02;}
     if (hunger > 100) {hunger = 100;}
 
-    if (Math.random() < 0.003) {
+    if (health < 100) {hunger -= 0.002; health += 0.004;}
+    if (health > 100) {health = 100;}
+
+    if (health <= 0) {stage = "menue";running = false;}
+
+    if (Math.random() < 0.004) {
       let animalx = Math.floor(posx/SIZE + (Math.random()*100 - 50));
       let animaly = Math.floor(posy/SIZE + (Math.random()*100 - 50));
       if (land[animalx % MAP_SIZE][animaly % MAP_SIZE][2] == 0 && dis([animalx, animaly], [posx, posy]) > 2000) {
-        animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 10, 2, 0, 0, Math.random()]);
-      } //                 x pos                      y pos     xvel yvel health speed type agression
+        let an_rand = Math.random()
+        if (an_rand < 0.3) {
+          animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 12, 2, 0, 0, 0, 0, 12]);
+           //             0   x pos                1     y pos  2  xvel 3 yvel 4 health 5 speed 6 type 7 agression 8 an_type 9 max health
+        } else if (an_rand < 0.6) {
+          animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 6, 4, 0, 0, 1, 0, 6]);
+        } else if (an_rand < 0.75) {
+          animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 12, 4, 1, 0, 2, 5, 12]);
+        } else if (an_rand < 0.9) {
+          animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 2, 1, 0, 3, 7, 24]);
+        } else if (an_rand < 1) {
+          animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 4, 2, 0, 4, 13, 24]);
+        }
+      }
     }
 
     for (let i of animals) {
@@ -323,15 +341,21 @@ function loop() {
           i[3] = Math.floor(Math.random()*3 - 1)*i[5];
         } else {i[2] = 0; i[3] = 0;}
       }
-      if (i[7] == -1 && Math.random() < 0.05) {
+      if (i[7] == -1 && Math.random() < 0.1) {
         if (posx < i[0]) {i[2] = i[5];} else {i[2] = -i[5];}
         if (posy < i[1]) {i[3] = i[5];} else {i[3] = -i[5];}
       }
-      if (i[7] == 1 && Math.random() < 0.05) {
+      if (i[7] == 1 && Math.random() < 0.1) {
         if (posx < i[0]) {i[2] = -i[5];} else {i[2] = i[5];}
         if (posy < i[1]) {i[3] = -i[5];} else {i[3] = i[5];}
+        if (dis([posx, posy], [i[0], i[1]]) < 50 && Math.random() > 0.05) {
+          health -= i[9];
+        }
       }
-      if (Math.random() < 0.001) {i[7] = 0;}
+      if (dis([posx, posy], [i[0], i[1]]) < 300 && i[6] == 2) {
+        i[7] = 1;
+      }
+      if (Math.random() < 0.0003) {i[7] = 0;}
         
 
       if (mouse.held[0] && !held && dis([mouse.x - 600, mouse.y - 300], [i[0] - posx, i[1] - posy]) < 25 && dis([600, 300], [mouse.x, mouse.y]) < reach) {
@@ -370,7 +394,7 @@ function loop() {
         i[3] = Math.floor(Math.random()*3 - 1)*i[5];
       }
       
-      if ((Math.random() < 0.0005 && dis([i[0], i[1]], [posx, posy]) > 2500) || i[4] <= 0) {
+      if ((Math.random() < 0.002 && dis([i[0], i[1]], [posx, posy]) > 2500) || i[4] <= 0) {
         if (i[4] <= 0) {
           let set1 = land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2];
           if (set1 == 0 || set1 == GRASS) {
@@ -591,7 +615,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.5.1", 20, 50);
+    ctx.fillText("Version 0.5.2", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -635,10 +659,14 @@ function loop() {
     }
 
     for (let i of animals) {
-      const aimg = animal_imgs[i[6]];
+      const aimg = animal_imgs[i[8]];
       ctx.drawImage(aimg, i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, SIZE, SIZE);
-      ctx.fillStyle = "rgb(0, 255, 0)";
-      ctx.fillRect(i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, i[4]*5, 10);
+      if (i[4] < i[10]) {
+        ctx.fillStyle = "rgb(255, 0, 0)";
+        ctx.fillRect(i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, 50, 10);
+        ctx.fillStyle = "rgb(0, 255, 0)";
+        ctx.fillRect(i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, i[4]/i[10]*50, 10);
+      }
     }
 
     ctx.fillStyle = "rgb(255, 0, 0)";
@@ -651,6 +679,9 @@ function loop() {
       ctx.fillStyle = "rgb(0, 255, 0)";
       ctx.fillRect(mouse.x - 25, mouse.y - 25, hit_bar/2, 10);
     }
+
+    ctx.fillStyle = "rgb(128, 128, 128)";
+    ctx.fillRect(400, 600, 400, 20);
 
     ctx.fillStyle = "rgb(255, 0, 0)";
     ctx.fillRect(400, 600, health*4, 10);
@@ -690,7 +721,6 @@ function loop() {
       ctx.fillStyle = "rgb(255, 0, 0)";
       ctx.fillRect(430, 150, craft_bar/2, 10);
     }
-    
     }
 
     if (courser > 0) {
