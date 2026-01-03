@@ -368,9 +368,9 @@ function loop() {
            //             0   x pos                1     y pos  2  xvel 3 yvel 4 health 5 speed 6 type 7 agression 8 an_type 9 max health
         } else if (an_rand < 0.6) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 6, 4, 0, 0, 1, 0, 6]);
-        } else if (an_rand < 0.75) {
+        } else if (an_rand < 0.775) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 12, 4, 1, 0, 2, 5, 12]);
-        } else if (an_rand < 0.9) {
+        } else if (an_rand < 0.95) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 2, 1, 0, 3, 7, 24]);
         } else if (an_rand < 1) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 4, 2, 0, 4, 13, 24]);
@@ -663,7 +663,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.7.0", 20, 50);
+    ctx.fillText("Version 0.7.1", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
