@@ -277,6 +277,8 @@ let block_posy = 0;
 
 let reach = 200;
 
+let craft_scroll = 0;
+
 let running = true;
 function loop() {
   if (!running) return;
@@ -304,6 +306,12 @@ function loop() {
       stage = "paused";
     }
     render1 = true;
+
+    if (open_inventory) {
+      if (keys["w"]) {craft_scroll -= 10;}
+      if (keys["s"]) {craft_scroll += 10;}
+      if (craft_scroll < 0) {craft_scroll = 0;}
+    }
 
     hunger -= 0.002;
     if (hunger <= 0) {hunger = 0; health -= 0.02;}
@@ -345,7 +353,7 @@ function loop() {
         if (posx < i[0]) {i[2] = i[5];} else {i[2] = -i[5];}
         if (posy < i[1]) {i[3] = i[5];} else {i[3] = -i[5];}
       }
-      if (i[7] == 1 && Math.random() < 0.1) {
+      if (i[7] == 1 && Math.random() < 0.05) {
         if (posx < i[0]) {i[2] = -i[5];} else {i[2] = i[5];}
         if (posy < i[1]) {i[3] = -i[5];} else {i[3] = i[5];}
         if (dis([posx, posy], [i[0], i[1]]) < 50 && Math.random() > 0.05) {
@@ -615,7 +623,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.5.3", 20, 50);
+    ctx.fillText("Version 0.6.0", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -690,7 +698,25 @@ function loop() {
 
     if (open_inventory) {
     ctx.fillStyle = "rgb(150, 75, 0)";
-    ctx.fillRect(48, 48, 800, 227);
+    ctx.fillRect(48, 48, 1000, 227);
+
+    for (let k = 0; k < crafts.length; k++) {
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (-20 < (j*70 - craft_scroll*2 + k*250 - 5)/2 && (j*70 - craft_scroll*2 + k*250 - 5)/2 < 180) {
+            ctx.fillStyle = "rgb(200, 100, 0)";
+            ctx.fillRect(700 + (i*70 - 5)/2, 70 + (j*70 - craft_scroll*2 + k*250 - 5)/2, SIZE/2 + 5, SIZE/2 + 5);
+            const img = images[crafts[k][0][i][j]];
+            ctx.drawImage(img, 700 + i*70/2, 70 + (j*70 - craft_scroll*2 + k*250)/2, SIZE/2, SIZE/2);
+
+            ctx.fillStyle = "rgb(200, 100, 0)";
+            ctx.fillRect(850 + (i*70 - 5)/2, 70 + (j*70 - craft_scroll*2 + k*250 - 5)/2, SIZE/2 + 5, SIZE/2 + 5);
+            const img2 = images[crafts[k][1][i][j]];
+            ctx.drawImage(img2, 850 + i*70/2, 70 + (j*70 - craft_scroll*2 + k*250)/2, SIZE/2, SIZE/2);
+          }
+        }
+      }
+    }
 
     for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 3; j++) {
