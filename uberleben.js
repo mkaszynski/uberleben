@@ -42,6 +42,13 @@ let WOODEN_PICKAXE = 21;
 let STONE_PICKAXE = 22;
 let TIN_PICKAXE = 23;
 let COPPER_PICKAXE = 24;
+let MEAT = 25;
+let COOKED_MEAT = 26;
+let WOODEN_SWORD = 27;
+let STONE_SWORD = 28;
+let TIN_SWORD = 29;
+let COPPER_SWORD = 30;
+
 
 let CHICKEN = 0;
 let RABBIT = 1;
@@ -50,9 +57,11 @@ let MAP_SIZE = 300;
 
 let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300}
 
-let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe"}
+let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword"}
 
-const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png"].map(src => {
+let foods = {25: 10, 26: 25}
+
+const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png"].map(src => {
   const img = new Image();
   img.src = src;
   return img;
@@ -64,7 +73,7 @@ const animal_imgs = ["chicken.png", "rabbit.png"].map(src => {
   return img2;
 });
 
-let collide = {0: 0, 1: 0.4, 4: 0.7, 12: 0.85}
+let collide = {0: 0, 1: 0.4, 4: 0.7}
 
 let SIZE = 40;
 
@@ -95,11 +104,11 @@ for (let i = 0; i < MAP_SIZE; i++) {
     if (-0.5 < height2 && height2 < 0.5) {
       column.push([i, j, WATER, 1]);
     } else if (height > 3) {
-      if (Math.random() < 0.02) {
+      if (Math.random() < 0.02 && height > 3.5) {
         column.push([i, j, COPPER_ORE, 1]);
-      } else if (Math.random() < 0.025) {
+      } else if (Math.random() < 0.025 && height > 3.5) {
         column.push([i, j, TIN_ORE, 1]);
-      } else if (Math.random() < 0.035) {
+      } else if (Math.random() < 0.035 && height > 3.7) {
         column.push([i, j, COAL, 1]);
       } else {
         column.push([i, j, STONE, 1]);
@@ -120,8 +129,8 @@ let animals = [];
 let posx = 80001000;
 let posy = 80001000;
 
-//resize();
-//window.addEventListener("resize", resize);
+let health = 100;
+let hunger = 100;
 
 let last = performance.now();
 
@@ -208,8 +217,6 @@ let craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
 let craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
 
-let durability_bar = 0;
-
 function same(recipy, craft1) {
   let same1 = true;
   for (let i = 0; i < 3; i++) {
@@ -231,6 +238,7 @@ crafts.push([[[0, 0, 0], [COMPRESSED_GRASS, 0, COMPRESSED_GRASS], [0, 0, 0]], [[
 crafts.push([[[0, 0, 0], [0, 0, COAL], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, FLAME], [0, 0, 0]], 50]);
 crafts.push([[[0, 0, 0], [TIN_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [TIN, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[0, 0, 0], [COPPER_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [COPPER, 0, 0], [0, 0, 0]], 300]);
+crafts.push([[[0, 0, 0], [MEAT, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [COOKED_MEAT, 0, 0], [0, 0, 0]], 400]);
 
 crafts.push([[[PLANKS, STICKS, 0], [PLANKS, PLANKS, 0], [0, 0, 0]], [[WOODEN_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
 crafts.push([[[STONE, STICKS, 0], [STONE, STONE, 0], [0, 0, 0]], [[STONE_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
@@ -242,15 +250,21 @@ crafts.push([[[0, STICKS, 0], [STONE, STONE, 0], [0, 0, 0]], [[STONE_AXE, 0, 0],
 crafts.push([[[0, STICKS, 0], [TIN, TIN, 0], [0, 0, 0]], [[TIN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
 crafts.push([[[0, STICKS, 0], [COPPER, COPPER, 0], [0, 0, 0]], [[COPPER_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
 
+crafts.push([[[PLANKS, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[WOODEN_SWORD, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+crafts.push([[[STONE, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[STONE_SWORD, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+crafts.push([[[TIN, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[TIN_SWORD, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+crafts.push([[[COPPER, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[COPPER_SWORD, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
+
 let woods = [LOG, PLANKS, WORKBENCH];
 let stones = [STONE, FURNACE, COAL, TIN_ORE, COPPER_ORE];
 
 let axes = [WOODEN_AXE, STONE_AXE, TIN_AXE, COPPER_AXE];
 let pickaxes = [WOODEN_PICKAXE, STONE_PICKAXE, TIN_PICKAXE, COPPER_PICKAXE];
+let swords = [WOODEN_SWORD, STONE_SWORD, TIN_SWORD, COPPER_SWORD];
 
-let strengths = [2, 3, 4, 4.5];
+let strengths = [2, 3, 4, 5];
 
-let durrability = [15, 30, 60, 45];
+let durrability = [10, 20, 50, 30];
 
 let hit_bar = 0;
 let hit_spot = [-1, -1];
@@ -290,18 +304,44 @@ function loop() {
     }
     render1 = true;
 
-    if (Math.random() < 0) {
+    hunger -= 0.002;
+    if (hunger <= 0) {hunger = 0; health -= 0.1;}
+    if (hunger > 100) {hunger = 100;}
+
+    if (Math.random() < 0.003) {
       let animalx = Math.floor(posx/SIZE + (Math.random()*100 - 50));
       let animaly = Math.floor(posy/SIZE + (Math.random()*100 - 50));
-      if (land[animalx % MAP_SIZE][animaly % MAP_SIZE][2] == 0) {
-        animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 5, 2, 0, 0]);
+      if (land[animalx % MAP_SIZE][animaly % MAP_SIZE][2] == 0 && dis([animalx, animaly], [posx, posy]) > 2000) {
+        animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 10, 2, 0, 0, Math.random()]);
       } //                 x pos                      y pos     xvel yvel health speed type agression
     }
 
     for (let i of animals) {
-      if (Math.random() < 0.02) {
-        i[2] = Math.floor(Math.random()*3 - 1)*i[5];
-        i[3] = Math.floor(Math.random()*3 - 1)*i[5];
+      if (Math.random() < 0.01) {
+        if (Math.random() > 0.5) {
+          i[2] = Math.floor(Math.random()*3 - 1)*i[5];
+          i[3] = Math.floor(Math.random()*3 - 1)*i[5];
+        } else {i[2] = 0; i[3] = 0;}
+      }
+      if (i[7] == -1 && Math.random() < 0.05) {
+        if (posx < i[0]) {i[2] = i[5];} else {i[2] = -i[5];}
+        if (posy < i[1]) {i[3] = i[5];} else {i[3] = -i[5];}
+      }
+      if (i[7] == 1 && Math.random() < 0.05) {
+        if (posx < i[0]) {i[2] = -i[5];} else {i[2] = i[5];}
+        if (posy < i[1]) {i[3] = -i[5];} else {i[3] = i[5];}
+      }
+      if (Math.random() < 0.001) {i[7] = 0;}
+        
+
+      if (mouse.held[0] && !held && dis([mouse.x - 600, mouse.y - 300], [i[0] - posx, i[1] - posy]) < 25 && dis([600, 300], [mouse.x, mouse.y]) < reach) {
+        let power3 = 1;
+        if (swords.includes(courser)) {power3 = strengths[swords.indexOf(courser)];}
+        i[4] -= power3;
+        held = true;
+        if (i[6] == 0) {i[7] = -1;}
+        if (i[6] == 1) {i[7] = 1;}
+        if (swords.includes(courser)) {if (Math.random() < 1/durrability[swords.indexOf(courser)]) {courser = 0;}}
       }
       
       let slow2 = 1;
@@ -328,6 +368,17 @@ function loop() {
       } else {
         i[2] = Math.floor(Math.random()*3 - 1)*i[5];
         i[3] = Math.floor(Math.random()*3 - 1)*i[5];
+      }
+      
+      if ((Math.random() < 0.0005 && dis([i[0], i[1]], [posx, posy]) > 2500) || i[4] <= 0) {
+        if (i[4] <= 0) {
+          let set1 = land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2];
+          if (set1 == 0 || set1 == GRASS) {
+            land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2] = MEAT;
+          }
+        }
+        let index = animals.indexOf(i);
+        if (index !== -1) animals.splice(index, 1);
       }
     }
 
@@ -403,6 +454,11 @@ function loop() {
           open_inventory = true;
           craft2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
         }
+      }
+
+      if (mouse.held[0] && courser in foods) {
+        hunger += foods[courser];
+        courser = 0;
       }
 
       if (mouse.held[0] && dis([mouse.x, mouse.y], [600, 300]) < reach) {
@@ -535,7 +591,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.4.3", 20, 50);
+    ctx.fillText("Version 0.5.0", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -581,6 +637,8 @@ function loop() {
     for (let i of animals) {
       const aimg = animal_imgs[i[6]];
       ctx.drawImage(aimg, i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, SIZE, SIZE);
+      ctx.fillStyle = "rgb(0, 255, 0)";
+      ctx.fillRect(i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, i[4]*5, 10);
     }
 
     ctx.fillStyle = "rgb(255, 0, 0)";
@@ -593,6 +651,11 @@ function loop() {
       ctx.fillStyle = "rgb(0, 255, 0)";
       ctx.fillRect(mouse.x - 25, mouse.y - 25, hit_bar/2, 10);
     }
+
+    ctx.fillStyle = "rgb(255, 0, 0)";
+    ctx.fillRect(400, 600, health*4, 10);
+    ctx.fillStyle = "rgb(0, 255, 0)";
+    ctx.fillRect(400, 610, hunger*4, 10);
 
     if (open_inventory) {
     ctx.fillStyle = "rgb(150, 75, 0)";
