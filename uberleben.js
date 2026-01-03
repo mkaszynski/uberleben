@@ -208,6 +208,8 @@ let craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
 let craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
 
+let durability_bar = 0;
+
 function same(recipy, craft1) {
   let same1 = true;
   for (let i = 0; i < 3; i++) {
@@ -248,7 +250,7 @@ let pickaxes = [WOODEN_PICKAXE, STONE_PICKAXE, TIN_PICKAXE, COPPER_PICKAXE];
 
 let strengths = [2, 3, 4, 4.5];
 
-let durrability = [35, 50, 85, 65];
+let durrability = [15, 30, 60, 45];
 
 let hit_bar = 0;
 let hit_spot = [-1, -1];
@@ -416,12 +418,11 @@ function loop() {
                 if (inventory[i][j] == 0) {
                   inventory[i][j] = land[block_posx][block_posy][2];
                   land[block_posx][block_posy][2] = 0;
-                  if (pickaxes.includes(courser)) {if (Math.random() < 1/durrability[pickaxes.indexOf(courser)]) {courser = 0;}}
-                  if (axes.includes(courser)) {if (Math.random() < 1/durrability[axes.indexOf(courser)]) {courser = 0;}}
-                  
                 }
               }
             }
+            if (pickaxes.includes(courser)) {if (Math.random() < 1/durrability[pickaxes.indexOf(courser)]) {courser = 0;}}
+            if (axes.includes(courser)) {if (Math.random() < 1/durrability[axes.indexOf(courser)]) {courser = 0;}}
             hit_bar = 0;
             hit_spot = [-1, -1];
           } else {
@@ -534,7 +535,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.4.2", 20, 50);
+    ctx.fillText("Version 0.4.3", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
