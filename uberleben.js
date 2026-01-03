@@ -43,6 +43,9 @@ let STONE_PICKAXE = 22;
 let TIN_PICKAXE = 23;
 let COPPER_PICKAXE = 24;
 
+let CHICKEN = 0;
+let RABBIT = 1;
+
 let MAP_SIZE = 300;
 
 let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300}
@@ -53,6 +56,12 @@ const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "pl
   const img = new Image();
   img.src = src;
   return img;
+});
+
+const animal_imgs = ["chicken.png", "rabbit.png"].map(src => {
+  const img2 = new Image();
+  img2.src = src;
+  return img2;
 });
 
 let collide = {0: 0, 1: 0.4, 4: 0.7, 12: 0.85}
@@ -84,27 +93,29 @@ for (let i = 0; i < MAP_SIZE; i++) {
       height2 += Math.sin(((i/10 + 100000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
     }
     if (-0.5 < height2 && height2 < 0.5) {
-      column.push([i, j, WATER]);
+      column.push([i, j, WATER, 1]);
     } else if (height > 3) {
       if (Math.random() < 0.02) {
-        column.push([i, j, COPPER_ORE]);
+        column.push([i, j, COPPER_ORE, 1]);
       } else if (Math.random() < 0.025) {
-        column.push([i, j, TIN_ORE]);
+        column.push([i, j, TIN_ORE, 1]);
       } else if (Math.random() < 0.035) {
-        column.push([i, j, COAL]);
+        column.push([i, j, COAL, 1]);
       } else {
-        column.push([i, j, STONE]);
+        column.push([i, j, STONE, 1]);
       }
     } else if (Math.random() < 0.03) {
-      column.push([i, j, LOG]);
+      column.push([i, j, LOG, 1]);
     } else if (Math.random() < 0.2) {
-      column.push([i, j, GRASS]);
+      column.push([i, j, GRASS, 1]);
     } else {
-      column.push([i, j, AIR]);
+      column.push([i, j, AIR, 1]);
     }
   }
   land.push(column);
 }
+
+let animals = [];
 
 let posx = 80001000;
 let posy = 80001000;
@@ -237,10 +248,17 @@ let pickaxes = [WOODEN_PICKAXE, STONE_PICKAXE, TIN_PICKAXE, COPPER_PICKAXE];
 
 let strengths = [2, 3, 4, 4.5];
 
+let durrability = [35, 50, 85, 65];
+
 let hit_bar = 0;
 let hit_spot = [-1, -1];
 
 let craft_bar = 0;
+
+let block_posx = 0;
+let block_posy = 0;
+
+let reach = 200;
 
 let running = true;
 function loop() {
@@ -270,6 +288,47 @@ function loop() {
     }
     render1 = true;
 
+    if (Math.random() < 0) {
+      let animalx = Math.floor(posx/SIZE + (Math.random()*100 - 50));
+      let animaly = Math.floor(posy/SIZE + (Math.random()*100 - 50));
+      if (land[animalx % MAP_SIZE][animaly % MAP_SIZE][2] == 0) {
+        animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 5, 2, 0, 0]);
+      } //                 x pos                      y pos     xvel yvel health speed type agression
+    }
+
+    for (let i of animals) {
+      if (Math.random() < 0.02) {
+        i[2] = Math.floor(Math.random()*3 - 1)*i[5];
+        i[3] = Math.floor(Math.random()*3 - 1)*i[5];
+      }
+      
+      let slow2 = 1;
+      block_posx = Math.floor(i[0]/SIZE) % MAP_SIZE;
+      block_posy = Math.floor(i[1]/SIZE) % MAP_SIZE;
+      if (land[block_posx][block_posy][2] in collide) {
+        slow2 = collide[land[block_posx][block_posy][2]];
+      }
+      slow2 = 1 - slow2;
+      
+      block_posx = Math.floor(i[0]/SIZE) % MAP_SIZE;
+      block_posy = Math.floor((i[1] + i[3]*slow2)/SIZE) % MAP_SIZE;
+      if ((land[block_posx][block_posy][2] in collide)) {
+        i[1] += i[3]*slow2;
+      } else {
+        i[2] = Math.floor(Math.random()*3 - 1)*i[5];
+        i[3] = Math.floor(Math.random()*3 - 1)*i[5];
+      }
+      
+      block_posx = Math.floor((i[0] + i[2]*slow2)/SIZE) % MAP_SIZE;
+      block_posy = Math.floor(i[1]/SIZE) % MAP_SIZE;
+      if ((land[block_posx][block_posy][2] in collide)) {
+        i[0] += i[2]*slow2;
+      } else {
+        i[2] = Math.floor(Math.random()*3 - 1)*i[5];
+        i[3] = Math.floor(Math.random()*3 - 1)*i[5];
+      }
+    }
+
     if (!keys["e"] && !mouse.held[0]) held = false;
 
     if (keys["e"] && !held) {
@@ -291,8 +350,8 @@ function loop() {
     if (!mouse.held[0]) hit_bar = 0;
 
     let slow = 1;
-    let block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
-    let block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
+    block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
+    block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
     if (land[block_posx][block_posy][2] in collide) {
       slow = collide[land[block_posx][block_posy][2]];
     }
@@ -327,7 +386,7 @@ function loop() {
     if (back) {posx = lposx;}
 
     if (!open_inventory) {
-      if (mouse.held[2] && courser == 0 && dis([mouse.x, mouse.y], [600, 300]) < 100) {
+      if (mouse.held[2] && courser == 0 && dis([mouse.x, mouse.y], [600, 300]) < reach) {
         block_posx = Math.floor((posx - 600 + mouse.x)/SIZE) % MAP_SIZE;
         block_posy = Math.floor((posy - 300 + mouse.y)/SIZE) % MAP_SIZE;
         if (land[block_posx][block_posy][2] == WORKBENCH) {
@@ -344,19 +403,22 @@ function loop() {
         }
       }
 
-      if (mouse.held[0] && dis([mouse.x, mouse.y], [600, 300]) < 100) {
+      if (mouse.held[0] && dis([mouse.x, mouse.y], [600, 300]) < reach) {
         block_posx = Math.floor((posx - 600 + mouse.x)/SIZE) % MAP_SIZE;
         block_posy = Math.floor((posy - 300 + mouse.y)/SIZE) % MAP_SIZE;
         if (!(hit_spot[0] == block_posx && hit_spot[1] == block_posy)) {hit_bar = 0;}
         hit_spot[0] = block_posx;
         hit_spot[1] = block_posy;
-        if (land[block_posx][block_posy][2] > 0) {
+        if (land[block_posx][block_posy][2] > 0 && land[block_posx][block_posy][3] > 0) {
           if (hit_bar >= 100) {
             for (let i = 0; i < 5; i++) {
               for (let j = 0; j < 3; j++) {
                 if (inventory[i][j] == 0) {
                   inventory[i][j] = land[block_posx][block_posy][2];
                   land[block_posx][block_posy][2] = 0;
+                  if (pickaxes.includes(courser)) {if (Math.random() < 1/durrability[pickaxes.indexOf(courser)]) {courser = 0;}}
+                  if (axes.includes(courser)) {if (Math.random() < 1/durrability[axes.indexOf(courser)]) {courser = 0;}}
+                  
                 }
               }
             }
@@ -380,7 +442,7 @@ function loop() {
           }
         }
       }
-      if (mouse.held[2] && courser > 0 && dis([mouse.x, mouse.y], [600, 300]) < 100) {
+      if (mouse.held[2] && courser > 0 && dis([mouse.x, mouse.y], [600, 300]) < reach) {
         block_posx = Math.floor((posx - 600 + mouse.x)/SIZE % MAP_SIZE);
         block_posy = Math.floor((posy - 300 + mouse.y)/SIZE % MAP_SIZE);
         let cur_type = courser;
@@ -472,7 +534,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.4.1", 20, 50);
+    ctx.fillText("Version 0.4.2", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -492,14 +554,32 @@ function loop() {
     for (let u = Math.floor(posx/SIZE) - 20; u < Math.floor(posx/SIZE) + 20; u++) {
       for (let v = Math.floor(posy/SIZE) - 10; v < Math.floor(posy/SIZE) + 10; v++) {
         let i = land[u % MAP_SIZE][v % MAP_SIZE];
-        color1 = ((i[0] + i[1]) % ((i[0]**2 - i[1]**2 + 0.14) % 1.1))*0.125 + 0.75;
-        color1 = 1/2 + color1/2;
-        ctx.fillStyle = "rgb(0," + 200*color1 + ", 0)";
-        ctx.fillRect(u*SIZE - posx + 600, v*SIZE - posy + 300, SIZE + 1, SIZE + 1);
+        if (i[3] > 0) {
+          color1 = (((i[0] + i[1]) % ((i[0]**2 - i[1]**2 + 0.14) % 1.1))*0.125 + 0.75)/2 + 1/2;
+          ctx.fillStyle = "rgb(0," + 200*color1 + ", 0)";
+          ctx.fillRect(u*SIZE - posx + 600, v*SIZE - posy + 300, SIZE + 1, SIZE + 1);
+          const img = images[i[2]];
+          ctx.drawImage(img, u*SIZE - posx + 600 - 1, v*SIZE - posy + 300 - 1, SIZE + 2, SIZE + 2);
+        } else {
+          ctx.fillStyle = "rgb(0, 0, 0)";
+          ctx.fillRect(u*SIZE - posx + 600, v*SIZE - posy + 300, SIZE + 1, SIZE + 1);
+        }
 
-        const img = images[i[2]];
-        ctx.drawImage(img, u*SIZE - posx + 600 - 1, v*SIZE - posy + 300 - 1, SIZE + 2, SIZE + 2);
+        let dark = true;
+        for (let k = 0; k < 3; k++) {
+          for (let l = 0; l < 3; l++) {
+            if (land[(u + k - 1) % MAP_SIZE][(v + l - 1) % MAP_SIZE][2] == 0 || land[(u + k - 1) % MAP_SIZE][(v + l - 1) % MAP_SIZE][2] == WATER) {
+              dark = false;
+            }
+          }
+        }
+        if (dark) {i[3] = 0;} else {i[3] = 1;}
       }
+    }
+
+    for (let i of animals) {
+      const aimg = animal_imgs[i[6]];
+      ctx.drawImage(aimg, i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, SIZE, SIZE);
     }
 
     ctx.fillStyle = "rgb(255, 0, 0)";
