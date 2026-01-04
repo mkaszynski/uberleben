@@ -63,6 +63,8 @@ let ALUMINUM_PICKAXE = 42;
 let TUNGSTEN_SWORD = 43;
 let TUNGSTEN_AXE = 44;
 let TUNGSTEN_PICKAXE = 45;
+let DOOR = 46;
+let OPEN_DOOR = 47;
 
 
 let CHICKEN = 0;
@@ -70,13 +72,13 @@ let RABBIT = 1;
 
 let MAP_SIZE = 300;
 
-let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000}
+let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200}
 
-let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword"}
+let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron pickaxe", 39: "iron axe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door"}
 
 let foods = {25: 10, 26: 25}
 
-const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png"].map(src => {
+const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png"].map(src => {
   const img = new Image();
   img.src = src;
   return img;
@@ -88,7 +90,7 @@ const animal_imgs = ["chicken.png", "rabbit.png", "fox.png", "deer.png", "wolf.p
   return img2;
 });
 
-let collide = {0: 0, 1: 0.4, 4: 0.7}
+let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0}
 
 let SIZE = 40;
 
@@ -232,7 +234,7 @@ let stage = "menue";
 
 let held = false;
 
-let courser = 0;
+let courser = DOOR;
 let inventory = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
 let craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
@@ -251,6 +253,7 @@ function same(recipy, craft1) {
 crafts = [];
 crafts.push([[[LOG, 0, 0], [0, 0, 0], [0, 0, 0]], [[PLANKS, 0, 0], [PLANKS, 0, 0], [0, 0, 0]], 30]);
 crafts.push([[[PLANKS, PLANKS, 0], [0, 0, 0], [0, 0, 0]], [[STICKS, STICKS, 0], [STICKS, STICKS, 0], [0, 0, 0]], 30]);
+crafts.push([[[PLANKS, PLANKS, 0], [PLANKS, PLANKS, 0], [0, 0, 0]], [[DOOR, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[PLANKS, 0, 0], [0, 0, 0], [0, 0, 0]], [[WORKBENCH, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[STONE, STONE, 0], [STONE, STONE, 0], [0, 0, 0]], [[FURNACE, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[GRASS, GRASS, 0], [GRASS, GRASS, 0], [0, 0, 0]], [[COMPRESSED_GRASS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
@@ -299,7 +302,7 @@ let swords = [WOODEN_SWORD, STONE_SWORD, TIN_SWORD, COPPER_SWORD, IRON_SWORD, AL
 
 let strengths = [2, 3, 4, 5, 8, 6, 12];
 
-let durrability = [20, 40, 70, 50, 150, 100, 500];
+let durrability = [20, 40, 90, 70, 150, 100, 500];
 
 let weights = [0.95, 0.85, 0.8, 0.75, 0.7, 0.95, 0.5];
 
@@ -314,6 +317,8 @@ let block_posy = 0;
 let reach = 200;
 
 let craft_scroll = 0;
+
+let mouse_tips = [];
 
 let running = true;
 function loop() {
@@ -343,13 +348,15 @@ function loop() {
     }
     render1 = true;
 
+    mouse_tips = [];
+
     if (open_inventory) {
       if (keys["w"]) {craft_scroll -= 10;}
       if (keys["s"]) {craft_scroll += 10;}
       if (craft_scroll < 0) {craft_scroll = 0;}
     }
 
-    hunger -= 0.002;
+    hunger -= 0.001;
     if (hunger <= 0) {hunger = 0; health -= 0.02;}
     if (hunger > 100) {hunger = 100;}
 
@@ -526,6 +533,13 @@ function loop() {
           open_inventory = true;
           craft2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
         }
+        if (land[block_posx][block_posy][2] == DOOR && !held) {
+          land[block_posx][block_posy][2] = OPEN_DOOR;
+          held = true;
+        } else if (land[block_posx][block_posy][2] == OPEN_DOOR && !held) {
+          land[block_posx][block_posy][2] = DOOR;
+          held = true;
+        }
       }
 
       if (mouse.held[2] && courser in foods) {
@@ -663,7 +677,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.7.1", 20, 50);
+    ctx.fillText("Version 0.7.2", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -749,10 +763,14 @@ function loop() {
             const img = images[crafts[k][0][i][j]];
             ctx.drawImage(img, 700 + i*70/2, 70 + (j*70 - craft_scroll*2 + k*250)/2, SIZE/2, SIZE/2);
 
+            mouse_tips.push([700 + i*70/2 + SIZE/4, 70 + (j*70 - craft_scroll*2 + k*250)/2 + SIZE/4, crafts[k][0][i][j]]);
+
             ctx.fillStyle = "rgb(200, 100, 0)";
             ctx.fillRect(850 + (i*70 - 5)/2, 70 + (j*70 - craft_scroll*2 + k*250 - 5)/2, SIZE/2 + 5, SIZE/2 + 5);
             const img2 = images[crafts[k][1][i][j]];
             ctx.drawImage(img2, 850 + i*70/2, 70 + (j*70 - craft_scroll*2 + k*250)/2, SIZE/2, SIZE/2);
+
+            mouse_tips.push([850 + i*70/2 + SIZE/4, 70 + (j*70 - craft_scroll*2 + k*250)/2 + SIZE/4, crafts[k][1][i][j]]);
           }
         }
       }
@@ -765,6 +783,7 @@ function loop() {
         if (inventory[i][j] > 0) {
           const img = images[inventory[i][j]];
           ctx.drawImage(img, 70 + i*70, 70 + j*70, SIZE, SIZE);
+          mouse_tips.push([70 + i*70 + SIZE/2, 70 + j*70 + SIZE/2, inventory[i][j]]);
         }
       }
     }
@@ -776,6 +795,7 @@ function loop() {
           if (craft[i][j] > 0) {
             const img = images[craft[i][j]];
             ctx.drawImage(img, 490 + i*70, 70 + j*70, SIZE, SIZE);
+            mouse_tips.push([490 + i*70 + SIZE/2, 70 + j*70 + SIZE/2, craft[i][j]]);
           }
         }
       }
@@ -792,6 +812,18 @@ function loop() {
     if (courser > 0) {
       const img = images[courser];
       ctx.drawImage(img, mouse.x - SIZE/2, mouse.y - SIZE/2, SIZE, SIZE);
+    }
+
+    for (let i of mouse_tips) {
+      let str_m = 0;
+      if (dis([mouse.x, mouse.y], [i[0], i[1]]) < SIZE/3 && i[2] > 0) {
+        str_m = i[2];
+      }
+      if (str_m > 0) {
+        ctx.fillStyle = "black";          // text color
+        ctx.font = "30px Arial";          // font size and family
+        ctx.fillText(names[str_m], mouse.x, mouse.y);
+      }
     }
     
     if (stage == "play") {
