@@ -368,16 +368,16 @@ function loop() {
     if (Math.random() < 0.004) {
       let animalx = Math.floor(posx/SIZE + (Math.random()*100 - 50));
       let animaly = Math.floor(posy/SIZE + (Math.random()*100 - 50));
-      if (land[animalx % MAP_SIZE][animaly % MAP_SIZE][2] == 0 && dis([animalx*SIZE, animaly*SIZE], [posx, posy]) > 2000) {
+      if (land[animalx % MAP_SIZE][animaly % MAP_SIZE][2] == 0 && dis([animalx*SIZE, animaly*SIZE], [posx, posy]) > 700) {
         let an_rand = Math.random()
         if (an_rand < 0.3) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 12, 2, 0, 0, 0, 0, 12]);
         //             0   x pos                1     y pos  2  xvel 3 yvel 4 health 5 speed 6 type 7 agression 8 an_type 9 max health
         } else if (an_rand < 0.6) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 6, 4, 0, 0, 1, 0, 6]);
-        } else if (an_rand < 0.775) {
+        } else if (an_rand < 0.75) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 12, 4, 1, 0, 2, 5, 12]);
-        } else if (an_rand < 0.95) {
+        } else if (an_rand < 0.90) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 2, 1, 0, 3, 7, 24]);
         } else if (an_rand < 1) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 4, 2, 0, 4, 13, 24]);
@@ -445,7 +445,7 @@ function loop() {
         i[3] = Math.floor(Math.random()*3 - 1)*i[5];
       }
       
-      if ((Math.random() < 0.002 && dis([i[0], i[1]], [posx, posy]) > 2500) || i[4] <= 0) {
+      if ((Math.random() < 0.0001 && dis([i[0], i[1]], [posx, posy]) > 1000) || i[4] <= 0) {
         if (i[4] <= 0) {
           let set1 = land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2];
           if (set1 == 0 || set1 == GRASS) {
