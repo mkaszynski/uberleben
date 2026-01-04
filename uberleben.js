@@ -72,20 +72,21 @@ let COPPER_ARMOR = 51;
 let IRON_ARMOR = 52;
 let ALUMINUM_ARMOR = 53;
 let TUNGSTEN_ARMOR = 54;
-
-
-let CHICKEN = 0;
-let RABBIT = 1;
+let TORCH = 55;
 
 let MAP_SIZE = 300;
 
 let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200}
 
-let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor"}
+let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor", 55: "torch"}
 
 let foods = {25: 10, 26: 25}
 
-const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png"].map(src => {
+let glow = {10: 5, 55: 14}
+
+let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, FURNACE, FORGE, COMPRESSED_GRASS, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, COAL];
+
+const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png", "torch.png"].map(src => {
   const img = new Image();
   img.src = src;
   return img;
@@ -132,29 +133,29 @@ for (let i = 0; i < MAP_SIZE; i++) {
       height2 += Math.sin(((i/10 + 100000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
     }
     if (-0.5 < height2 && height2 < 0.5) {
-      column.push([i, j, WATER, 1]);
+      column.push([i, j, WATER, 0, WATER]);
     } else if (height > 3) {
       if (Math.random() < 0.02 && height > 3.5) {
-        column.push([i, j, COPPER_ORE, 1]);
+        column.push([i, j, COPPER_ORE, 0, STONE]);
       } else if (Math.random() < 0.025 && height > 3.5) {
-        column.push([i, j, TIN_ORE, 1]);
+        column.push([i, j, TIN_ORE, 0, STONE]);
       } else if (Math.random() < 0.035 && height > 3.75) {
-        column.push([i, j, COAL, 1]);
+        column.push([i, j, COAL, 0, STONE]);
       } else if (Math.random() < 0.01 && height > 4) {
-        column.push([i, j, IRON_ORE, 1]);
+        column.push([i, j, IRON_ORE, 0, STONE]);
       } else if (Math.random() < 0.006 && height > 4.7) {
-        column.push([i, j, ALUMINUM_ORE, 1]);
+        column.push([i, j, ALUMINUM_ORE, 0, STONE]);
       } else if (Math.random() < 0.002 && height > 5.5) {
-        column.push([i, j, TUNGSTEN_ORE, 1]);
+        column.push([i, j, TUNGSTEN_ORE, 0, STONE]);
       } else {
-        column.push([i, j, STONE, 1]);
+        column.push([i, j, STONE, 0, STONE]);
       }
     } else if (Math.random() < 0.03) {
-      column.push([i, j, LOG, 1]);
+      column.push([i, j, LOG, 0, 0]);
     } else if (Math.random() < 0.2) {
-      column.push([i, j, GRASS, 1]);
+      column.push([i, j, GRASS, 0, 0]);
     } else {
-      column.push([i, j, AIR, 1]);
+      column.push([i, j, AIR, 0, 0]);
     }
   }
   land.push(column);
@@ -247,7 +248,9 @@ let stage = "menue";
 
 let held = false;
 
+
 let courser = 0;
+
 let inventory = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
 let craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
@@ -267,6 +270,7 @@ crafts = [];
 crafts.push([[[LOG, 0, 0], [0, 0, 0], [0, 0, 0]], [[PLANKS, 0, 0], [PLANKS, 0, 0], [0, 0, 0]], 30]);
 crafts.push([[[PLANKS, PLANKS, 0], [0, 0, 0], [0, 0, 0]], [[STICKS, STICKS, 0], [STICKS, STICKS, 0], [0, 0, 0]], 30]);
 crafts.push([[[PLANKS, PLANKS, 0], [PLANKS, PLANKS, 0], [0, 0, 0]], [[DOOR, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
+crafts.push([[[FLAME, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[TORCH, 0, 0], [TORCH, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[PLANKS, 0, 0], [0, 0, 0], [0, 0, 0]], [[WORKBENCH, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[STONE, STONE, 0], [STONE, STONE, 0], [0, 0, 0]], [[FURNACE, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[GRASS, GRASS, 0], [GRASS, GRASS, 0], [0, 0, 0]], [[COMPRESSED_GRASS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
@@ -343,6 +347,8 @@ let mouse_tips = [];
 
 let armor = 0;
 
+let day = 0;
+
 let running = true;
 function loop() {
   if (!running) return;
@@ -356,8 +362,14 @@ function loop() {
   if (time1 == 0) dt = dt_now;
   if (time1 > 0 && time1 < 10) dt = dt*0.75 + dt_now*0.25;
 
-
   time1 += 1;
+
+  
+  day = Math.floor(Math.sin(time1/20000*Math.PI*2)*20 + 15/2);
+
+  if (day < 4) day = 4;
+  if (day > 15) day = 15;
+  
 
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -760,7 +772,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.8.0", 20, 50);
+    ctx.fillText("Version 0.9.0", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -777,29 +789,43 @@ function loop() {
   // RENDER GRAPICS IF REQUIRED
   
   if (render1) {
-    for (let u = Math.floor(posx/SIZE) - 20; u < Math.floor(posx/SIZE) + 20; u++) {
-      for (let v = Math.floor(posy/SIZE) - 10; v < Math.floor(posy/SIZE) + 10; v++) {
+    for (let u = Math.floor(posx/SIZE) - 30; u < Math.floor(posx/SIZE) + 30; u++) {
+      for (let v = Math.floor(posy/SIZE) - 20; v < Math.floor(posy/SIZE) + 20; v++) {
         let i = land[u % MAP_SIZE][v % MAP_SIZE];
-        if (i[3] > 0) {
-          color1 = (((i[0] + i[1]) % ((i[0]**2 - i[1]**2 + 0.14) % 1.1))*0.125 + 0.75)/2 + 1/2;
-          ctx.fillStyle = "rgb(0," + 200*color1 + ", 0)";
-          ctx.fillRect(u*SIZE - posx + 600, v*SIZE - posy + 300, SIZE + 1, SIZE + 1);
-          const img = images[i[2]];
-          ctx.drawImage(img, u*SIZE - posx + 600 - 1, v*SIZE - posy + 300 - 1, SIZE + 2, SIZE + 2);
-        } else {
-          ctx.fillStyle = "rgb(0, 0, 0)";
-          ctx.fillRect(u*SIZE - posx + 600, v*SIZE - posy + 300, SIZE + 1, SIZE + 1);
+        
+        color1 = (((i[0] + i[1]) % ((i[0]**2 - i[1]**2 + 0.14) % 1.1))*0.125 + 0.75)/2 + 1/2;
+        ctx.fillStyle = "rgb(0," + 200*color1 + ", 0)";
+        ctx.fillRect(Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
+        
+        if (i[4] > 0) {
+          const img5 = images[i[4]];
+          ctx.drawImage(img5, Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
+          ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+          ctx.fillRect(Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
         }
+        
+        const img = images[i[2]];
+        ctx.drawImage(img, Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
 
-        let dark = true;
+        ctx.fillStyle = "rgba(0, 0, 0, " + (15 - i[3])/15 + ")";
+        ctx.fillRect(Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
+
+        if (i[2] in glow) {if (i[3] < glow[i[2]]) {i[3] = glow[i[2]];}}
+        
+        let suround = true;
+        let dark = 0;
         for (let k = 0; k < 3; k++) {
           for (let l = 0; l < 3; l++) {
-            if (land[(u + k - 1) % MAP_SIZE][(v + l - 1) % MAP_SIZE][2] == 0 || land[(u + k - 1) % MAP_SIZE][(v + l - 1) % MAP_SIZE][2] == WATER) {
-              dark = false;
+            let k3 = land[(u + k - 1) % MAP_SIZE][(v + l - 1) % MAP_SIZE];
+            if (!dark_blocks.includes(k3[2])) {
+              if (k3[3] - 1 > dark) {dark = k3[3] - 1;}
+              suround = false;
             }
           }
         }
-        if (dark) {i[3] = 0;} else {i[3] = 1;}
+        i[3] = dark;
+        if (i[2] == 0 && i[4] == 0) {i[3] = day;}
+        if (suround) {i[3] = 0;}
       }
     }
 
