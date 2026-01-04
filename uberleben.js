@@ -74,7 +74,7 @@ let MAP_SIZE = 300;
 
 let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200}
 
-let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron pickaxe", 39: "iron axe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door"}
+let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door"}
 
 let foods = {25: 10, 26: 25}
 
@@ -304,7 +304,7 @@ let strengths = [2, 3, 4, 5, 8, 6, 12];
 
 let durrability = [20, 40, 90, 70, 150, 100, 500];
 
-let weights = [0.95, 0.85, 0.8, 0.75, 0.7, 0.95, 0.5];
+let weights = [0.95, 0.85, 0.8, 0.75, 0.65, 0.95, 0.5];
 
 let hit_bar = 0;
 let hit_spot = [-1, -1];
@@ -518,7 +518,7 @@ function loop() {
     if (back) {posx = lposx;}
 
     if (!open_inventory) {
-      if (mouse.held[0] && courser == 0 && dis([mouse.x, mouse.y], [600, 300]) < reach) {
+      if (mouse.held[0] && dis([mouse.x, mouse.y], [600, 300]) < reach) {
         block_posx = Math.floor((posx - 600 + mouse.x)/SIZE) % MAP_SIZE;
         block_posy = Math.floor((posy - 300 + mouse.y)/SIZE) % MAP_SIZE;
         if (land[block_posx][block_posy][2] == WORKBENCH) {
@@ -555,14 +555,16 @@ function loop() {
         hit_spot[1] = block_posy;
         if (land[block_posx][block_posy][2] > 0 && land[block_posx][block_posy][3] > 0) {
           if (hit_bar >= 100) {
-            for (let i = 0; i < 5; i++) {
-              for (let j = 0; j < 3; j++) {
-                if (inventory[i][j] == 0) {
-                  inventory[i][j] = land[block_posx][block_posy][2];
-                  land[block_posx][block_posy][2] = 0;
+            if (courser > 0) {
+              for (let i = 0; i < 5; i++) {
+                for (let j = 0; j < 3; j++) {
+                  if (inventory[i][j] == 0) {
+                    inventory[i][j] = land[block_posx][block_posy][2];
+                    land[block_posx][block_posy][2] = 0;
+                  }
                 }
               }
-            }
+            } else {courser = land[block_posx][block_posy][2];land[block_posx][block_posy][2] = 0;}
             if (pickaxes.includes(courser)) {if (Math.random() < 1/durrability[pickaxes.indexOf(courser)]) {courser = 0;}}
             if (axes.includes(courser)) {if (Math.random() < 1/durrability[axes.indexOf(courser)]) {courser = 0;}}
             hit_bar = 0;
@@ -618,6 +620,18 @@ function loop() {
               courser = 0;
               held = true;
             }
+            if (mouse.held[2]) {
+              let m3 = false;
+              for (let s = 0; s < 3; s++) {
+                for (let m = 0; m < 3; m++) {
+                  if (craft2[s][m] == 1 && craft[s][m] == 0 && !m3) {
+                    m3 = true;
+                    craft[s][m] = inventory[i][j];
+                    inventory[i][j] = 0;
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -633,6 +647,18 @@ function loop() {
               craft[i][j] = courser;
               courser = 0;
               held = true;
+            }
+            if (mouse.held[2]) {
+              let m3 = false;
+              for (let s = 0; s < 5; s++) {
+                for (let m = 0; m < 3; m++) {
+                  if (inventory[s][m] == 0 && !m3) {
+                    m3 = true;
+                    inventory[s][m] = craft[i][j];
+                    craft[i][j] = 0;
+                  }
+                }
+              }
             }
           }
         }
@@ -677,7 +703,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.7.5", 20, 50);
+    ctx.fillText("Version 0.7.6", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
