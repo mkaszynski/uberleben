@@ -677,7 +677,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.7.3", 20, 50);
+    ctx.fillText("Version 0.7.4", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -814,17 +814,18 @@ function loop() {
       ctx.drawImage(img, mouse.x - SIZE/2, mouse.y - SIZE/2, SIZE, SIZE);
     }
 
+    let str_m = 0;
     for (let i of mouse_tips) {
-      let str_m = 0;
-      if (dis([mouse.x, mouse.y], [i[0], i[1]]) < SIZE/3 && i[2] > 0) {
+      if (dis([mouse.x, mouse.y], [i[0], i[1]]) < SIZE/2 && i[2] > 0) {
         str_m = i[2];
       }
-      if (str_m > 0) {
+    }
+    if (str_m > 0) {
         ctx.fillStyle = "black";          // text color
         ctx.font = "30px Arial";          // font size and family
         ctx.fillText(names[str_m], mouse.x, mouse.y);
-      }
     }
+    
     
     if (stage == "play") {
       ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
