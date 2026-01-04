@@ -234,7 +234,7 @@ let stage = "menue";
 
 let held = false;
 
-let courser = DOOR;
+let courser = 0;
 let inventory = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
 let craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
@@ -677,7 +677,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.7.2", 20, 50);
+    ctx.fillText("Version 0.7.3", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
