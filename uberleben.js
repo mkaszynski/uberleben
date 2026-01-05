@@ -137,8 +137,12 @@ for (let i = 0; i < MAP_SIZE; i++) {
     for (let k of seed) {
       height3 += Math.sin(((i + 10000 - 30) * Math.sin(k[2]) + (j - 15) * Math.cos(k[2])) / k[0] + k[1]);
     }
+    let height4 = 0;
+    for (let k of seed) {
+      height3 += Math.sin(((i/10 - 10000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
+    }
     let leave = 0;
-    if (height3 > 2) {leave = LEAVES;}
+    if (height3 + height4 > 2) {leave = LEAVES;}
     if (-0.5 < height2 && height2 < 0.5) {
       if (height < 3) {
         column.push([i, j, WATER, 0, leave]);
@@ -159,7 +163,7 @@ for (let i = 0; i < MAP_SIZE; i++) {
       } else {
         column.push([i, j, STONE, 0, STONE]);
       }
-    } else if (Math.random() < 0.1 && height3 > 2) {
+    } else if (Math.random() < 0.1 && height3 + height4 > 2) {
       column.push([i, j, LOG, 0, leave]);
     } else if (Math.random() < 0.2) {
       column.push([i, j, GRASS, 0, leave]);
@@ -783,7 +787,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.9.7", 20, 50);
+    ctx.fillText("Version 0.9.8", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
