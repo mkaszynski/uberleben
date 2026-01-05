@@ -774,7 +774,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.9.2", 20, 50);
+    ctx.fillText("Version 0.9.3", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -792,7 +792,7 @@ function loop() {
   
   if (render1) {
     for (let u = Math.floor(posx/SIZE) - 30; u < Math.floor(posx/SIZE) + 30; u++) {
-      for (let v = Math.floor(posy/SIZE) - 20; v < Math.floor(posy/SIZE) + 20; v++) {
+      for (let v = Math.floor(posy/SIZE) - 15; v < Math.floor(posy/SIZE) + 15; v++) {
         let i = land[u % MAP_SIZE][v % MAP_SIZE];
         
         color1 = (((i[0] + i[1]) % ((i[0]**2 - i[1]**2 + 0.14) % 1.1))*0.125 + 0.75)/2 + 1/2;
