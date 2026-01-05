@@ -92,7 +92,7 @@ const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "pl
   return img;
 });
 
-const animal_imgs = ["chicken.png", "rabbit.png", "fox.png", "deer.png", "wolf.png"].map(src => {
+const animal_imgs = ["chicken.png", "rabbit.png", "fox.png", "deer.png", "wolf.png", "bear.png"].map(src => {
   const img2 = new Image();
   img2.src = src;
   return img2;
@@ -380,7 +380,7 @@ function loop() {
   // PLAY MODE
   
   if (stage === "play") {
-    if (mouse.x < 100 && mouse.y > 400 && mouse.y < 500 && mouse.held[0]) {
+    if (mouse.x < 100 && mouse.y > 500 && mouse.y < 600 && mouse.held[0]) {
       stage = "paused";
     }
     render1 = true;
@@ -416,8 +416,10 @@ function loop() {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 12, 4, 1, 0, 2, 5, 12]);
         } else if (an_rand < 0.90) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 2, 1, 0, 3, 7, 24]);
-        } else if (an_rand < 1) {
+        } else if (an_rand < 0.95) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 4, 2, 0, 4, 13, 24]);
+        } else if (an_rand < 1) {
+          animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 48, 2, 2, 0, 5, 17, 48]);
         }
       }
     }
@@ -774,7 +776,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.9.3", 20, 50);
+    ctx.fillText("Version 0.9.4", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -792,7 +794,7 @@ function loop() {
   
   if (render1) {
     for (let u = Math.floor(posx/SIZE) - 30; u < Math.floor(posx/SIZE) + 30; u++) {
-      for (let v = Math.floor(posy/SIZE) - 15; v < Math.floor(posy/SIZE) + 15; v++) {
+      for (let v = Math.floor(posy/SIZE) - 20; v < Math.floor(posy/SIZE) + 20; v++) {
         let i = land[u % MAP_SIZE][v % MAP_SIZE];
         
         color1 = (((i[0] + i[1]) % ((i[0]**2 - i[1]**2 + 0.14) % 1.1))*0.125 + 0.75)/2 + 1/2;
@@ -960,11 +962,11 @@ function loop() {
     
     if (stage == "play") {
       ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
-      ctx.fillRect(0, 400, 100, 100);
+      ctx.fillRect(0, 500, 100, 100);
       
       ctx.fillStyle = "black";          // text color
       ctx.font = "15px Arial";          // font size and family
-      ctx.fillText("Pause", 25, 450);
+      ctx.fillText("Pause", 25, 550);
     }
   }
 
