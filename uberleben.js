@@ -83,7 +83,7 @@ let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks"
 
 let foods = {25: 10, 26: 25}
 
-let glow = {10: 5, 55: 14}
+let glow = {10: 6, 55: 14}
 
 let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, FURNACE, FORGE, COMPRESSED_GRASS, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, COAL, LEAVES];
 
@@ -787,7 +787,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.9.8", 20, 50);
+    ctx.fillText("Version 0.9.9", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
