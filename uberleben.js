@@ -453,7 +453,7 @@ function loop() {
       if (dis([posx, posy], [i[0], i[1]]) < 300 && i[6] == 2) {
         i[7] = 1;
       }
-      if (Math.random() < 0.0003) {i[7] = 0;}
+      if (Math.random() < 0.001) {i[7] = 0;}
 
 
       if (mouse.held[2] && !held && dis([mouse.x - 600, mouse.y - 300], [i[0] - posx, i[1] - posy]) < 25 && dis([600, 300], [mouse.x, mouse.y]) < reach) {
@@ -783,7 +783,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.9.6", 20, 50);
+    ctx.fillText("Version 0.9.7", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
