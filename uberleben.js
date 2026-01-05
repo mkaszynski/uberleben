@@ -133,7 +133,9 @@ for (let i = 0; i < MAP_SIZE; i++) {
       height2 += Math.sin(((i/10 + 100000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
     }
     if (-0.5 < height2 && height2 < 0.5) {
-      column.push([i, j, WATER, 0, WATER]);
+      if (height < 3) {
+        column.push([i, j, WATER, 0, 0]);
+      } else {column.push([i, j, WATER, 0, STONE]);}
     } else if (height > 3) {
       if (Math.random() < 0.02 && height > 3.5) {
         column.push([i, j, COPPER_ORE, 0, STONE]);
@@ -365,9 +367,9 @@ function loop() {
   time1 += 1;
 
   
-  day = Math.floor(Math.sin(time1/20000*Math.PI*2)*20 + 15/2);
+  day = Math.floor(Math.sin(time1/40000*Math.PI*2)*20 + 15/2);
 
-  if (day < 4) day = 4;
+  if (day < 3) day = 3;
   if (day > 15) day = 15;
   
 
@@ -772,7 +774,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.9.0", 20, 50);
+    ctx.fillText("Version 0.9.1", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -824,7 +826,7 @@ function loop() {
           }
         }
         i[3] = dark;
-        if (i[2] == 0 && i[4] == 0) {i[3] = day;}
+        if (!dark_blocks.includes(i[2]) && !dark_blocks.includes(i[4]) && day > i[3]) {i[3] = day;}
         if (suround) {i[3] = 0;}
       }
     }
