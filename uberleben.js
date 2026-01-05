@@ -774,7 +774,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.9.1", 20, 50);
+    ctx.fillText("Version 0.9.2", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -802,7 +802,7 @@ function loop() {
         if (i[4] > 0) {
           const img5 = images[i[4]];
           ctx.drawImage(img5, Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
-          ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+          ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
           ctx.fillRect(Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
         }
         
@@ -812,16 +812,22 @@ function loop() {
         ctx.fillStyle = "rgba(0, 0, 0, " + (15 - i[3])/15 + ")";
         ctx.fillRect(Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
 
+        block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
+        block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
+
         if (i[2] in glow) {if (i[3] < glow[i[2]]) {i[3] = glow[i[2]];}}
+        if (courser in glow) {if (i[3] < glow[courser] && i[0] == block_posx && i[1] == block_posy) {i[3] = glow[courser];}}
         
         let suround = true;
         let dark = 0;
         for (let k = 0; k < 3; k++) {
           for (let l = 0; l < 3; l++) {
-            let k3 = land[(u + k - 1) % MAP_SIZE][(v + l - 1) % MAP_SIZE];
-            if (!dark_blocks.includes(k3[2])) {
-              if (k3[3] - 1 > dark) {dark = k3[3] - 1;}
-              suround = false;
+            if (dis([k, l], [1, 1]) < 1.1) {
+              let k3 = land[(u + k - 1) % MAP_SIZE][(v + l - 1) % MAP_SIZE];
+              if (!dark_blocks.includes(k3[2])) {
+                if (k3[3] - 1 > dark) {dark = k3[3] - 1;}
+                suround = false;
+              }
             }
           }
         }
@@ -832,6 +838,9 @@ function loop() {
     }
 
     for (let i of animals) {
+      block_posx = Math.floor(i[0]/SIZE) % MAP_SIZE;
+      block_posy = Math.floor(i[1]/SIZE) % MAP_SIZE;
+      ctx.filter = "brightness(" + land[block_posx][block_posy][3]/15 + ")";
       const aimg = animal_imgs[i[8]];
       ctx.drawImage(aimg, i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, SIZE, SIZE);
       if (i[4] < i[10]) {
@@ -840,6 +849,7 @@ function loop() {
         ctx.fillStyle = "rgb(0, 255, 0)";
         ctx.fillRect(i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, i[4]/i[10]*50, 10);
       }
+      ctx.filter = "none";
     }
 
     ctx.fillStyle = "rgb(255, 0, 0)";
