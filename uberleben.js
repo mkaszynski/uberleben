@@ -75,18 +75,19 @@ let TUNGSTEN_ARMOR = 54;
 let TORCH = 55;
 let LEAVES = 56;
 let BED = 57;
+let CHEST = 58;
 
 let MAP_SIZE = 300;
 
-let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200, 58: 100}
+let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200, 57: 100, 58: 100}
 
-let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor", 55: "torch", 56: "leaves", 57: "bed"}
+let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor", 55: "torch", 56: "leaves", 57: "bed", 58: "chest"}
 
 let foods = {25: 10, 26: 25}
 
 let glow = {10: 6, 55: 14}
 
-const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png", "torch.png", "leaves.png", "bed.png"].map(src => {
+const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png", "torch.png", "leaves.png", "bed.png", "chest.png"].map(src => {
   const img = new Image();
   img.src = src;
   return img;
@@ -104,7 +105,7 @@ const place_armor = ["place_armor.png"].map(src => {
   return img3;
 });
 
-let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, FURNACE, FORGE, COMPRESSED_GRASS, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, COAL, LEAVES];
+let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, FORGE, COMPRESSED_GRASS, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, COAL, LEAVES, CHEST];
 
 let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0, 55: 0, 57: 0.5}
 
@@ -122,6 +123,8 @@ for (let i = 0; i < 20; i++) {
 }
 
 let land = [];
+
+let chests = {};
 
 let animals = [];
 
@@ -204,8 +207,9 @@ let stage = "menue";
 
 let held = false;
 
-let mine_setting = 1;
+let open_chest = false;
 
+let chest_open = "";
 
 // Set this stuff
 let courser = 0;
@@ -239,6 +243,7 @@ crafts.push([[[PLANKS, PLANKS, 0], [0, 0, 0], [0, 0, 0]], [[STICKS, STICKS, 0], 
 crafts.push([[[PLANKS, PLANKS, 0], [PLANKS, PLANKS, 0], [0, 0, 0]], [[DOOR, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[FLAME, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[TORCH, 0, 0], [TORCH, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[PLANKS, 0, 0], [0, 0, 0], [0, 0, 0]], [[WORKBENCH, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
+crafts.push([[[PLANKS, TIN, 0], [TIN, PLANKS, 0], [0, 0, 0]], [[CHEST, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[STONE, STONE, 0], [STONE, STONE, 0], [0, 0, 0]], [[FURNACE, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[GRASS, GRASS, 0], [GRASS, GRASS, 0], [0, 0, 0]], [[COMPRESSED_GRASS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
 crafts.push([[[COMPRESSED_GRASS, PLANKS, 0], [COMPRESSED_GRASS, PLANKS, 0], [0, 0, 0]], [[BED, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
@@ -489,9 +494,22 @@ function loop() {
             if (craft[i][j] > 0) {no_craft = false;}
           }
         }
-        if (no_craft) {open_inventory = false;
+        if (no_craft && !open_chest) {open_inventory = false;
           craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
-          craft_bar = 0;}
+          craft_bar = 0;
+        }
+        if (open_chest) {
+          for (let f = 0; f < 3; f++) {
+            for (let g = 0; g < 3; g++) {
+              chests[chest_open][f][g] = craft[f][g];
+            }
+          }
+          open_inventory = false;
+          open_chest = false;
+          chest_open = "";
+          craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
+          craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+        }
       }
       held = true;
     }
@@ -561,6 +579,17 @@ function loop() {
           open_inventory = true;
           craft2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
         }
+        if (land[block_posx][block_posy][2] == CHEST) {
+          open_inventory = true;
+          craft2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
+          open_chest = true;
+          chest_open = block_posx + " " + block_posy;
+          for (let f = 0; f < 3; f++) {
+            for (let g = 0; g < 3; g++) {
+              craft[f][g] = chests[chest_open][f][g];
+            }
+          }
+        }
         if (land[block_posx][block_posy][2] == DOOR && !held) {
           land[block_posx][block_posy][2] = OPEN_DOOR;
           held = true;
@@ -587,12 +616,46 @@ function loop() {
               for (let i = 0; i < 6; i++) {
                 for (let j = 0; j < 6; j++) {
                   if (inventory[i][j] == 0) {
-                    inventory[i][j] = land[block_posx][block_posy][2];
-                    land[block_posx][block_posy][2] = 0;
+                    if (land[block_posx][block_posy][2] != CHEST) {
+                      inventory[i][j] = land[block_posx][block_posy][2];
+                      land[block_posx][block_posy][2] = 0;
+                    } else {
+                      let empty = true;
+                      for (let f = 0; f < 3; f++) {
+                        for (let g = 0; g < 3; g++) {
+                          if (chests[block_posx + " " + block_posy][f][g] > 0) {
+                            empty = false;
+                          }
+                        }
+                      }
+                      if (empty) {
+                        delete chests[block_posx + " " + block_posy];
+                        inventory[i][j] = land[block_posx][block_posy][2];
+                        land[block_posx][block_posy][2] = 0;
+                      }
+                    }
                   }
                 }
               }
-            } else {courser = land[block_posx][block_posy][2];land[block_posx][block_posy][2] = 0;}
+            } else {
+              if (land[block_posx][block_posy][2] != CHEST) {
+                courser = land[block_posx][block_posy][2];land[block_posx][block_posy][2] = 0;
+              } else {
+                let empty = true;
+                for (let f = 0; f < 3; f++) {
+                  for (let g = 0; g < 3; g++) {
+                    if (chests[block_posx + " " + block_posy][f][g] > 0) {
+                      empty = false;
+                    }
+                  }
+                }
+                if (empty) {
+                  delete chests[block_posx + " " + block_posy];
+                  courser = land[block_posx][block_posy][2];
+                  land[block_posx][block_posy][2] = 0;
+                }
+              }
+            }
             if (pickaxes.includes(courser)) {if (Math.random() < 1/durrability[pickaxes.indexOf(courser)]) {courser = 0;}}
             if (axes.includes(courser)) {if (Math.random() < 1/durrability[axes.indexOf(courser)]) {courser = 0;}}
             hit_bar = 0;
@@ -621,6 +684,9 @@ function loop() {
         let cur_type = courser;
         if (land[block_posx][block_posy][2] == 0) {
           land[block_posx][block_posy][2] = courser;
+          if (courser == CHEST) {
+            chests[block_posx + " " + block_posy] = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+          }
           courser = 0;
           let found1 = true;
           for (let i = 0; i < 6; i++) {
@@ -734,7 +800,7 @@ function loop() {
         }
       }
 
-      if (keys["c"]) {
+      if (keys["c"] && !open_chest) {
         let s = true;
         for (let m of crafts) {
           if (same(m[0], craft)) {
@@ -773,7 +839,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.10.0", 20, 50);
+    ctx.fillText("Version 0.11.0", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
