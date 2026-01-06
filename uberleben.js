@@ -665,13 +665,13 @@ function loop() {
             if (land[block_posx][block_posy][2] in hardness) {
               let u2 = false;
               if (stones.includes(land[block_posx][block_posy][2]) && pickaxes.includes(courser)) {
-                let power = strengths[pickaxes.indexOf(courser)]*danger_power;
-                hit_bar += 100/(hardness[land[block_posx][block_posy][2]]/power);
+                let power = strengths[pickaxes.indexOf(courser)];
+                hit_bar += 100/(hardness[land[block_posx][block_posy][2]]/power*danger_power);
                 u2 = true;
               }
               if (woods.includes(land[block_posx][block_posy][2]) && axes.includes(courser)) {
-                let power1 = strengths[axes.indexOf(courser)]*danger_power;
-                hit_bar += 100/(hardness[land[block_posx][block_posy][2]]/power1);
+                let power1 = strengths[axes.indexOf(courser)];
+                hit_bar += 100/(hardness[land[block_posx][block_posy][2]]/power1*danger_power);
                 u2 = true;
               }
               if (!u2) {hit_bar += 100/hardness[land[block_posx][block_posy][2]]/danger_power;}
@@ -840,7 +840,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.11.3", 20, 50);
+    ctx.fillText("Version 0.11.4", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
