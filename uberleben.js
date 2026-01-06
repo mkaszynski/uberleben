@@ -839,7 +839,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.11.0", 20, 50);
+    ctx.fillText("Version 0.11.1", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -1121,6 +1121,8 @@ function loop() {
         ]
       );
     }
+
+    chests = {};
 
     land = [];
 for (let i = 0; i < MAP_SIZE; i++) {
