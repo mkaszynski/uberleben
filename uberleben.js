@@ -288,7 +288,7 @@ crafts.push([[[0, IRON, 0], [IRON, 0, IRON], [0, IRON, 0]], [[IRON_ARMOR, 0, 0],
 crafts.push([[[0, ALUMINUM, 0], [ALUMINUM, 0, ALUMINUM], [0, ALUMINUM, 0]], [[ALUMINUM_ARMOR, 0, 0], [0, 0, 0], [0, 0, 0]], 400])
 crafts.push([[[0, TUNGSTEN, 0], [TUNGSTEN, 0, TUNGSTEN], [0, TUNGSTEN, 0]], [[TUNGSTEN_ARMOR, 0, 0], [0, 0, 0], [0, 0, 0]], 1000])
 
-let woods = [LOG, PLANKS, WORKBENCH, DOOR, OPEN_DOOR];
+let woods = [LOG, PLANKS, WORKBENCH, DOOR, OPEN_DOOR, BED, CHEST];
 let stones = [STONE, FURNACE, COAL, TIN_ORE, COPPER_ORE, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE];
 
 let axes = [WOODEN_AXE, STONE_AXE, TIN_AXE, COPPER_AXE, IRON_AXE, ALUMINUM_AXE, TUNGSTEN_AXE];
@@ -298,7 +298,7 @@ let armors = [AIR, FUR_ARMOR, TIN_ARMOR, COPPER_ARMOR, IRON_SWORD, ALUMINUM_SWOR
 
 let strengths = [2, 3, 4, 5, 8, 6, 12];
 
-let durrability = [20, 40, 90, 70, 150, 100, 500];
+let durrability = [20, 40, 110, 90, 200, 110, 600];
 
 let weights = [0.95, 0.85, 0.8, 0.75, 0.65, 0.95, 0.5];
 
@@ -448,7 +448,7 @@ function loop() {
       
       block_posx = Math.floor(i[0]/SIZE) % MAP_SIZE;
       block_posy = Math.floor((i[1] + i[3]*slow2)/SIZE) % MAP_SIZE;
-      if ((land[block_posx][block_posy][2] in collide)) {
+      if (land[block_posx][block_posy][2] in collide) {
         i[1] += i[3]*slow2;
       } else {
         i[2] = Math.floor(Math.random()*3 - 1)*i[5];
@@ -457,7 +457,7 @@ function loop() {
       
       block_posx = Math.floor((i[0] + i[2]*slow2)/SIZE) % MAP_SIZE;
       block_posy = Math.floor(i[1]/SIZE) % MAP_SIZE;
-      if ((land[block_posx][block_posy][2] in collide)) {
+      if (land[block_posx][block_posy][2] in collide) {
         i[0] += i[2]*slow2;
       } else {
         i[2] = Math.floor(Math.random()*3 - 1)*i[5];
@@ -544,7 +544,7 @@ function loop() {
     block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
     block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
     let back = false;
-    if (!(land[block_posx][block_posy][2] in collide)) {
+    if (!(land[block_posx][block_posy][2] in collide) && danger > 0) {
       back = true;
     }
     if (back) {posy = lposy;} 
@@ -558,7 +558,7 @@ function loop() {
     block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
     block_posy = Math.floor(posy/SIZE) % MAP_SIZE;    
     back = false;
-    if (!(land[block_posx][block_posy][2] in collide)) {
+    if (!(land[block_posx][block_posy][2] in collide) && danger > 0) {
       back = true;
     }
     if (back) {posx = lposx;}
@@ -580,6 +580,7 @@ function loop() {
           craft2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
         }
         if (land[block_posx][block_posy][2] == CHEST) {
+          held = true;
           open_inventory = true;
           craft2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
           open_chest = true;
@@ -839,7 +840,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.11.2", 20, 50);
+    ctx.fillText("Version 0.11.3", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
@@ -929,6 +930,7 @@ function loop() {
         i[3] = dark;
         if (!dark_blocks.includes(i[2]) && !dark_blocks.includes(i[4]) && day > i[3]) {i[3] = day;}
         if (suround) {i[3] = 0;}
+        if (danger == 0 && !(land[block_posx][block_posy][2] in collide)) {i[3] = 15;}
       }
     }
 
@@ -1162,7 +1164,7 @@ for (let i = 0; i < MAP_SIZE; i++) {
         column.push([i, j, IRON_ORE, 0, STONE]);
       } else if (Math.random() < 0.006 && height > 4.7) {
         column.push([i, j, ALUMINUM_ORE, 0, STONE]);
-      } else if (Math.random() < 0.002 && height > 5.5) {
+      } else if (Math.random() < 0.002 && height > 4.7) {
         column.push([i, j, TUNGSTEN_ORE, 0, STONE]);
       } else {
         column.push([i, j, STONE, 0, STONE]);
