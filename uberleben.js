@@ -74,20 +74,19 @@ let ALUMINUM_ARMOR = 53;
 let TUNGSTEN_ARMOR = 54;
 let TORCH = 55;
 let LEAVES = 56;
+let BED = 57;
 
 let MAP_SIZE = 300;
 
-let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200}
+let hardness = {1: 10, 2: 200, 3: 500, 4: 1000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200, 58: 100}
 
-let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor", 55: "torch", 56: "leaves"}
+let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor", 55: "torch", 56: "leaves", 57: "bed"}
 
 let foods = {25: 10, 26: 25}
 
 let glow = {10: 6, 55: 14}
 
-let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, FURNACE, FORGE, COMPRESSED_GRASS, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, COAL, LEAVES];
-
-const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png", "torch.png", "leaves.png"].map(src => {
+const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png", "torch.png", "leaves.png", "bed.png"].map(src => {
   const img = new Image();
   img.src = src;
   return img;
@@ -105,7 +104,9 @@ const place_armor = ["place_armor.png"].map(src => {
   return img3;
 });
 
-let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0}
+let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, FURNACE, FORGE, COMPRESSED_GRASS, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, COAL, LEAVES];
+
+let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0, 55: 0, 57: 0.5}
 
 let SIZE = 40;
 
@@ -175,12 +176,6 @@ for (let i = 0; i < MAP_SIZE; i++) {
 }
 
 let animals = [];
-
-let posx = 80001000;
-let posy = 80001000;
-
-let health = 100;
-let hunger = 100;
 
 let last = performance.now();
 
@@ -253,7 +248,7 @@ canvas.addEventListener("mouseup", e => mouse.held[e.button] = false);
 
 let dt = 0.016;
 
-let start = true;
+let start = false;
 
 let time1 = 0;
 
@@ -262,12 +257,23 @@ let stage = "menue";
 let held = false;
 
 
+// Set this stuff
 let courser = 0;
 
 let inventory = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
 let craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
 let craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
+
+let armor = 0;
+
+let posx = 80001000;
+let posy = 80001000;
+
+let health = 100;
+let hunger = 100;
+
+
 
 function same(recipy, craft1) {
   let same1 = true;
@@ -287,6 +293,7 @@ crafts.push([[[FLAME, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[TORCH, 0, 0], [TORCH,
 crafts.push([[[PLANKS, 0, 0], [0, 0, 0], [0, 0, 0]], [[WORKBENCH, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[STONE, STONE, 0], [STONE, STONE, 0], [0, 0, 0]], [[FURNACE, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[GRASS, GRASS, 0], [GRASS, GRASS, 0], [0, 0, 0]], [[COMPRESSED_GRASS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
+crafts.push([[[COMPRESSED_GRASS, PLANKS, 0], [COMPRESSED_GRASS, PLANKS, 0], [0, 0, 0]], [[BED, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[0, 0, 0], [PLANKS, 0, PLANKS], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[0, 0, 0], [COMPRESSED_GRASS, 0, COMPRESSED_GRASS], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[0, 0, 0], [0, 0, COAL], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, FLAME], [0, 0, 0]], 50]);
@@ -358,9 +365,9 @@ let craft_scroll = 0;
 
 let mouse_tips = [];
 
-let armor = 0;
-
 let day = 0;
+
+let o1 = 0;
 
 let running = true;
 function loop() {
@@ -376,7 +383,24 @@ function loop() {
   if (time1 > 0 && time1 < 10) dt = dt*0.75 + dt_now*0.25;
 
   time1 += 1;
+  
+  if (start) {
+    courser = 0;
 
+    inventory = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
+    craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+
+    craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
+
+    armor = 0;
+
+    posx = 80001000;
+    posy = 80001000;
+
+    health = 100;
+    hunger = 100;
+  }
+    
   
   day = Math.floor(Math.sin(time1/40000*Math.PI*2)*20 + 15/2);
 
@@ -411,7 +435,7 @@ function loop() {
     if (health < 100) {hunger -= 0.002; health += 0.004;}
     if (health > 100) {health = 100;}
 
-    if (health <= 0) {stage = "menue";running = false;}
+    if (health <= 0) {stage = "menue";start = false;}
 
     if (Math.random() < 0.004) {
       let animalx = Math.floor(posx/SIZE + (Math.random()*100 - 50));
@@ -542,6 +566,9 @@ function loop() {
     if (land[block_posx][block_posy][2] in collide) {
       slow = collide[land[block_posx][block_posy][2]];
     }
+    if (land[block_posx][block_posy][2] == BED && day < 10) {
+      time1 += 100;
+    }
     slow = 1 - slow;
     if (swords.includes(courser)) {slow *= weights[swords.indexOf(courser)]/2 + 1/2;}
     if (axes.includes(courser)) {slow *= weights[axes.indexOf(courser)]/2 + 1/2;}
@@ -602,7 +629,7 @@ function loop() {
         }
       }
 
-      if (mouse.held[2] && courser in foods) {
+      if (mouse.held[0] && courser in foods) {
         hunger += foods[courser];
         courser = 0;
       }
@@ -680,6 +707,12 @@ function loop() {
               courser = 0;
               held = true;
             }
+            if (courser > 0 && inventory[i][j] > 0 && !held && mouse.held[0]) {
+              o1 = courser;
+              courser = inventory[i][j];
+              inventory[i][j] = o1;
+              held = true;
+            }
             if (mouse.held[2]) {
               let m3 = false;
               for (let s = 0; s < 3; s++) {
@@ -706,6 +739,12 @@ function loop() {
           courser = 0;
           held = true;
         }
+        if (courser > 0 && armor > 0 && !held && mouse.held[0]) {
+          o1 = courser;
+          courser = armor;
+          armor = o1;
+          held = true;
+        }
         if (armor > 0 && mouse.held[2]) {
           let m4 = false;
           for (let s = 0; s < 6; s++) {
@@ -730,6 +769,12 @@ function loop() {
             if (courser > 0 && craft[i][j] == 0 && !held && mouse.held[0]) {
               craft[i][j] = courser;
               courser = 0;
+              held = true;
+            }
+            if (courser > 0 && craft[i][j] > 0 && !held && mouse.held[0]) {
+              o1 = courser;
+              courser = craft[i][j];
+              craft[i][j] = o1;
               held = true;
             }
             if (mouse.held[2]) {
