@@ -121,59 +121,7 @@ for (let i = 0; i < 20; i++) {
   );
 }
 
-land = []
-for (let i = 0; i < MAP_SIZE; i++) {
-
-  let column = [];
-  for (let j = 0; j < MAP_SIZE; j++) {
-    let height = 0
-    for (let k of seed) {
-      height += Math.sin(((i/5 - 30) * Math.sin(k[2]) + (j/5 - 15) * Math.cos(k[2])) / k[0] + k[1]);
-    }
-    let height2 = 0
-    for (let k of seed) {
-      height2 += Math.sin(((i/10 + 100000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
-    }
-    let height3 = 0;
-    for (let k of seed) {
-      height3 += Math.sin(((i + 10000 - 30) * Math.sin(k[2]) + (j - 15) * Math.cos(k[2])) / k[0] + k[1]);
-    }
-    let height4 = 0;
-    for (let k of seed) {
-      height3 += Math.sin(((i/10 - 10000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
-    }
-    let leave = 0;
-    if (height3 + height4 > 2) {leave = LEAVES;}
-    if (-0.5 < height2 && height2 < 0.5) {
-      if (height < 3) {
-        column.push([i, j, WATER, 0, leave]);
-      } else {column.push([i, j, WATER, 0, STONE]);}
-    } else if (height > 3) {
-      if (Math.random() < 0.02 && height > 3.5) {
-        column.push([i, j, COPPER_ORE, 0, STONE]);
-      } else if (Math.random() < 0.025 && height > 3.5) {
-        column.push([i, j, TIN_ORE, 0, STONE]);
-      } else if (Math.random() < 0.035 && height > 3.75) {
-        column.push([i, j, COAL, 0, STONE]);
-      } else if (Math.random() < 0.01 && height > 4) {
-        column.push([i, j, IRON_ORE, 0, STONE]);
-      } else if (Math.random() < 0.006 && height > 4.7) {
-        column.push([i, j, ALUMINUM_ORE, 0, STONE]);
-      } else if (Math.random() < 0.002 && height > 5.5) {
-        column.push([i, j, TUNGSTEN_ORE, 0, STONE]);
-      } else {
-        column.push([i, j, STONE, 0, STONE]);
-      }
-    } else if (Math.random() < 0.1 && height3 + height4 > 2) {
-      column.push([i, j, LOG, 0, leave]);
-    } else if (Math.random() < 0.2) {
-      column.push([i, j, GRASS, 0, leave]);
-    } else {
-      column.push([i, j, AIR, 0, leave]);
-    }
-  }
-  land.push(column);
-}
+let land = [];
 
 let animals = [];
 
@@ -256,6 +204,8 @@ let stage = "menue";
 
 let held = false;
 
+let mine_setting = 1;
+
 
 // Set this stuff
 let courser = 0;
@@ -272,8 +222,6 @@ let posy = 80001000;
 
 let health = 100;
 let hunger = 100;
-
-
 
 function same(recipy, craft1) {
   let same1 = true;
@@ -351,6 +299,8 @@ let weights = [0.95, 0.85, 0.8, 0.75, 0.65, 0.95, 0.5];
 
 let protections = [1, 0.75, 0.6, 0.5, 0.3, 0.35, 0.2];
 
+let danger = 1;
+
 let hit_bar = 0;
 let hit_spot = [-1, -1];
 
@@ -382,27 +332,7 @@ function loop() {
   if (time1 == 0) dt = dt_now;
   if (time1 > 0 && time1 < 10) dt = dt*0.75 + dt_now*0.25;
 
-  time1 += 1;
-  
-  if (start) {
-    courser = 0;
-
-    inventory = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
-    craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-
-    craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
-
-    armor = 0;
-
-    posx = 80001000;
-    posy = 80001000;
-
-    health = 100;
-    hunger = 100;
-
-    start = false;
-  }
-    
+  time1 += 1;   
   
   day = Math.floor(Math.sin(time1/40000*Math.PI*2)*20 + 15/2);
 
@@ -430,14 +360,20 @@ function loop() {
       if (craft_scroll < 0) {craft_scroll = 0;}
     }
 
-    hunger -= 0.001;
-    if (hunger <= 0) {hunger = 0; health -= 0.02;}
+    hunger -= 0.001*danger;
+    if (hunger <= 0) {hunger = 0; health -= 0.02*danger;}
     if (hunger > 100) {hunger = 100;}
 
     if (health < 100) {hunger -= 0.002; health += 0.004;}
     if (health > 100) {health = 100;}
 
     if (health <= 0) {stage = "menue";start = false;}
+
+    if (danger == 0) {health = 100; hunger = 100;}
+
+    let danger_power = 1;
+    if (danger == 0) {danger_power = 0.01;}
+    if (danger == 2) {danger_power = 3;}
 
     if (Math.random() < 0.004) {
       let animalx = Math.floor(posx/SIZE + (Math.random()*100 - 50));
@@ -476,7 +412,7 @@ function loop() {
         if (posx < i[0]) {i[2] = -i[5];} else {i[2] = i[5];}
         if (posy < i[1]) {i[3] = -i[5];} else {i[3] = i[5];}
         if (dis([posx, posy], [i[0], i[1]]) < 50 && Math.random() > 0.05) {
-          health -= i[9]*protections[armors.indexOf(armor)];
+          health -= i[9]*protections[armors.indexOf(armor)]*danger;
           if (Math.random() < 1/durrability[armors.indexOf(armor)]) {armor = 0;}
         }
       }
@@ -489,6 +425,7 @@ function loop() {
       if (mouse.held[2] && !held && dis([mouse.x - 600, mouse.y - 300], [i[0] - posx, i[1] - posy]) < 25 && dis([600, 300], [mouse.x, mouse.y]) < reach) {
         let power3 = 1;
         if (swords.includes(courser)) {power3 = strengths[swords.indexOf(courser)];}
+        if (danger == 2) {power3 *= 1/3;}
         i[4] -= power3;
         held = true;
         if (i[6] == 0) {i[7] = -1;}
@@ -576,6 +513,8 @@ function loop() {
     if (axes.includes(courser)) {slow *= weights[axes.indexOf(courser)]/2 + 1/2;}
     if (pickaxes.includes(courser)) {slow *= weights[pickaxes.indexOf(courser)]/2 + 1/2;}
     slow *= weights[armors.indexOf(armor)];
+
+    if (danger == 0) {slow = 3;}
     
     let lposy = posy;    
     if (keys["w"] && !open_inventory) {
@@ -662,16 +601,16 @@ function loop() {
             if (land[block_posx][block_posy][2] in hardness) {
               let u2 = false;
               if (stones.includes(land[block_posx][block_posy][2]) && pickaxes.includes(courser)) {
-                let power = strengths[pickaxes.indexOf(courser)];
+                let power = strengths[pickaxes.indexOf(courser)]*danger_power;
                 hit_bar += 100/(hardness[land[block_posx][block_posy][2]]/power);
                 u2 = true;
               }
               if (woods.includes(land[block_posx][block_posy][2]) && axes.includes(courser)) {
-                let power1 = strengths[axes.indexOf(courser)];
+                let power1 = strengths[axes.indexOf(courser)]*danger_power;
                 hit_bar += 100/(hardness[land[block_posx][block_posy][2]]/power1);
                 u2 = true;
               }
-              if (!u2) {hit_bar += 100/hardness[land[block_posx][block_posy][2]];}
+              if (!u2) {hit_bar += 100/hardness[land[block_posx][block_posy][2]]/danger_power;}
             } else {hit_bar += 50;}
           }
         }
@@ -807,7 +746,7 @@ function loop() {
                 }
               }
             } else {
-              craft_bar += 100/m[2];
+              craft_bar += 100/m[2]/danger_power;
             }
           } else {s = false;}
         }
@@ -834,17 +773,45 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 0.9.11", 20, 50);
+    ctx.fillText("Version 0.10.0", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "play";
+      danger = 1;
+      start = true;
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(550, 450, 100, 100);
     
     ctx.fillStyle = "black";          // text color
     ctx.font = "15px Arial";          // font size and family
-    ctx.fillText("Play", 575, 500);
+    ctx.fillText("Survival", 575, 500);
+    
+
+    if (400 < mouse.x && mouse.x < 500 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
+      stage = "play";
+      danger = 2;
+      start = true;
+    }
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
+    ctx.fillRect(400, 450, 100, 100);
+    
+    ctx.fillStyle = "black";          // text color
+    ctx.font = "15px Arial";          // font size and family
+    ctx.fillText("Death Mode", 410, 500);
+    
+
+    if (700 < mouse.x && mouse.x < 800 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
+      stage = "play";
+      danger = 0;
+      start = true;
+    }
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
+    ctx.fillRect(700, 450, 100, 100);
+    
+    ctx.fillStyle = "black";          // text color
+    ctx.font = "15px Arial";          // font size and family
+    ctx.fillText("Creative", 725, 500);
   }
 
 
@@ -917,7 +884,7 @@ function loop() {
     ctx.fillStyle = "rgb(255, 0, 0)";
     ctx.fillRect(600 - SIZE/4, 300 - SIZE/4, SIZE/2, SIZE/2);
 
-    if (hit_bar > 0) {
+    if (hit_bar > 0 && danger > 0) {
       ctx.fillStyle = "rgb(128, 128, 128)";
       ctx.fillRect(mouse.x - 25, mouse.y - 25, 50, 10);
 
@@ -946,14 +913,14 @@ function loop() {
             const img = images[crafts[k][0][i][j]];
             ctx.drawImage(img, 770 + i*70/2, 70 + (j*70 - craft_scroll*2 + k*250)/2, SIZE/2, SIZE/2);
 
-            mouse_tips.push([770 + i*70/2 + SIZE/4, 70 + (j*70 - craft_scroll*2 + k*250)/2 + SIZE/4, crafts[k][0][i][j]]);
+            mouse_tips.push([770 + i*70/2 + SIZE/4, 70 + (j*70 - craft_scroll*2 + k*250)/2 + SIZE/4, crafts[k][0][i][j], true]);
 
             ctx.fillStyle = "rgb(200, 100, 0)";
             ctx.fillRect(920 + (i*70 - 5)/2, 70 + (j*70 - craft_scroll*2 + k*250 - 5)/2, SIZE/2 + 5, SIZE/2 + 5);
             const img2 = images[crafts[k][1][i][j]];
             ctx.drawImage(img2, 920 + i*70/2, 70 + (j*70 - craft_scroll*2 + k*250)/2, SIZE/2, SIZE/2);
 
-            mouse_tips.push([920 + i*70/2 + SIZE/4, 70 + (j*70 - craft_scroll*2 + k*250)/2 + SIZE/4, crafts[k][1][i][j]]);
+            mouse_tips.push([920 + i*70/2 + SIZE/4, 70 + (j*70 - craft_scroll*2 + k*250)/2 + SIZE/4, crafts[k][1][i][j], true]);
           }
         }
       }
@@ -966,7 +933,7 @@ function loop() {
         if (inventory[i][j] > 0) {
           const img = images[inventory[i][j]];
           ctx.drawImage(img, 70 + i*70, 70 + j*70, SIZE, SIZE);
-          mouse_tips.push([70 + i*70 + SIZE/2, 70 + j*70 + SIZE/2, inventory[i][j]]);
+          mouse_tips.push([70 + i*70 + SIZE/2, 70 + j*70 + SIZE/2, inventory[i][j], false]);
         }
       }
     }
@@ -978,7 +945,7 @@ function loop() {
           if (craft[i][j] > 0) {
             const img = images[craft[i][j]];
             ctx.drawImage(img, 560 + i*70, 70 + j*70, SIZE, SIZE);
-            mouse_tips.push([560 + i*70 + SIZE/2, 70 + j*70 + SIZE/2, craft[i][j]]);
+            mouse_tips.push([560 + i*70 + SIZE/2, 70 + j*70 + SIZE/2, craft[i][j], false]);
           }
         }
       }
@@ -992,13 +959,13 @@ function loop() {
     }
     const img = images[armor];
     ctx.drawImage(img, 560, 300, SIZE, SIZE);
-    mouse_tips.push([560 + SIZE/2, 300 + SIZE/2, armor]);
+      mouse_tips.push([560 + SIZE/2, 300 + SIZE/2, armor, false]);
 
     if (craft_bar > 0) {
       ctx.fillStyle = "rgb(128, 128, 128)";
-      ctx.fillRect(430, 150, 50, 10);
+      ctx.fillRect(500, 150, 50, 10);
       ctx.fillStyle = "rgb(255, 0, 0)";
-      ctx.fillRect(430, 150, craft_bar/2, 10);
+      ctx.fillRect(500, 150, craft_bar/2, 10);
     }
     }
 
@@ -1008,15 +975,20 @@ function loop() {
     }
 
     let str_m = 0;
+    let get2 = false;
     for (let i of mouse_tips) {
       if (dis([mouse.x, mouse.y], [i[0], i[1]]) < SIZE/2 && i[2] > 0) {
         str_m = i[2];
+        if (i[3]) {get2 = true;}
       }
     }
     if (str_m > 0) {
         ctx.fillStyle = "black";          // text color
         ctx.font = "30px Arial";          // font size and family
         ctx.fillText(names[str_m], mouse.x, mouse.y);
+    }
+    if (mouse.held[0] && courser == 0 && str_m > 0 && danger == 0 && get2) {
+      courser = str_m;
     }
     
     
@@ -1035,7 +1007,6 @@ function loop() {
   if (stage == "paused") {
     if (100 > mouse.x && mouse.y < 400 && mouse.y > 300 && mouse.held[0]) {
       stage = "menue";
-      start = true;
     }
     if (550 < mouse.x && mouse.x < 650 && 250 < mouse.y && mouse.y < 350 && mouse.held[0]) {
       stage = "play";
@@ -1055,6 +1026,91 @@ function loop() {
     ctx.font = "15px Arial";          // font size and family
     ctx.fillText("Unpause", 575, 300);
   }
+
+    if (start) {
+    courser = 0;
+
+    inventory = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
+    craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+
+    craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
+
+    armor = 0;
+
+    posx = 80001000;
+    posy = 80001000;
+
+    health = 100;
+    hunger = 100;
+
+    start = false;
+
+    let seed = [];
+    for (let i = 0; i < 20; i++) {
+      seed.push(
+        [
+          (Math.random() ** 2 * 30 + 2) / 4,
+            Math.random() * 100,
+            Math.random() * 100,
+        ]
+      );
+    }
+
+    land = [];
+for (let i = 0; i < MAP_SIZE; i++) {
+
+  let column = [];
+  for (let j = 0; j < MAP_SIZE; j++) {
+    let height = 0
+    for (let k of seed) {
+      height += Math.sin(((i/5 - 30) * Math.sin(k[2]) + (j/5 - 15) * Math.cos(k[2])) / k[0] + k[1]);
+    }
+    let height2 = 0
+    for (let k of seed) {
+      height2 += Math.sin(((i/10 + 100000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
+    }
+    let height3 = 0;
+    for (let k of seed) {
+      height3 += Math.sin(((i + 10000 - 30) * Math.sin(k[2]) + (j - 15) * Math.cos(k[2])) / k[0] + k[1]);
+    }
+    let height4 = 0;
+    for (let k of seed) {
+      height3 += Math.sin(((i/10 - 10000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
+    }
+    let leave = 0;
+    if (height3 + height4 > 2) {leave = LEAVES;}
+    if (-0.5 < height2 && height2 < 0.5) {
+      if (height < 3) {
+        column.push([i, j, WATER, 0, leave]);
+      } else {column.push([i, j, WATER, 0, STONE]);}
+    } else if (height > 3) {
+      if (Math.random() < 0.02 && height > 3.5) {
+        column.push([i, j, COPPER_ORE, 0, STONE]);
+      } else if (Math.random() < 0.025 && height > 3.5) {
+        column.push([i, j, TIN_ORE, 0, STONE]);
+      } else if (Math.random() < 0.035 && height > 3.75) {
+        column.push([i, j, COAL, 0, STONE]);
+      } else if (Math.random() < 0.01 && height > 4) {
+        column.push([i, j, IRON_ORE, 0, STONE]);
+      } else if (Math.random() < 0.006 && height > 4.7) {
+        column.push([i, j, ALUMINUM_ORE, 0, STONE]);
+      } else if (Math.random() < 0.002 && height > 5.5) {
+        column.push([i, j, TUNGSTEN_ORE, 0, STONE]);
+      } else {
+        column.push([i, j, STONE, 0, STONE]);
+      }
+    } else if (Math.random() < 0.1 && height3 + height4 > 2) {
+      column.push([i, j, LOG, 0, leave]);
+    } else if (Math.random() < 0.2) {
+      column.push([i, j, GRASS, 0, leave]);
+    } else {
+      column.push([i, j, AIR, 0, leave]);
+    }
+  }
+  land.push(column);
+}
+  }
+  
 
   render1 = false;
 
