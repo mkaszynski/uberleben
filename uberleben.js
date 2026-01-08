@@ -17,6 +17,85 @@ function resize() {
 
 ctx.imageSmoothingEnabled = false;
 
+if (localStorage.getItem("worlds") == null) {
+  localStorage.setItem("worlds", JSON.stringify([]));
+}
+
+function run_land() {
+  let seed = [];
+  for (let i = 0; i < 20; i++) {
+    seed.push(
+        [
+          (Math.random() ** 2 * 30 + 2) / 4,
+            Math.random() * 100,
+            Math.random() * 100,
+        ]
+    );
+  }
+  land = [];
+    for (let i = 0; i < MAP_SIZE; i++) {
+
+      let column = [];
+      for (let j = 0; j < MAP_SIZE; j++) {
+        let height = 0
+        for (let k of seed) {
+          height += Math.sin(((i/5 - 30) * Math.sin(k[2]) + (j/5 - 15) * Math.cos(k[2])) / k[0] + k[1]);
+        }
+        let height2 = 0
+        for (let k of seed) {
+          height2 += Math.sin(((i/10 + 100000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
+        }
+        let height3 = 0;
+        for (let k of seed) {
+          height3 += Math.sin(((i + 10000 - 30) * Math.sin(k[2]) + (j - 15) * Math.cos(k[2])) / k[0] + k[1]);
+        }
+        let height4 = 0;
+        for (let k of seed) {
+          height3 += Math.sin(((i/10 - 10000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
+        }
+        let leave = 0;
+        if (height3 + height4 > 2) {leave = LEAVES;}
+        if (-0.5 < height2 && height2 < 0.5) {
+          if (height < 3) {
+            column.push([i, j, WATER, 0, leave]);
+          } else {column.push([i, j, WATER, 0, STONE]);}
+        } else if (height > 3) {
+          if (Math.random() < 0.02 && height > 3.5) {
+            column.push([i, j, COPPER_ORE, 0, STONE]);
+          } else if (Math.random() < 0.025 && height > 3.5) {
+            column.push([i, j, TIN_ORE, 0, STONE]);
+          } else if (Math.random() < 0.035 && height > 3.75) {
+            column.push([i, j, COAL, 0, STONE]);
+          } else if (Math.random() < 0.01 && height > 4) {
+            column.push([i, j, IRON_ORE, 0, STONE]);
+          } else if (Math.random() < 0.006 && height > 4.3) {
+            column.push([i, j, ALUMINUM_ORE, 0, STONE]);
+          } else if (Math.random() < 0.002 && height > 4.3) {
+            column.push([i, j, TUNGSTEN_ORE, 0, STONE]);
+          } else {
+            column.push([i, j, STONE, 0, STONE]);
+          }
+        } else if (Math.random() < 0.1 && height3 + height4 > 2) {
+          column.push([i, j, LOG, 0, leave]);
+        } else if (Math.random() < 0.2) {
+          column.push([i, j, GRASS, 0, leave]);
+        } else {
+          column.push([i, j, AIR, 0, leave]);
+        }
+      }
+      land.push(column);
+    }
+  return land;
+}
+
+worlds = JSON.parse(localStorage.getItem("worlds"));
+
+// WORLD VALUES
+
+// {courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: {}, time1: 0, land: run_land()};
+
+let world_name = 0;
+
 let AIR = 0;
 let GRASS = 1;
 let LOG = 2;
@@ -111,20 +190,7 @@ let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0, 55: 0, 57: 0.5}
 
 let SIZE = 40;
 
-let seed = [];
-for (let i = 0; i < 20; i++) {
-  seed.push(
-        [
-          (Math.random() ** 2 * 30 + 2) / 4,
-            Math.random() * 100,
-            Math.random() * 100,
-        ]
-  );
-}
-
 let land = [];
-
-let chests = {};
 
 let animals = [];
 
@@ -211,13 +277,11 @@ let open_chest = false;
 
 let chest_open = "";
 
+
 // Set this stuff
 let courser = 0;
 
 let inventory = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
-let craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-
-let craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
 
 let armor = 0;
 
@@ -226,6 +290,16 @@ let posy = 80001000;
 
 let health = 100;
 let hunger = 100;
+
+let chests = {};
+
+// Don't store this stuff
+
+let craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+
+let craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
+
+
 
 function same(recipy, craft1) {
   let same1 = true;
@@ -397,7 +471,7 @@ function loop() {
         } else if (an_rand < 0.95) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 4, 2, 0, 4, 13, 24]);
         } else if (an_rand < 1) {
-          animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 48, 2, 2, 0, 5, 17, 48]);
+          animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 48, 2, 3, 0, 5, 17, 48]);
         }
       }
     }
@@ -826,7 +900,7 @@ function loop() {
   if (stage == "paused") render1 = true;
 
 
-  // MAIN MENU
+  // MAIN MENUE
 
   if (stage == "menue") {
     
@@ -836,16 +910,87 @@ function loop() {
 
     ctx.fillStyle = "rgb(128, 0, 255)";          // text color
     ctx.font = "30px Arial";          // font size and family
-    ctx.fillText("By Michael Alexander Kaszynski", 400, 350);
+    ctx.fillText("By Michael Alexander Kaszynski", 400, 325);
+    
+    ctx.fillStyle = "white";          // text color
+    ctx.font = "12px Arial";          // font size and family
+    ctx.fillText("Version 1.0.0", 20, 50);
+
+    
+    if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
+      stage = "new world";
+    }
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
+    ctx.fillRect(550, 350, 100, 100);
+    
+    ctx.fillStyle = "black";          // text color
+    ctx.font = "15px Arial";          // font size and family
+    ctx.fillText("New world", 565, 400);
+
+    if (worlds.length > 0) {
+      for (let i = 0; i < worlds.length; i++) {
+        let boxx = (i*100) % 700 + 200;
+        ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
+        ctx.fillRect(boxx, 550, 75, 75);
+
+        ctx.fillStyle = "black";          // text color
+        ctx.font = "15px Arial";          // font size and family
+        ctx.fillText("World " + i, boxx, 575);
+        ctx.font = "12px Arial";
+        if (worlds[i].danger == 0) {
+          ctx.fillText("Creative", boxx, 600);
+        }
+        if (worlds[i].danger == 1) {
+          ctx.fillText("Survival", boxx, 600);
+        }
+        if (worlds[i].danger == 2) {
+          ctx.fillText("Death Mode", boxx, 600);
+        }
+
+        if (mouse.x > boxx && mouse.x < boxx + 75 && mouse.y > 550 && mouse.y < 625 && mouse.held[0]) {
+          stage = "play";
+          courser = worlds[i].courser;
+
+          time1 = worlds[i].time1;
+
+          inventory = worlds[i].inventory;
+
+          armor = worlds[i].armor;
+
+          posx = worlds[i].posx;
+          posy = worlds[i].posy;
+
+          health = worlds[i].health;
+          hunger = worlds[i].hunger;
+
+          chests = worlds[i].chests;
+          land = worlds[i].land;
+
+          danger = worlds[i].danger;
+
+          world_name = i;
+        }
+
+      }
+    }
+  }
+
+  // OPEN NEW WORLD
+
+  if (stage == "new world") {
+
+    ctx.fillStyle = "white";          // text color
+    ctx.font = "30px Arial";          // font size and family
+    ctx.fillText("Select your world type:", 300, 200);
+    
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
     ctx.fillText("Version 0.11.6", 20, 50);
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
-      stage = "play";
-      danger = 1;
-      start = true;
+      stage = "menue";
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: {}, time1: 0, land: run_land(), danger: 1});
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(550, 450, 100, 100);
@@ -856,9 +1001,9 @@ function loop() {
     
 
     if (400 < mouse.x && mouse.x < 500 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
-      stage = "play";
-      danger = 2;
-      start = true;
+      stage = "menue";
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: {}, time1: 0, land: run_land(), danger: 2});
+      localStorage.setItem("worlds", JSON.stringify(worlds))
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(400, 450, 100, 100);
@@ -869,9 +1014,8 @@ function loop() {
     
 
     if (700 < mouse.x && mouse.x < 800 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
-      stage = "play";
-      danger = 0;
-      start = true;
+      stage = "menue";
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: {}, time1: 0, land: run_land(), danger: 0});
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(700, 450, 100, 100);
@@ -1075,6 +1219,27 @@ function loop() {
   if (stage == "paused") {
     if (100 > mouse.x && mouse.y < 400 && mouse.y > 300 && mouse.held[0]) {
       stage = "menue";
+      
+      worlds[world_name].courser = courser;
+
+      worlds[world_name].time1 = time1;
+
+      worlds[world_name].inventory = inventory;
+
+      worlds[world_name].armor = armor;
+
+      worlds[world_name].posx = posx;
+      worlds[world_name].posy = posy;
+
+      worlds[world_name].health = health;
+      worlds[world_name].hunger = hunger;
+
+      worlds[world_name].chests = chests;
+      worlds[world_name].land = land;
+
+      worlds[world_name].danger = danger;
+
+      localStorage.setItem("worlds", JSON.stringify(worlds));
     }
     if (550 < mouse.x && mouse.x < 650 && 250 < mouse.y && mouse.y < 350 && mouse.held[0]) {
       stage = "play";
@@ -1126,59 +1291,7 @@ function loop() {
 
     chests = {};
 
-    land = [];
-for (let i = 0; i < MAP_SIZE; i++) {
-
-  let column = [];
-  for (let j = 0; j < MAP_SIZE; j++) {
-    let height = 0
-    for (let k of seed) {
-      height += Math.sin(((i/5 - 30) * Math.sin(k[2]) + (j/5 - 15) * Math.cos(k[2])) / k[0] + k[1]);
-    }
-    let height2 = 0
-    for (let k of seed) {
-      height2 += Math.sin(((i/10 + 100000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
-    }
-    let height3 = 0;
-    for (let k of seed) {
-      height3 += Math.sin(((i + 10000 - 30) * Math.sin(k[2]) + (j - 15) * Math.cos(k[2])) / k[0] + k[1]);
-    }
-    let height4 = 0;
-    for (let k of seed) {
-      height3 += Math.sin(((i/10 - 10000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
-    }
-    let leave = 0;
-    if (height3 + height4 > 2) {leave = LEAVES;}
-    if (-0.5 < height2 && height2 < 0.5) {
-      if (height < 3) {
-        column.push([i, j, WATER, 0, leave]);
-      } else {column.push([i, j, WATER, 0, STONE]);}
-    } else if (height > 3) {
-      if (Math.random() < 0.02 && height > 3.5) {
-        column.push([i, j, COPPER_ORE, 0, STONE]);
-      } else if (Math.random() < 0.025 && height > 3.5) {
-        column.push([i, j, TIN_ORE, 0, STONE]);
-      } else if (Math.random() < 0.035 && height > 3.75) {
-        column.push([i, j, COAL, 0, STONE]);
-      } else if (Math.random() < 0.01 && height > 4) {
-        column.push([i, j, IRON_ORE, 0, STONE]);
-      } else if (Math.random() < 0.006 && height > 4.7) {
-        column.push([i, j, ALUMINUM_ORE, 0, STONE]);
-      } else if (Math.random() < 0.002 && height > 4.7) {
-        column.push([i, j, TUNGSTEN_ORE, 0, STONE]);
-      } else {
-        column.push([i, j, STONE, 0, STONE]);
-      }
-    } else if (Math.random() < 0.1 && height3 + height4 > 2) {
-      column.push([i, j, LOG, 0, leave]);
-    } else if (Math.random() < 0.2) {
-      column.push([i, j, GRASS, 0, leave]);
-    } else {
-      column.push([i, j, AIR, 0, leave]);
-    }
-  }
-  land.push(column);
-}
+    land = run_land();
   }
   
 
