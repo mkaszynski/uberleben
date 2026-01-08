@@ -914,7 +914,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.0.5", 20, 50);
+    ctx.fillText("Version 1.0.6", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1251,7 +1251,7 @@ function loop() {
     
     ctx.fillStyle = "black";          // text color
     ctx.font = "15px Arial";          // font size and family
-    ctx.fillText("Main Menu", 25, 350);
+    ctx.fillText("Save & Quit", 10, 350);
 
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(550, 250, 100, 100);
