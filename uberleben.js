@@ -914,7 +914,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.0.3", 20, 50);
+    ctx.fillText("Version 1.0.4", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1238,7 +1238,7 @@ function loop() {
 
       worlds[world_name].danger = danger;
 
-      worlds[i].animals = animals;
+      worlds[world_name].animals = animals;
 
       localStorage.setItem("worlds", JSON.stringify(worlds));
     }
