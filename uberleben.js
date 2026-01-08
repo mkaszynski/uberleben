@@ -911,6 +911,10 @@ function loop() {
     ctx.fillStyle = "rgb(128, 0, 255)";          // text color
     ctx.font = "30px Arial";          // font size and family
     ctx.fillText("By Michael Alexander Kaszynski", 400, 325);
+    
+    ctx.fillStyle = "white";          // text color
+    ctx.font = "12px Arial";          // font size and family
+    ctx.fillText("Version 1.0.3", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -981,7 +985,7 @@ function loop() {
     ctx.fillStyle = "white";          // text color
     ctx.font = "30px Arial";          // font size and family
     ctx.fillText("Select your world type:", 300, 200);
-    
+
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
@@ -1289,11 +1293,7 @@ function loop() {
     chests = {};
 
     land = run_land();
-    }
-
-  ctx.fillStyle = "white";          // text color
-  ctx.font = "12px Arial";          // font size and family
-  ctx.fillText("Version 1.0.2", 20, 50);
+  }
   
 
   render1 = false;
