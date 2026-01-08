@@ -471,7 +471,7 @@ function loop() {
         } else if (an_rand < 0.95) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 4, 2, 0, 4, 13, 24]);
         } else if (an_rand < 1) {
-          animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 48, 2, 3, 0, 5, 17, 48]);
+          animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 48, 3, 2, 0, 5, 17, 48]);
         }
       }
     }
@@ -914,7 +914,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.0.4", 20, 50);
+    ctx.fillText("Version 1.0.5", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
