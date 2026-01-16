@@ -368,7 +368,7 @@ let stones = [STONE, FURNACE, COAL, TIN_ORE, COPPER_ORE, IRON_ORE, ALUMINUM_ORE,
 let axes = [WOODEN_AXE, STONE_AXE, TIN_AXE, COPPER_AXE, IRON_AXE, ALUMINUM_AXE, TUNGSTEN_AXE];
 let pickaxes = [WOODEN_PICKAXE, STONE_PICKAXE, TIN_PICKAXE, COPPER_PICKAXE, IRON_PICKAXE, ALUMINUM_PICKAXE, TUNGSTEN_PICKAXE];
 let swords = [WOODEN_SWORD, STONE_SWORD, TIN_SWORD, COPPER_SWORD, IRON_SWORD, ALUMINUM_SWORD, TUNGSTEN_SWORD];
-let armors = [AIR, FUR_ARMOR, TIN_ARMOR, COPPER_ARMOR, IRON_SWORD, ALUMINUM_SWORD, TUNGSTEN_ARMOR];
+let armors = [AIR, FUR_ARMOR, TIN_ARMOR, COPPER_ARMOR, IRON_ARMOR, ALUMINUM_ARMOR, TUNGSTEN_ARMOR];
 
 let strengths = [2, 3, 4, 5, 8, 6, 12];
 
@@ -796,15 +796,20 @@ function loop() {
               held = true;
             }
             if (mouse.held[2]) {
-              let m3 = false;
-              for (let s = 0; s < 3; s++) {
-                for (let m = 0; m < 3; m++) {
-                  if (craft2[s][m] == 1 && craft[s][m] == 0 && !m3) {
-                    m3 = true;
-                    craft[s][m] = inventory[i][j];
-                    inventory[i][j] = 0;
+              if (!armors.includes(courser) || armor > 0) {
+                let m3 = false;
+                for (let s = 0; s < 3; s++) {
+                  for (let m = 0; m < 3; m++) {
+                    if (craft2[s][m] == 1 && craft[s][m] == 0 && !m3) {
+                      m3 = true;
+                      craft[s][m] = inventory[i][j];
+                      inventory[i][j] = 0;
+                    }
                   }
                 }
+              } else {
+                armor = inventory[i][j];
+                inventory[i][j] = 0;
               }
             }
           }
@@ -914,7 +919,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.0.7", 20, 50);
+    ctx.fillText("Version 1.0.8", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
