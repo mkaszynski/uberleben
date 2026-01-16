@@ -796,7 +796,7 @@ function loop() {
               held = true;
             }
             if (mouse.held[2]) {
-              if (!armors.includes(courser) || armor > 0) {
+              if (!armors.includes(inventory[i][j]) || armor > 0) {
                 let m3 = false;
                 for (let s = 0; s < 3; s++) {
                   for (let m = 0; m < 3; m++) {
@@ -919,7 +919,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.0.8", 20, 50);
+    ctx.fillText("Version 1.0.9", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
