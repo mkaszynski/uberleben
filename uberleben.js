@@ -423,7 +423,7 @@ function loop() {
   if (time1 == 0) dt = dt_now;
   if (time1 > 0 && time1 < 10) dt = dt*0.75 + dt_now*0.25;
 
-  time1 += 1;   
+  time1 += 1;
   
   day = Math.floor(Math.sin(time1/40000*Math.PI*2)*20 + 15/2);
 
@@ -452,6 +452,7 @@ function loop() {
     }
     if (height1 > 2) {
       rain.push([(block_posx + Math.random()*30 - 15)*SIZE, (block_posy + Math.random()*30 - 15)*SIZE]);
+      day -= 1;
     }
 
     if (rain.length > 100 || (height1 < 2 && rain.length > 0)) {
@@ -953,7 +954,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.1.0", 20, 50);
+    ctx.fillText("Version 1.1.1", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
