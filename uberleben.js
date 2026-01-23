@@ -21,6 +21,16 @@ if (localStorage.getItem("worlds") == null) {
   localStorage.setItem("worlds", JSON.stringify([]));
 }
 
+let weather = [];
+for (let i = 0; i < 10; i++) {
+  weather.push(
+        [
+          Math.random() * 10 + 5,
+            Math.random() * 100000 - 50000,
+        ]
+  );
+}
+
 function run_land() {
   let seed = [];
   for (let i = 0; i < 20; i++) {
@@ -178,7 +188,7 @@ const animal_imgs = ["chicken.png", "rabbit.png", "fox.png", "deer.png", "wolf.p
   return img2;
 });
 
-const place_armor = ["place_armor.png"].map(src => {
+const place_armor = ["place_armor.png", "drop.png"].map(src => {
   const img3 = new Image();
   img3.src = src;
   return img3;
@@ -193,6 +203,8 @@ let SIZE = 40;
 let land = [];
 
 let animals = [];
+
+let rain = [];
 
 let last = performance.now();
 
@@ -430,6 +442,28 @@ function loop() {
       stage = "paused";
     }
     render1 = true;
+
+    block_posx = Math.floor(posx/SIZE);
+    block_posy = Math.floor(posy/SIZE);
+
+    let height1 = 0;
+    for (let i of weather) {
+      height1 += Math.sin((i[1] + time1)/i[0]/200);
+    }
+    if (height1 > 2) {
+      rain.push([(block_posx + Math.random()*30 - 15)*SIZE, (block_posy + Math.random()*30 - 15)*SIZE]);
+    }
+
+    if (rain.length > 100 || (height1 < 2 && rain.length > 0)) {
+      rain.splice(Math.floor(Math.random()*rain.length), 1);
+    }
+
+    for (let i of rain) {
+      i[1] += 15;
+      if (i[1] > posy + 1000) {
+        i[1] = posy - 1000;
+      }
+    }
 
     mouse_tips = [];
 
@@ -919,7 +953,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.0.9", 20, 50);
+    ctx.fillText("Version 1.1.0", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1080,6 +1114,17 @@ function loop() {
         if (suround) {i[3] = 0;}
         if (danger == 0 && !(land[block_posx][block_posy][2] in collide)) {i[3] = 15;}
       }
+    }
+
+    for (let i of rain) {
+      block_posx = Math.floor(i[0]/SIZE) % MAP_SIZE;
+      block_posy = Math.floor(i[1]/SIZE) % MAP_SIZE;
+      ctx.filter = "brightness(" + land[block_posx][block_posy][3]/15 + ")";
+      if (land[block_posx][block_posy][4] == 0) {
+        const rimg = place_armor[1];
+        ctx.drawImage(rimg, i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, SIZE, SIZE);
+      }
+      ctx.filter = "none";
     }
 
     for (let i of animals) {
