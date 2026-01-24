@@ -461,6 +461,7 @@ function loop() {
     if (height1 > 2) {
       rain.push([(block_posx + Math.random()*30 - 15)*SIZE, (block_posy + Math.random()*30 - 15)*SIZE]);
       day -= 1;
+      if (Math.random() < 0.001) {day = 15;}
     }
 
     if (rain.length > 100 || (height1 < 2 && rain.length > 0)) {
@@ -989,7 +990,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.1.9", 20, 50);
+    ctx.fillText("Version 1.1.10", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
