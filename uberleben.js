@@ -333,9 +333,9 @@ crafts.push([[[PLANKS, PLANKS, 0], [PLANKS, STICKS, 0], [0, 0, 0]], [[DOOR, 0, 0
 crafts.push([[[FLAME, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[TORCH, 0, 0], [TORCH, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[PLANKS, 0, 0], [0, 0, 0], [0, 0, 0]], [[WORKBENCH, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[PLANKS, PLANKS, 0], [PLANKS, PLANKS, 0], [0, 0, 0]], [[CHEST, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
-crafts.push([[[STICKS, STICKS, 0], [STICKS, STICKS, 0], [0, 0, 0]], [[FLOOR, 0, 0], [FLOOR, 0, 0], [0, 0, 0]], 50]);
-crafts.push([[[STONE, 0, 0], [STONE, 0, 0], [0, 0, 0]], [[STONE_BRICKS, 0, 0], [0, 0, 0], [0, 0, 0]], 50]);
-crafts.push([[[STONE_BRICKS, 0, 0], [STONE_BRICKS, 0, 0], [0, 0, 0]], [[STONE_PATH, STONE_PATH, 0], [STONE_PATH, STONE_PATH, 0], [0, 0, 0]], 50]);
+crafts.push([[[STICKS, STICKS, 0], [STICKS, STICKS, 0], [0, 0, 0]], [[FLOOR, FLOOR, 0], [FLOOR, FLOOR, 0], [0, 0, 0]], 50]);
+crafts.push([[[STONE, 0, 0], [STONE, 0, 0], [0, 0, 0]], [[STONE_BRICKS, STONE_BRICKS, 0], [0, 0, 0], [0, 0, 0]], 50]);
+crafts.push([[[STONE_BRICKS, STONE_BRICKS, 0], [0, 0, 0], [0, 0, 0]], [[STONE_PATH, STONE_PATH, 0], [STONE_PATH, STONE_PATH, 0], [0, 0, 0]], 50]);
 crafts.push([[[STONE, STONE, 0], [STONE, STONE, 0], [0, 0, 0]], [[FURNACE, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[GRASS, GRASS, 0], [GRASS, GRASS, 0], [0, 0, 0]], [[COMPRESSED_GRASS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
 crafts.push([[[COMPRESSED_GRASS, PLANKS, 0], [COMPRESSED_GRASS, PLANKS, 0], [0, 0, 0]], [[BED, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
@@ -960,7 +960,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.1.2", 20, 50);
+    ctx.fillText("Version 1.1.3", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
