@@ -989,7 +989,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.1.8", 20, 50);
+    ctx.fillText("Version 1.1.9", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1287,6 +1287,10 @@ function loop() {
     if (mouse.held[0] && courser == 0 && str_m > 0 && danger == 0 && get2) {
       courser = str_m;
     }
+
+    ctx.fillStyle = "white";          // text color
+    ctx.font = "25px Arial";          // font size and family
+    ctx.fillText("Days played: " + Math.floor(time1/40000), 0, 30);
     
     
     if (stage == "play") {
