@@ -466,7 +466,7 @@ function loop() {
     }
     if (height1 > 2) {
       rain.push([(block_posx + Math.random()*30 - 15)*SIZE, (block_posy + Math.random()*30 - 15)*SIZE]);
-      day -= 1;
+      day -= 5;
       if (Math.random() < 0.001) {day = 15;}
     }
 
@@ -480,6 +480,9 @@ function loop() {
         i[1] = posy - 1000;
       }
     }
+
+    if (day < 2) day = 3;
+    if (day > 15) day = 15;
 
     mouse_tips = [];
 
@@ -577,6 +580,15 @@ function loop() {
       } else {
         i[2] = Math.floor(Math.random()*3 - 1)*i[5];
         i[3] = Math.floor(Math.random()*3 - 1)*i[5];
+        if (i[7] != 0) {
+          if (land[block_posx][block_posy][2] in hardness) {
+            if (Math.random() < 20/hardness[land[block_posx][block_posy][2]]) {
+              land[block_posx][block_posy][2] = 0;
+            }
+          } else {
+            land[block_posx][block_posy][2] = 0;
+          }
+        }
       }
       
       block_posx = Math.floor((i[0] + i[2]*slow2)/SIZE) % MAP_SIZE;
@@ -586,6 +598,15 @@ function loop() {
       } else {
         i[2] = Math.floor(Math.random()*3 - 1)*i[5];
         i[3] = Math.floor(Math.random()*3 - 1)*i[5];
+        if (i[7] != 0) {
+          if (land[block_posx][block_posy][2] in hardness) {
+            if (Math.random() < 20/hardness[land[block_posx][block_posy][2]]) {
+              land[block_posx][block_posy][2] = 0;
+            }
+          } else {
+            land[block_posx][block_posy][2] = 0;
+          }
+        }
       }
       
       if ((Math.random() < 0.0001 && dis([i[0], i[1]], [posx, posy]) > 1000) || i[4] <= 0) {
@@ -996,7 +1017,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.2.0", 20, 50);
+    ctx.fillText("Version 1.2.1", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1297,6 +1318,17 @@ function loop() {
     }
     if (mouse.held[0] && courser == 0 && str_m > 0 && danger == 0 && get2) {
       courser = str_m;
+    }
+    if (mouse.held[2] && courser == 0 && str_m > 0 && danger == 0 && get2) {
+      let m4 = false;
+      for (let s = 0; s < 6; s++) {
+        for (let m = 0; m < 6; m++) {
+          if (inventory[s][m] == 0 && !m4) {
+            m4 = true;
+            inventory[s][m] = str_m;
+          }
+        }
+      }
     }
 
     ctx.fillStyle = "white";          // text color
