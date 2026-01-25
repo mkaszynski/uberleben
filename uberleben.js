@@ -582,7 +582,7 @@ function loop() {
         i[3] = Math.floor(Math.random()*3 - 1)*i[5];
         if (i[7] != 0) {
           if (land[block_posx][block_posy][2] in hardness) {
-            if (Math.random() < 20/hardness[land[block_posx][block_posy][2]]) {
+            if (Math.random() < 10/hardness[land[block_posx][block_posy][2]]) {
               land[block_posx][block_posy][2] = 0;
             }
           } else {
@@ -600,7 +600,7 @@ function loop() {
         i[3] = Math.floor(Math.random()*3 - 1)*i[5];
         if (i[7] != 0) {
           if (land[block_posx][block_posy][2] in hardness) {
-            if (Math.random() < 20/hardness[land[block_posx][block_posy][2]]) {
+            if (Math.random() < 10/hardness[land[block_posx][block_posy][2]]) {
               land[block_posx][block_posy][2] = 0;
             }
           } else {
@@ -1017,7 +1017,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.2.1", 20, 50);
+    ctx.fillText("Version 1.2.2", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
