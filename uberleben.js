@@ -198,6 +198,12 @@ const place_armor = ["place_armor.png", "drop.png"].map(src => {
   return img3;
 });
 
+const persons = ["person.png", "person_fur.png", "person_tin.png", "person_copper.png", "person_iron.png", "person_aluminum.png", "person_tungsten.png"].map(src => {
+  const img4 = new Image();
+  img4.src = src;
+  return img4;
+});
+
 let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, FORGE, COMPRESSED_GRASS, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, COAL, LEAVES, CHEST];
 
 let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0, 55: 0, 57: 0.5, 60: -0.3, 61: -0.3, 62: -0.3}
@@ -990,7 +996,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.1.10", 20, 50);
+    ctx.fillText("Version 1.2.0", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1179,8 +1185,12 @@ function loop() {
       ctx.filter = "none";
     }
 
-    ctx.fillStyle = "rgb(255, 0, 0)";
-    ctx.fillRect(600 - SIZE/4, 300 - SIZE/4, SIZE/2, SIZE/2);
+    block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
+    block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
+    ctx.filter = "brightness(" + land[block_posx][block_posy][3]/15 + ")";
+    const personimg = persons[armors.indexOf(armor)];
+    ctx.drawImage(personimg, 600 - SIZE/2, 300 - SIZE*1.5, SIZE, SIZE*2);
+    ctx.filter = "none";
 
     if (hit_bar > 0 && danger > 0) {
       ctx.fillStyle = "rgb(128, 128, 128)";
