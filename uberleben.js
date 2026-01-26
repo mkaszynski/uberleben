@@ -346,7 +346,7 @@ crafts.push([[[STONE, STONE, 0], [0, 0, 0], [0, 0, 0]], [[STONE_BRICKS, STONE_BR
 crafts.push([[[STONE_BRICKS, STONE_BRICKS, 0], [0, 0, 0], [0, 0, 0]], [[STONE_PATH, STONE_PATH, 0], [STONE_PATH, STONE_PATH, 0], [0, 0, 0]], 50]);
 crafts.push([[[STONE, STONE, 0], [STONE, STONE, 0], [0, 0, 0]], [[FURNACE, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[GRASS, GRASS, 0], [GRASS, GRASS, 0], [0, 0, 0]], [[COMPRESSED_GRASS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
-crafts.push([[[COMPRESSED_GRASS, PLANKS, 0], [COMPRESSED_GRASS, PLANKS, 0], [0, 0, 0]], [[BED, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
+crafts.push([[[FUR, PLANKS, 0], [FUR, PLANKS, 0], [0, 0, 0]], [[BED, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[0, 0, 0], [PLANKS, 0, PLANKS], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[0, 0, 0], [COMPRESSED_GRASS, 0, COMPRESSED_GRASS], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[0, 0, 0], [0, 0, COAL], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, FLAME], [0, 0, 0]], 50]);
@@ -448,6 +448,8 @@ function loop() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  if (!keys["e"] && !mouse.held[0] && !mouse.held[2]) held = false;
+
 
   // PLAY MODE
   
@@ -481,7 +483,7 @@ function loop() {
       }
     }
 
-    if (day < 2) day = 3;
+    if (day < 2) day = 2;
     if (day > 15) day = 15;
 
     mouse_tips = [];
@@ -1017,7 +1019,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.2.2", 20, 50);
+    ctx.fillText("Version 1.2.3", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1034,23 +1036,36 @@ function loop() {
       for (let i = 0; i < worlds.length; i++) {
         let boxx = (i*100) % 700 + 200;
         ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
-        ctx.fillRect(boxx, 550, 75, 75);
+        ctx.fillRect(boxx, 500, 75, 75);
 
         ctx.fillStyle = "black";          // text color
         ctx.font = "15px Arial";          // font size and family
-        ctx.fillText("World " + i, boxx, 575);
+        ctx.fillText("World " + i, boxx, 525);
         ctx.font = "12px Arial";
         if (worlds[i].danger == 0) {
-          ctx.fillText("Creative", boxx, 600);
+          ctx.fillText("Creative", boxx, 550);
         }
         if (worlds[i].danger == 1) {
-          ctx.fillText("Survival", boxx, 600);
+          ctx.fillText("Survival", boxx, 550);
         }
         if (worlds[i].danger == 2) {
-          ctx.fillText("Death Mode", boxx, 600);
+          ctx.fillText("Death Mode", boxx, 550);
         }
 
-        if (mouse.x > boxx && mouse.x < boxx + 75 && mouse.y > 550 && mouse.y < 625 && mouse.held[0]) {
+        ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
+        ctx.fillRect(boxx, 600, 30, 30);
+
+        ctx.fillStyle = "black";          // text color
+        ctx.font = "10px Arial";          // font size and family
+        ctx.fillText("Delete", boxx, 615);
+
+        if (mouse.x > boxx && mouse.x < boxx + 30 && mouse.y > 600 && mouse.y < 630 && mouse.held[0] && !held) {
+          held = true;
+          worlds.splice(i, 1);
+          localStorage.setItem("worlds", JSON.stringify(worlds));
+        }
+          
+        if (mouse.x > boxx && mouse.x < boxx + 75 && mouse.y > 500 && mouse.y < 575 && mouse.held[0]) {
           stage = "play";
           courser = worlds[i].courser;
 
