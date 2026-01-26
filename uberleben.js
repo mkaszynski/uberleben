@@ -501,7 +501,12 @@ function loop() {
     if (health < 100) {hunger -= 0.002; health += 0.004;}
     if (health > 100) {health = 100;}
 
-    if (health <= 0) {stage = "menue";start = false;}
+    if (health <= 0) {
+      stage = "menue";
+      start = false;
+      worlds.splice(world_name, 1);
+      localStorage.setItem("worlds", JSON.stringify(worlds));
+    }
 
     if (danger == 0) {health = 100; hunger = 100;}
 
@@ -1019,7 +1024,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.2.3", 20, 50);
+    ctx.fillText("Version 1.2.4", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
