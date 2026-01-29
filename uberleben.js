@@ -357,7 +357,7 @@ crafts.push([[[TIN, FURNACE, 0], [PLANKS, TIN, 0], [0, 0, 0]], [[SALVAGER, 0, 0]
 crafts.push([[[GRASS, GRASS, 0], [GRASS, GRASS, 0], [0, 0, 0]], [[COMPRESSED_GRASS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
 crafts.push([[[COMPRESSED_GRASS, COMPRESSED_GRASS, 0], [0, 0, 0], [0, 0, 0]], [[SEEDS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
 crafts.push([[[PLANKS, 0, 0], [0, 0, 0], [0, 0, 0]], [[SAPLING, 0, 0], [SAPLING, 0, 0], [0, 0, 0]], 30]);
-crafts.push([[[WHEAT, 0, 0], [0, 0, 0], [0, 0, 0]], [[SEEDS, SEEDS, 0], [SEEDS, SEEDS, 0], [0, 0, 0]], 30]);
+crafts.push([[[WHEAT, 0, 0], [0, 0, 0], [0, 0, 0]], [[SEEDS, 0, 0], [SEEDS, 0, 0], [0, 0, 0]], 30]);
 crafts.push([[[WHEAT, WHEAT, 0], [WHEAT, WHEAT, 0], [0, 0, 0]], [[COMPRESSED_WHEAT, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
 crafts.push([[[FUR, PLANKS, 0], [FUR, PLANKS, 0], [0, 0, 0]], [[BED, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[0, 0, 0], [PLANKS, 0, PLANKS], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0, 0, 0]], 50]);
@@ -1080,7 +1080,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.3.1", 20, 50);
+    ctx.fillText("Version 1.3.2", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
