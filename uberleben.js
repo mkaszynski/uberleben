@@ -654,7 +654,7 @@ function loop() {
     block_posy = Math.floor(posy/SIZE + Math.random()*100 - 50) % MAP_SIZE;
     if (land[block_posx][block_posy][2] == SAPLING && land[block_posx][block_posy][4] == LEAVES && land[block_posx][block_posy][3] > 8) {
       land[block_posx][block_posy][2] = LOG;
-    } else if (land[block_posx][block_posy][2] == SEEDS && land[block_posx][block_posy][4] == AIR && land[block_posx][block_posy][3] > 10) {
+    } else if (land[block_posx][block_posy][2] == SEEDS && land[block_posx][block_posy][4] == AIR && land[block_posx][block_posy][3] > 8) {
       land[block_posx][block_posy][2] = WHEAT;
     }
 
@@ -1023,7 +1023,9 @@ function loop() {
                 craft_bar = 0;
                 for (let i = 0; i < 3; i++) {
                   for (let j = 0; j < 3; j++) {
-                    craft[i][j] = m[1][i][j];
+                    if (craft2[i][j]) {
+                      craft[i][j] = m[1][i][j];
+                    }
                   }
                 }
               } else {
@@ -1041,7 +1043,9 @@ function loop() {
                 for (let i = 0; i < 3; i++) {
                   for (let j = 0; j < 3; j++) {
                     if (Math.random() < 0.5) {
-                      craft[i][j] = m[0][i][j];
+                      if (craft2[i][j]) {
+                        craft[i][j] = m[0][i][j];
+                      }
                     } else {
                       craft[i][j] = 0;
                     }
@@ -1076,7 +1080,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.3.0", 20, 50);
+    ctx.fillText("Version 1.3.1", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
