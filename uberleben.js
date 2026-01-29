@@ -170,18 +170,23 @@ let STONE_PATH = 60;
 let FLOOR = 61;
 let BRIDGE = 62;
 let SALVAGER = 63;
+let SAPLING = 64;
+let SEEDS = 65;
+let WHEAT = 66;
+let COMPRESSED_WHEAT = 67;
+let BREAD = 68;
 
 let MAP_SIZE = 300;
 
-let hardness = {1: 10, 2: 200, 3: 500, 4: 100, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200, 57: 100, 58: 100, 59: 500, 60: 100, 61: 50, 62: 200, 63: 200};
+let hardness = {1: 10, 2: 200, 3: 500, 4: 100, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200, 57: 100, 58: 100, 59: 500, 60: 100, 61: 50, 62: 200, 63: 200, 64:30, 65: 10, 66: 20};
 
-let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor", 55: "torch", 56: "leaves", 57: "bed", 58: "chest", 59: "stone bricks", 60: "stone path", 61: "floor", 62: "bridge", 63: "salvager"};
+let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor", 55: "torch", 56: "leaves", 57: "bed", 58: "chest", 59: "stone bricks", 60: "stone path", 61: "floor", 62: "bridge", 63: "salvager", 64: "sapling", 65: "seeds", 66: "wheat", 67: "compressed wheat", 68: "bread"};
 
-let foods = {25: 10, 26: 25};
+let foods = {25: 10, 26: 25, 68: 17};
 
 let glow = {10: 6, 55: 12, 11: 15};
 
-const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png", "torch.png", "leaves.png", "bed.png", "chest.png", "stone_bricks.png", "stone_path.png", "floor.png", "bridge.png", "salvager.png"].map(src => {
+const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png", "torch.png", "leaves.png", "bed.png", "chest.png", "stone_bricks.png", "stone_path.png", "floor.png", "bridge.png", "salvager.png", "sapling.png", "seeds.png", "wheat.png", "compressed_wheat.png", "bread.png"].map(src => {
   const img = new Image();
   img.src = src;
   return img;
@@ -205,9 +210,9 @@ const persons = ["person.png", "person_fur.png", "person_tin.png", "person_coppe
   return img4;
 });
 
-let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, COMPRESSED_GRASS, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, COAL, LEAVES, CHEST, STONE_BRICKS, SALVAGER];
+let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, COMPRESSED_GRASS, COMPRESSED_WHEAT, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, COAL, LEAVES, CHEST, STONE_BRICKS, SALVAGER];
 
-let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0, 55: 0, 57: 0.5, 60: -0.3, 61: -0.3, 62: -0.3}
+let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0, 55: 0, 57: 0.5, 60: -0.3, 61: -0.3, 62: -0.3, 65: 0, 66: 0}
 
 let SIZE = 40;
 
@@ -341,7 +346,7 @@ crafts.push([[[LOG, 0, 0], [0, 0, 0], [0, 0, 0]], [[PLANKS, 0, 0], [PLANKS, 0, 0
 crafts.push([[[PLANKS, PLANKS, 0], [0, 0, 0], [0, 0, 0]], [[STICKS, STICKS, 0], [STICKS, STICKS, 0], [0, 0, 0]], 30]);
 crafts.push([[[PLANKS, PLANKS, 0], [PLANKS, STICKS, 0], [0, 0, 0]], [[DOOR, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[FLAME, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[TORCH, 0, 0], [TORCH, 0, 0], [0, 0, 0]], 50]);
-crafts.push([[[PLANKS, 0, 0], [0, 0, 0], [0, 0, 0]], [[WORKBENCH, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
+crafts.push([[[PLANKS, 0, 0], [PLANKS, 0, 0], [0, 0, 0]], [[WORKBENCH, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[PLANKS, PLANKS, 0], [PLANKS, PLANKS, 0], [0, 0, 0]], [[CHEST, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[PLANKS, 0, 0], [0, PLANKS, 0], [0, 0, 0]], [[BRIDGE, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[STICKS, STICKS, 0], [STICKS, STICKS, 0], [0, 0, 0]], [[FLOOR, FLOOR, 0], [FLOOR, FLOOR, 0], [0, 0, 0]], 50]);
@@ -350,6 +355,10 @@ crafts.push([[[STONE_BRICKS, STONE_BRICKS, 0], [0, 0, 0], [0, 0, 0]], [[STONE_PA
 crafts.push([[[STONE, STONE, 0], [STONE, STONE, 0], [0, 0, 0]], [[FURNACE, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[TIN, FURNACE, 0], [PLANKS, TIN, 0], [0, 0, 0]], [[SALVAGER, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[GRASS, GRASS, 0], [GRASS, GRASS, 0], [0, 0, 0]], [[COMPRESSED_GRASS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
+crafts.push([[[COMPRESSED_GRASS, COMPRESSED_GRASS, 0], [0, 0, 0], [0, 0, 0]], [[SEEDS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
+crafts.push([[[PLANKS, 0, 0], [0, 0, 0], [0, 0, 0]], [[SAPLING, 0, 0], [SAPLING, 0, 0], [0, 0, 0]], 30]);
+crafts.push([[[WHEAT, 0, 0], [0, 0, 0], [0, 0, 0]], [[SEEDS, SEEDS, 0], [SEEDS, SEEDS, 0], [0, 0, 0]], 30]);
+crafts.push([[[WHEAT, WHEAT, 0], [WHEAT, WHEAT, 0], [0, 0, 0]], [[COMPRESSED_WHEAT, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
 crafts.push([[[FUR, PLANKS, 0], [FUR, PLANKS, 0], [0, 0, 0]], [[BED, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[0, 0, 0], [PLANKS, 0, PLANKS], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[0, 0, 0], [COMPRESSED_GRASS, 0, COMPRESSED_GRASS], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0, 0, 0]], 50]);
@@ -361,7 +370,7 @@ crafts.push([[[0, 0, 0], [IRON_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [IRON, 0,
 crafts.push([[[0, 0, 0], [ALUMINUM_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [ALUMINUM, 0, 0], [0, 0, 0]], 1000]);
 crafts.push([[[0, 0, 0], [TUNGSTEN_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [TUNGSTEN, 0, 0], [0, 0, 0]], 1500]);
 crafts.push([[[0, 0, 0], [MEAT, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [COOKED_MEAT, 0, 0], [0, 0, 0]], 200]);
-
+crafts.push([[[0, 0, 0], [COMPRESSED_WHEAT, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [BREAD, 0, 0], [0, 0, 0]], 70]);
 crafts.push([[[PLANKS, STICKS, 0], [PLANKS, PLANKS, 0], [0, 0, 0]], [[WOODEN_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
 crafts.push([[[STONE, STICKS, 0], [STONE, STONE, 0], [0, 0, 0]], [[STONE_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
 crafts.push([[[TIN, STICKS, 0], [TIN, TIN, 0], [0, 0, 0]], [[TIN_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
@@ -639,6 +648,14 @@ function loop() {
         let index = animals.indexOf(i);
         if (index !== -1) animals.splice(index, 1);
       }
+    }
+
+    block_posx = Math.floor(posx/SIZE + Math.random()*100 - 50) % MAP_SIZE;
+    block_posy = Math.floor(posy/SIZE + Math.random()*100 - 50) % MAP_SIZE;
+    if (land[block_posx][block_posy][2] == SAPLING && land[block_posx][block_posy][4] == LEAVES && land[block_posx][block_posy][3] > 8) {
+      land[block_posx][block_posy][2] = LOG;
+    } else if (land[block_posx][block_posy][2] == SEEDS && land[block_posx][block_posy][4] == AIR && land[block_posx][block_posy][3] > 10) {
+      land[block_posx][block_posy][2] = WHEAT;
     }
 
     if (!keys["e"] && !mouse.held[0] && !mouse.held[2]) held = false;
@@ -1059,7 +1076,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.2.7", 20, 50);
+    ctx.fillText("Version 1.3.0", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
