@@ -856,6 +856,7 @@ function loop() {
           open_chest = true;
           if (!((block_posx + " " + block_posy) in chests)) {
             chests[block_posx + " " + block_posy] = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+          }
           chest_open = block_posx + " " + block_posy;
           for (let f = 0; f < 3; f++) {
             for (let g = 0; g < 3; g++) {
@@ -1222,7 +1223,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.3", 20, 50);
+    ctx.fillText("Version 1.4.4", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
