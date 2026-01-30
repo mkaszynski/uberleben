@@ -484,7 +484,7 @@ function loop() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  if (!keys["e"] && !mouse.held[0] && !mouse.held[2]) held = false;
+  if (!keys["e"] && !mouse.held[0] && !mouse.held[2] && !keys["c"]) held = false;
 
 
   // PLAY MODE
@@ -548,6 +548,7 @@ function loop() {
 
     let danger_power = 1;
     if (danger == 0) {danger_power = 0.01;}
+    if (danger == 0.5) {danger_power = 0.5;}
     if (danger == 2) {danger_power = 3;}
 
     if (Math.random() < 0.004) {
@@ -564,9 +565,9 @@ function loop() {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 12, 4, 1, 0, 2, 5, 12]);
         } else if (an_rand < 0.90) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 2, 1, 0, 3, 7, 24]);
-        } else if (an_rand < 0.95) {
+        } else if (an_rand < 0.95 && danger != 0.5) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 4, 2, 0, 4, 13, 24]);
-        } else if (an_rand < 1) {
+        } else if (an_rand < 1 && danger != 0.5) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 48, 3, 2, 0, 5, 17, 48]);
         }
       }
@@ -680,7 +681,7 @@ function loop() {
       land[block_posx][block_posy][2] = WHEAT;
     }
 
-    if (!keys["e"] && !mouse.held[0] && !mouse.held[2]) held = false;
+    if (!keys["e"] && !mouse.held[0] && !mouse.held[2] && !keys["c"]) held = false;
 
     if (keys["e"] && !held) {
       if (!open_inventory) {open_inventory = true;} else {
@@ -1055,9 +1056,9 @@ function loop() {
         }
       }
 
-      if (keys["c"] && !open_chest) {
+      if (keys["c"] && !open_chest && !held) {
         if (!salvage) {
-          let s = true;
+          let s = false;
           for (let m of crafts) {
             if (same(m[0], craft)) {
               if (craft_bar >= 100) {
@@ -1069,14 +1070,16 @@ function loop() {
                     }
                   }
                 }
+                held = true;
               } else {
                 craft_bar += 100/m[2]/danger_power;
               }
-            } else {s = false;}
+              s = false;
+            }
           }
           if (s) craft_bar = 0;
         } else {
-          let s = true;
+          let s = false;
           for (let m of crafts) {
             if (same(m[1], craft)) {
               if (craft_bar >= 100) {
@@ -1092,10 +1095,12 @@ function loop() {
                     }
                   }
                 }
+                held = true;
               } else {
                 craft_bar += 400/m[2]/danger_power;
               }
-            } else {s = false;}
+              s = false;
+            }
           }
           if (s) craft_bar = 0;
         }
@@ -1162,7 +1167,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.0", 20, 50);
+    ctx.fillText("Version 1.4.1", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1185,13 +1190,15 @@ function loop() {
         ctx.font = "15px Arial";          // font size and family
         ctx.fillText("World " + i, boxx, 525);
         ctx.font = "12px Arial";
-        if (worlds[i].danger == 0) {
+        if (worlds[i].land.length < 200) {
+          ctx.fillText("Mini World", boxx, 550);
+        } else if (worlds[i].danger == 0) {
           ctx.fillText("Creative", boxx, 550);
-        }
-        if (worlds[i].danger == 1) {
+        } else if (worlds[i].danger == 0.5) {
+          ctx.fillText("Peaceful", boxx, 550);
+        } else if (worlds[i].danger == 1) {
           ctx.fillText("Survival", boxx, 550);
-        }
-        if (worlds[i].danger == 2) {
+        } else if (worlds[i].danger == 2) {
           ctx.fillText("Death Mode", boxx, 550);
         }
 
@@ -1210,6 +1217,7 @@ function loop() {
           
         if (mouse.x > boxx && mouse.x < boxx + 75 && mouse.y > 500 && mouse.y < 575 && mouse.held[0]) {
           stage = "play";
+          MAP_SIZE = worlds[i].land.length
           courser = worlds[i].courser;
 
           time1 = worlds[i].time1;
@@ -1314,16 +1322,39 @@ function loop() {
     ctx.fillText("Death Mode", 410, 500);
     
 
-    if (700 < mouse.x && mouse.x < 800 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
+    if (850 < mouse.x && mouse.x < 950 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
       worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: {}, time1: 0, land: run_land(300), danger: 0, animals: []});
+    }
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
+    ctx.fillRect(850, 450, 100, 100);
+    
+    ctx.fillStyle = "black";          // text color
+    ctx.font = "15px Arial";          // font size and family
+    ctx.fillText("Creative", 875, 500);
+
+    if (700 < mouse.x && mouse.x < 800 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
+      stage = "menue";
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: {}, time1: 0, land: run_land(300), danger: 0.5, animals: []});
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(700, 450, 100, 100);
     
     ctx.fillStyle = "black";          // text color
     ctx.font = "15px Arial";          // font size and family
-    ctx.fillText("Creative", 725, 500);
+    ctx.fillText("Peaceful", 725, 500);
+
+    if (250 < mouse.x && mouse.x < 350 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
+      stage = "menue";
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: {}, time1: 0, land: run_land(50), danger: 2, animals: []});
+      localStorage.setItem("worlds", JSON.stringify(worlds))
+    }
+    ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
+    ctx.fillRect(250, 450, 100, 100);
+    
+    ctx.fillStyle = "black";          // text color
+    ctx.font = "15px Arial";          // font size and family
+    ctx.fillText("Mini World", 260, 500);
   }
 
 
