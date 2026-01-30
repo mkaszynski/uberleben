@@ -64,7 +64,7 @@ function run_land(map_size) {
   }
   
   land = [];
-  chests = [];
+  let chests1 = {};
     for (let i = 0; i < map_size; i++) {
 
       let column = [];
@@ -150,7 +150,7 @@ function run_land(map_size) {
         land.push(column);
       
     }
-  return [land, chests];
+  return [land, chests1];
 }
 
 let worlds = JSON.parse(localStorage.getItem("worlds"));
@@ -1223,7 +1223,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.4", 20, 50);
+    ctx.fillText("Version 1.4.5", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
