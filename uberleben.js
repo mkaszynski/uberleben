@@ -65,7 +65,7 @@ function run_land(map_size) {
   
   land = [];
   let chests1 = {};
-    for (let i = 0; i < map_size; i++) {
+  for (let i = 0; i < map_size; i++) {
 
       let column = [];
       for (let j = 0; j < map_size; j++) {
@@ -142,7 +142,7 @@ function run_land(map_size) {
             column.push([i, j, SALVAGER, 0, leave]);
           } else if (n2 < 1) {
             column.push([i, j, CHEST, 0, leave]);
-            chests[i + " " + j] = Chester();
+            chests1[i + " " + j] = Chester();
           }
         }
         }
@@ -238,7 +238,7 @@ let IRON_SCYTHE = 73;
 let ALUMINUM_SCYTHE = 74;
 let TUNGSTEN_SCYTHE = 75;
 
-let hardness = {1: 10, 2: 200, 3: 500, 4: 100, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200, 57: 100, 58: 100, 59: 500, 60: 100, 61: 50, 62: 200, 63: 200, 64:30, 65: 10, 66: 20};
+let hardness = {1: 10, 2: 200, 3: 500, 4: 100, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200, 57: 100, 58: 100, 59: 1000, 60: 100, 61: 50, 62: 200, 63: 200, 64:30, 65: 10, 66: 20};
 
 let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor", 55: "torch", 56: "leaves", 57: "bed", 58: "chest", 59: "stone bricks", 60: "stone path", 61: "floor", 62: "bridge", 63: "salvager", 64: "sapling", 65: "seeds", 66: "wheat", 67: "compressed wheat", 68: "bread", 69: "wooden scythe", 70: "stone scythe", 71: "tin scythe", 72: "copper scythe", 73: "iron scythe", 74: "aluminum scythe", 75: "tungsten scythe"};
 
@@ -1220,7 +1220,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.7", 20, 50);
+    ctx.fillText("Version 1.4.8", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
