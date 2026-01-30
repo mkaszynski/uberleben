@@ -1220,7 +1220,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.9", 20, 50);
+    ctx.fillText("Version 1.4.10", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1404,7 +1404,7 @@ function loop() {
     if (250 < mouse.x && mouse.x < 350 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
       n = run_land(50)
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 2, animals: []});
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 1, animals: []});
       localStorage.setItem("worlds", JSON.stringify(worlds))
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
