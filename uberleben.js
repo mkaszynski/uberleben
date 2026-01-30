@@ -329,6 +329,8 @@ let craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
 let craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
 
+let craft_color = "rgb(150, 75, 0)";
+let craft_color2 = "rgb(200, 100, 0)";
 
 
 function same(recipy, craft1) {
@@ -672,6 +674,8 @@ function loop() {
           salvage = false;
           craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
           craft_bar = 0;
+          craft_color = "rgb(150, 75, 0)";
+          craft_color2 = "rgb(200, 100, 0)"
         }
         if (open_chest) {
           for (let f = 0; f < 3; f++) {
@@ -746,21 +750,31 @@ function loop() {
         if (land[block_posx][block_posy][2] == WORKBENCH) {
           open_inventory = true;
           craft2 = [[1, 1, 0], [1, 1, 0], [0, 0, 0]];
+          craft_color = "rgb(175, 75, 0)";
+          craft_color2 = "rgb(200, 95, 0)";
         }
         if (land[block_posx][block_posy][2] == FURNACE) {
           open_inventory = true;
           craft2 = [[0, 0, 0], [1, 0, 1], [0, 0, 0]];
+          craft_color = "rgb(100, 100, 100)";
+          craft_color2 = "rgb(125, 125, 125)";
         }
         if (land[block_posx][block_posy][2] == FORGE) {
           open_inventory = true;
           craft2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
+          craft_color = "rgb(35, 0, 50)";
+          craft_color2 = "rgb(55, 0, 70)";
         }
         if (land[block_posx][block_posy][2] == SALVAGER) {
           open_inventory = true;
           craft2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
           salvage = true;
+          craft_color = "rgb(150, 50, 0)";
+          craft_color2 = "rgb(180, 70, 0)";
         }
         if (land[block_posx][block_posy][2] == CHEST) {
+          craft_color = "rgb(125, 65, 0)";
+          craft_color2 = "rgb(155, 95, 0)";
           held = true;
           open_inventory = true;
           craft2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
@@ -1080,7 +1094,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.3.3", 20, 50);
+    ctx.fillText("Version 1.3.4", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1204,7 +1218,7 @@ function loop() {
   }
 
 
-  // RENDER GRAPICS IF REQUIRED
+  // RENDER GRAPHICS IF REQUIRED
   
   if (render1) {
     for (let u = Math.floor(posx/SIZE) - 30; u < Math.floor(posx/SIZE) + 30; u++) {
@@ -1306,21 +1320,21 @@ function loop() {
     ctx.fillRect(400, 610, hunger*4, 10);
 
     if (open_inventory) {
-    ctx.fillStyle = "rgb(150, 75, 0)";
+    ctx.fillStyle = craft_color;
     ctx.fillRect(48, 48, 1000, 437);
 
     for (let k = 0; k < crafts.length; k++) {
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
           if (-20 < (j*70 - craft_scroll*2 + k*250 - 5)/2 && (j*70 - craft_scroll*2 + k*250 - 5)/2 < 390) {
-            ctx.fillStyle = "rgb(200, 100, 0)";
+            ctx.fillStyle = craft_color2;
             ctx.fillRect(770 + (i*70 - 5)/2, 70 + (j*70 - craft_scroll*2 + k*250 - 5)/2, SIZE/2 + 5, SIZE/2 + 5);
             const img = images[crafts[k][0][i][j]];
             ctx.drawImage(img, 770 + i*70/2, 70 + (j*70 - craft_scroll*2 + k*250)/2, SIZE/2, SIZE/2);
 
             mouse_tips.push([770 + i*70/2 + SIZE/4, 70 + (j*70 - craft_scroll*2 + k*250)/2 + SIZE/4, crafts[k][0][i][j], true]);
 
-            ctx.fillStyle = "rgb(200, 100, 0)";
+            ctx.fillStyle = craft_color2;
             ctx.fillRect(920 + (i*70 - 5)/2, 70 + (j*70 - craft_scroll*2 + k*250 - 5)/2, SIZE/2 + 5, SIZE/2 + 5);
             const img2 = images[crafts[k][1][i][j]];
             ctx.drawImage(img2, 920 + i*70/2, 70 + (j*70 - craft_scroll*2 + k*250)/2, SIZE/2, SIZE/2);
@@ -1333,7 +1347,7 @@ function loop() {
 
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 6; j++) {
-        ctx.fillStyle = "rgb(200, 100, 0)";
+        ctx.fillStyle = craft_color2;
         ctx.fillRect(70 + i*70 - 5, 70 + j*70 - 5, SIZE + 10, SIZE + 10);
         if (inventory[i][j] > 0) {
           const img = images[inventory[i][j]];
@@ -1345,7 +1359,7 @@ function loop() {
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         if (craft2[i][j] == 1) {
-          ctx.fillStyle = "rgb(200, 100, 0)";
+          ctx.fillStyle = craft_color2;
           ctx.fillRect(560 + i*70 - 5, 70 + j*70 - 5, SIZE + 10, SIZE + 10);
           if (craft[i][j] > 0) {
             const img = images[craft[i][j]];
@@ -1356,7 +1370,7 @@ function loop() {
       }
     }
 
-    ctx.fillStyle = "rgb(200, 100, 0)";
+    ctx.fillStyle = craft_color2;
     ctx.fillRect(560 - 5, 300 - 5, SIZE + 10, SIZE + 10);
     if (armor == 0) {
       const img = place_armor[0];
@@ -1364,7 +1378,7 @@ function loop() {
     }
     const img = images[armor];
     ctx.drawImage(img, 560, 300, SIZE, SIZE);
-      mouse_tips.push([560 + SIZE/2, 300 + SIZE/2, armor, false]);
+    mouse_tips.push([560 + SIZE/2, 300 + SIZE/2, armor, false]);
 
     if (craft_bar > 0) {
       ctx.fillStyle = "rgb(128, 128, 128)";
@@ -1388,7 +1402,9 @@ function loop() {
       }
     }
     if (str_m > 0) {
-        ctx.fillStyle = "black";          // text color
+        ctx.fillStyle = "rgb(0, 0, 0)";
+        ctx.fillRect(mouse.x, mouse.y - 25, 17*names[str_m].length, 40);
+        ctx.fillStyle = "white";          // text color
         ctx.font = "30px Arial";          // font size and family
         ctx.fillText(names[str_m], mouse.x, mouse.y);
     }
