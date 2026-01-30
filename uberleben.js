@@ -33,6 +33,20 @@ for (let i = 0; i < 10; i++) {
 
 let MAP_SIZE = 300;
 
+function Chester() {
+  let n = [];
+  let items = [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, TIN_SCYTHE, COPPER_SCYTHE, IRON_SCYTHE, STONE, STONE, STONE, PLANKS, PLANKS, SAPLING, STICKS, STICKS, TIN, COPPER, GRASS, SEEDS, SEEDS, FUR_ARMOR, FUR, FUR, BRIDGE, BRIDGE, DOOR];
+  for (let i = 0; i < 3; i++) {
+    let o = [];
+    for (let j = 0; j < 3; j++) {
+      o.push(items[Math.floor(Math.random()*items.length)]);
+    }
+    n.push(o);
+  }
+  return n;
+}
+
+
 function run_land(map_size) {
   let seed = [];
   for (let i = 0; i < 20; i++) {
@@ -44,7 +58,13 @@ function run_land(map_size) {
         ]
     );
   }
+  ruins = [];
+  for (let i = 0; i < Math.floor(map_size**2/10000 + 1); i++) {
+    ruins.push([Math.floor(Math.random()*map_size), Math.floor(Math.random()*map_size), Math.floor(Math.random()*6 + 3), Math.floor(Math.random()*6 + 3)])
+  }
+  
   land = [];
+  chests = [];
     for (let i = 0; i < map_size; i++) {
 
       let column = [];
@@ -64,6 +84,12 @@ function run_land(map_size) {
         let height4 = 0;
         for (let k of seed) {
           height3 += Math.sin(((i/10 - 10000 - 30) * Math.sin(k[2]) + (j/10 - 15) * Math.cos(k[2])) / k[0] + k[1]);
+        }
+        let ruin = false;
+        for (let k of ruins) {
+          if ((i == k[0] || j == k[1] || i == k[0] + k[2] || j == k[1] + k[3] || true) && i > k[0] && i < k[0] + k[2] && j < k[1] + k[3] && j > k[1]) {
+            ruin = true;
+          }
         }
         let leave = 0;
         if (height3 + height4 > 2) {leave = LEAVES;}
@@ -87,17 +113,44 @@ function run_land(map_size) {
           } else {
             column.push([i, j, STONE, 0, STONE]);
           }
-        } else if (Math.random() < 0.1 && height3 + height4 > 2) {
+        } else {
+          if (!ruin) {
+          if (Math.random() < 0.1 && height3 + height4 > 2) {
           column.push([i, j, LOG, 0, leave]);
         } else if (Math.random() < 0.2) {
           column.push([i, j, GRASS, 0, leave]);
         } else {
           column.push([i, j, AIR, 0, leave]);
         }
+        } else {
+          let n2 = Math.random();
+          if (n2 < 0.5) {
+            column.push([i, j, AIR, 0, leave]);
+          } else if (n2 < 0.65) {
+            column.push([i, j, PLANKS, 0, leave]);
+          } else if (n2 < 0.75) {
+            column.push([i, j, STONE_BRICKS, 0, leave]);
+          } else if (n2 < 0.80) {
+            column.push([i, j, DOOR, 0, leave]);
+          } else if (n2 < 0.83) {
+            column.push([i, j, BED, 0, leave]);
+          } else if (n2 < 0.90) {
+            column.push([i, j, TORCH, 0, leave]);
+          } else if (n2 < 0.92) {
+            column.push([i, j, WORKBENCH, 0, leave]);
+          } else if (n2 < 0.93) {
+            column.push([i, j, SALVAGER, 0, leave]);
+          } else if (n2 < 1) {
+            column.push([i, j, CHEST, 0, leave]);
+            chests[i + " " + j] = Chester();
+          }
+        }
+        }
       }
-      land.push(column);
+        land.push(column);
+      
     }
-  return land;
+  return [land, chests];
 }
 
 let worlds = JSON.parse(localStorage.getItem("worlds"));
@@ -302,7 +355,7 @@ let dt = 0.016;
 
 let start = false;
 
-let time1 = 0;
+let time1 = 5000;
 
 let stage = "menue";
 
@@ -458,7 +511,7 @@ let day = 0;
 
 let o1 = 0;
 
-land = run_land(50);
+land = run_land(50)[0];
 
 let running = true;
 function loop() {
@@ -1167,7 +1220,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.1", 20, 50);
+    ctx.fillText("Version 1.4.2", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1299,7 +1352,8 @@ function loop() {
     
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: {}, time1: 0, land: run_land(300), danger: 1, animals: []});
+      n = run_land(300)
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 0, land: n[0], danger: 1, animals: []});
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(550, 450, 100, 100);
@@ -1311,7 +1365,8 @@ function loop() {
 
     if (400 < mouse.x && mouse.x < 500 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: {}, time1: 0, land: run_land(300), danger: 2, animals: []});
+      n = run_land(300)
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 0, land: n[0], danger: 2, animals: []});
       localStorage.setItem("worlds", JSON.stringify(worlds))
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
@@ -1324,7 +1379,8 @@ function loop() {
 
     if (850 < mouse.x && mouse.x < 950 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: {}, time1: 0, land: run_land(300), danger: 0, animals: []});
+      n = run_land(300)
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 0, land: n[0], danger: 0, animals: []});
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(850, 450, 100, 100);
@@ -1335,7 +1391,8 @@ function loop() {
 
     if (700 < mouse.x && mouse.x < 800 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: {}, time1: 0, land: run_land(300), danger: 0.5, animals: []});
+      n = run_land(300)
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 0, land: n[0], danger: 0.5, animals: []});
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(700, 450, 100, 100);
@@ -1346,7 +1403,8 @@ function loop() {
 
     if (250 < mouse.x && mouse.x < 350 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: {}, time1: 0, land: run_land(50), danger: 2, animals: []});
+      n = run_land(50)
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 0, land: n[0], danger: 2, animals: []});
       localStorage.setItem("worlds", JSON.stringify(worlds))
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
@@ -1608,7 +1666,7 @@ function loop() {
 
       localStorage.setItem("worlds", JSON.stringify(worlds));
 
-      land = run_land(50);
+      land = run_land(50)[0];
     }
     if (550 < mouse.x && mouse.x < 650 && 250 < mouse.y && mouse.y < 350 && mouse.held[0]) {
       stage = "play";
