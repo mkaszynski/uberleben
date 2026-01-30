@@ -212,7 +212,7 @@ const persons = ["person.png", "person_fur.png", "person_tin.png", "person_coppe
 
 let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, COMPRESSED_GRASS, COMPRESSED_WHEAT, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, COAL, LEAVES, CHEST, STONE_BRICKS, SALVAGER];
 
-let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0, 55: 0, 57: 0.5, 60: -0.3, 61: -0.3, 62: -0.3, 65: 0, 66: 0}
+let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0, 55: 0, 57: 0.5, 60: -0.3, 61: -0.3, 62: -0.3, 65: 0, 66: 0.4}
 
 let SIZE = 40;
 
@@ -481,12 +481,12 @@ function loop() {
       height1 += Math.sin((i[1] + time1)/i[0]/200);
     }
     if (height1 > 2) {
-      rain.push([(block_posx + Math.random()*30 - 15)*SIZE, (block_posy + Math.random()*30 - 15)*SIZE]);
+      rain.push([(block_posx + Math.random()*25 - 25/2)*SIZE, (block_posy + Math.random()*20 - 10)*SIZE]);
       day -= 5;
       if (Math.random() < 0.001) {day = 15;}
     }
 
-    if (rain.length > 100 || (height1 < 2 && rain.length > 0)) {
+    if (rain.length > 50 || (height1 < 2 && rain.length > 0)) {
       rain.splice(Math.floor(Math.random()*rain.length), 1);
     }
 
@@ -650,8 +650,8 @@ function loop() {
       }
     }
 
-    block_posx = Math.floor(posx/SIZE + Math.random()*100 - 50) % MAP_SIZE;
-    block_posy = Math.floor(posy/SIZE + Math.random()*100 - 50) % MAP_SIZE;
+    block_posx = Math.floor(posx/SIZE + Math.random()*150 - 75) % MAP_SIZE;
+    block_posy = Math.floor(posy/SIZE + Math.random()*150 - 75) % MAP_SIZE;
     if (land[block_posx][block_posy][2] == SAPLING && land[block_posx][block_posy][4] == LEAVES && land[block_posx][block_posy][3] > 8) {
       land[block_posx][block_posy][2] = LOG;
     } else if (land[block_posx][block_posy][2] == SEEDS && land[block_posx][block_posy][4] == AIR && land[block_posx][block_posy][3] > 8) {
@@ -1080,7 +1080,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.3.2", 20, 50);
+    ctx.fillText("Version 1.3.3", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
