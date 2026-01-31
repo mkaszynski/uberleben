@@ -373,6 +373,8 @@ let courser = 0;
 
 let inventory = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
 
+let tips = ["Wherever aluminum ore is, you can find tungsten.", "Use a salvager to salvage unused items!", "There are no hostile animals in peaceful.", "The world is 300 blocks wide, but only 50 in mini mode!", "Hold c to craft!", "Death mode is the most chalanging mode.", "Rare ruins can be found with loot!", "While iron is sharper than aluminum, aluminum is lighter!", "Watch out for the bears!", "Stand where a bed is to sleep durring the night.", "Right click to quickly send stuff over.", "Press e to open inventory!", "Tin is more durable than copper, but copper is sharper.", "Watch your hunger bar!", "Welcome to uberleben!", "Animals can break through blocks, so be careful!", "Have fun!", "The tungsten sword can hit 12x harder than the fist!", "Only forges can make iron and tungsten armor.", "Uberpowered!", "Uberleben means survive in German!", "That puppy will bite!"];
+
 let armor = 0;
 
 let posx = 80001000;
@@ -510,6 +512,8 @@ let mouse_tips = [];
 let day = 0;
 
 let o1 = 0;
+
+let tip = tips[Math.floor(Math.random()*tips.length)];
 
 land = run_land(50)[0];
 
@@ -1214,13 +1218,17 @@ function loop() {
     ctx.font = "125px Arial";          // font size and family
     ctx.fillText("UBERLEBEN", 250, 200);
 
+    ctx.fillStyle = "rgb(255, 255, 0)";          // text color
+    ctx.font = (Math.sin(time1/25)*2 + 25) + "px Arial";          // font size and family
+    ctx.fillText(tip, 400, 275);
+
     ctx.fillStyle = "rgb(128, 0, 255)";          // text color
     ctx.font = "30px Arial";          // font size and family
     ctx.fillText("By Michael Alexander Kaszynski", 400, 325);
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.10", 20, 50);
+    ctx.fillText("Version 1.4.11", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1291,6 +1299,8 @@ function loop() {
           danger = worlds[i].danger;
 
           world_name = i;
+
+          tip = tips[Math.floor(Math.random()*tips.length)];
 
           if (!("animals" in worlds[i])) {worlds[i].animals = [];}
           animals = worlds[i].animals;
@@ -1667,6 +1677,8 @@ function loop() {
       localStorage.setItem("worlds", JSON.stringify(worlds));
 
       land = run_land(50)[0];
+
+      let tip = tips[Math.floor(Math.random()*tips.length)];
     }
     if (550 < mouse.x && mouse.x < 650 && 250 < mouse.y && mouse.y < 350 && mouse.held[0]) {
       stage = "play";
