@@ -258,7 +258,7 @@ const animal_imgs = ["chicken.png", "rabbit.png", "fox.png", "deer.png", "wolf.p
   return img2;
 });
 
-const place_armor = ["place_armor.png", "drop.png"].map(src => {
+const place_armor = ["place_armor.png", "drop.png", "snow.png", "snow_grass.png"].map(src => {
   const img3 = new Image();
   img3.src = src;
   return img3;
@@ -373,7 +373,9 @@ let courser = 0;
 
 let inventory = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
 
-let tips = ["Wherever aluminum ore is, you can find tungsten.", "Use a salvager to salvage unused items!", "There are no hostile animals in peaceful.", "The world is 300 blocks wide, but only 50 in mini mode!", "Hold c to craft!", "Death mode is the most chalanging mode.", "Rare ruins can be found with loot!", "While iron is sharper than aluminum, aluminum is lighter!", "Watch out for the bears!", "Stand where a bed is to sleep durring the night.", "Right click to quickly send stuff over.", "Press e to open inventory!", "Tin is more durable than copper, but copper is sharper.", "Watch your hunger bar!", "Welcome to uberleben!", "Animals can break through blocks, so be careful!", "Have fun!", "The tungsten sword can hit 12x harder than the fist!", "Only forges can make iron and tungsten armor.", "Uberpowered!", "Uberleben means survive in German!", "That puppy will bite!"];
+let tips = ["Wherever aluminum ore is, you can find tungsten.", "Use a salvager to salvage unused items!", "There are no hostile animals in peaceful mode.", "The world is 300 blocks wide, but only 50 in mini mode!", "Hold c to craft!", "Death mode is the most chalanging mode.", "Rare ruins can be found with loot!", "While iron is sharper than aluminum, aluminum is lighter!", "Watch out for the bears!", "Stand where a bed is to sleep durring the night.", "Right click to quickly send stuff over.", "Press e to open inventory!", "Tin is more durable than copper, but copper is sharper.", "Watch your hunger bar!", "Welcome to uberleben!", "Animals can break through blocks, so be careful!", "Have fun!", "The tungsten sword can hit 12x harder than the fist!", "Only forges can make iron and tungsten armor.", "Uberpowered!", "Uberleben means survive in German!", "That puppy will bite!"];
+
+let torial = ["Welcome to Uberleben!", "In this game, you will have to build up resources, and survive the many dangers.", "Use wasd keys to move, right click to mine blocks and attack animsl, ", "and left click to place, eat, and use blocks.", "Press e to open and exit the inventory, and hold c to craft.", "In your inventory, right click to send stuff fast.", "On the right side you will see the crafting recipies.", "", "In most game modes, hostile animals will spawn at any time of day, ", "though the night is usually more dangerous.", "If you think that the normal dificulty is too hard, try peaceful mode.", "However, if it is too easy, death mode is a true chalenge.", "Explore all the blocks and items with creative mode, without any danger.", "Mini mode is a true chalange, where the space is limited, as the world is 36x smaller than normal!"];
 
 let armor = 0;
 
@@ -382,6 +384,7 @@ let posy = 80001000;
 
 let health = 100;
 let hunger = 100;
+let cold = 50;
 
 let chests = {};
 
@@ -493,6 +496,8 @@ let weights = [0.95, 0.85, 0.8, 0.75, 0.65, 0.95, 0.5];
 
 let protections = [1, 0.75, 0.6, 0.5, 0.3, 0.35, 0.2];
 
+let temp = 30;
+
 let danger = 1;
 
 let hit_bar = 0;
@@ -512,6 +517,8 @@ let mouse_tips = [];
 let day = 0;
 
 let o1 = 0;
+
+let screen_glow = [0, 0, 0, 0];
 
 let tip = tips[Math.floor(Math.random()*tips.length)];
 
@@ -557,10 +564,12 @@ function loop() {
 
     let height1 = 0;
     for (let i of weather) {
-      height1 += Math.sin((i[1] + time1)/i[0]/200);
+      height1 += Math.sin((i[1] + time1)/i[0]/400);
     }
     if (height1 > 2) {
-      rain.push([(block_posx + Math.random()*25 - 25/2)*SIZE, (block_posy + Math.random()*20 - 10)*SIZE]);
+      if (Math.random() > 0.75) {
+        rain.push([(block_posx + Math.random()*25 - 25/2)*SIZE, (block_posy + Math.random()*20 - 10)*SIZE]);
+      }
       day -= 5;
       if (Math.random() < 0.001) {day = 15;}
     }
@@ -570,9 +579,17 @@ function loop() {
     }
 
     for (let i of rain) {
-      i[1] += 15;
-      if (i[1] > posy + 1000) {
-        i[1] = posy - 1000;
+      if (temp > 20) {
+        i[1] += 15;
+      } else {
+        i[1] += 5;
+        i[0] += 5;
+      }
+      if (i[1] > posy + 700) {
+        i[1] = posy - 700;
+      }
+      if (i[0] > posx + 1000) {
+        i[0] = posx - 1000;
       }
     }
 
@@ -582,14 +599,33 @@ function loop() {
     mouse_tips = [];
 
     if (open_inventory) {
-      if (keys["w"]) {craft_scroll -= 20;}
-      if (keys["s"]) {craft_scroll += 20;}
+      if (mouse.x > 1000 && mouse.x < 1080 && mouse.y > 48 + 25 && mouse.y < 437 + 25 && mouse.held[0]) {
+        craft_scroll = (mouse.y - 25 - 48)/400*250/2*crafts.length - 100;
+      }
       if (craft_scroll < 0) {craft_scroll = 0;}
     }
+
+    temp = Math.sin(time1/400000/20*Math.PI*2)*30 + 30;
+
+    block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
+    block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
+
+    cold = cold*0.999 + 0.001*(temp + land[block_posx][block_posy][3]*2);
+
+    if (cold > 70) {screen_glow = [255*0.01 + screen_glow[0]*0.99, 255*0.01 + screen_glow[1]*0.99, screen_glow[2]*0.99, (cold - 70)*15*0.01 + screen_glow[3]*0.99];}
+    if (cold < 30) {screen_glow = [screen_glow[0]*0.99, 255*0.01 + screen_glow[1]*0.99, 255*0.01 + screen_glow[2]*0.99, (30 - cold)*15*0.01 + screen_glow[3]*0.99];}
+
+    screen_glow[3] *= 0.975;
 
     hunger -= 0.001*danger;
     if (hunger <= 0) {hunger = 0; health -= 0.02*danger;}
     if (hunger > 100) {hunger = 100;}
+
+    if (cold <= 10) {health -= 0.02*danger;}
+    if (cold >= 90) {health -= 0.02*danger;}
+
+    if (cold <= 0) {cold = 0;}
+    if (cold >= 100) {cold = 100;}
 
     if (health < 100) {hunger -= 0.002; health += 0.004;}
     if (health > 100) {health = 100;}
@@ -612,7 +648,7 @@ function loop() {
       let animalx = Math.floor(posx/SIZE + (Math.random()*100 - 50));
       let animaly = Math.floor(posy/SIZE + (Math.random()*100 - 50));
       if (land[animalx % MAP_SIZE][animaly % MAP_SIZE][2] == 0 && dis([animalx*SIZE, animaly*SIZE], [posx, posy]) > 700) {
-        let an_rand = Math.random()
+        let an_rand = Math.random();
         if (an_rand < 0.3) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 12, 2, 0, 0, 0, 0, 12]);
         //             0   x pos                1     y pos  2  xvel 3 yvel 4 health 5 speed 6 type 7 agression 8 an_type 9 max health
@@ -646,6 +682,7 @@ function loop() {
         if (posy < i[1]) {i[3] = -i[5];} else {i[3] = i[5];}
         if (dis([posx, posy], [i[0], i[1]]) < 50 && Math.random() > 0.05) {
           health -= i[9]*protections[armors.indexOf(armor)]*danger;
+          screen_glow = [255, 0, 0, 150];
           if (Math.random() < 1/durrability[armors.indexOf(armor)]) {armor = 0;}
         }
       }
@@ -790,6 +827,9 @@ function loop() {
     if (pickaxes.includes(courser)) {slow *= weights[pickaxes.indexOf(courser)]/2 + 1/2;}
     if (scythes.includes(courser)) {slow *= weights[scythes.indexOf(courser)]/2 + 1/2;}
     slow *= weights[armors.indexOf(armor)];
+
+    if (cold > 70) {slow *= (100 - cold)/30*0.6 + 0.4;}
+    if (cold < 30) {slow *= (30 - cold)/30*0.6 + 0.4;}
 
     if (danger == 0) {slow = 3;}
     
@@ -1228,7 +1268,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.11", 20, 50);
+    ctx.fillText("Version 1.4.12", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1304,6 +1344,8 @@ function loop() {
 
           if (!("animals" in worlds[i])) {worlds[i].animals = [];}
           animals = worlds[i].animals;
+          if (!("temp" in worlds[i])) {worlds[i].temp = 50;}
+          cold = worlds[i].temp;
         }
 
       }
@@ -1363,7 +1405,7 @@ function loop() {
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
       n = run_land(300)
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 1, animals: []});
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 1, animals: [], temp: 50});
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(550, 450, 100, 100);
@@ -1376,7 +1418,7 @@ function loop() {
     if (400 < mouse.x && mouse.x < 500 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
       n = run_land(300)
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 2, animals: []});
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 2, animals: [], temp: 50});
       localStorage.setItem("worlds", JSON.stringify(worlds))
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
@@ -1390,7 +1432,7 @@ function loop() {
     if (850 < mouse.x && mouse.x < 950 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
       n = run_land(300)
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 0, animals: []});
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 0, animals: [], temp: 50});
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(850, 450, 100, 100);
@@ -1402,7 +1444,7 @@ function loop() {
     if (700 < mouse.x && mouse.x < 800 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
       n = run_land(300)
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 0.5, animals: []});
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 0.5, animals: [], temp: 50});
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(700, 450, 100, 100);
@@ -1414,7 +1456,7 @@ function loop() {
     if (250 < mouse.x && mouse.x < 350 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
       n = run_land(50)
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 1, animals: []});
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 1, animals: [], temp: 50});
       localStorage.setItem("worlds", JSON.stringify(worlds))
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
@@ -1434,7 +1476,11 @@ function loop() {
         let i = land[u % MAP_SIZE][v % MAP_SIZE];
         
         color1 = (((i[0] + i[1]) % ((i[0]**2 - i[1]**2 + 0.14) % 1.1))*0.125 + 0.75)/2 + 1/2;
-        ctx.fillStyle = "rgb(0," + 200*color1 + ", 0)";
+        if (temp > 20) {
+          ctx.fillStyle = "rgb(0," + 200*color1 + ", 0)";
+        } else {
+          ctx.fillStyle = "rgb(" + 200*color1 + "," + 200*color1 + ", " + 200*color1 + ")";
+        }
         ctx.fillRect(Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
         
         if (i[4] > 0) {
@@ -1445,9 +1491,14 @@ function loop() {
             ctx.fillRect(Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
           }
         }
-        
-        const img = images[i[2]];
-        ctx.drawImage(img, Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
+
+        if (temp > 20 || i[2] != GRASS) {
+          const img = images[i[2]];
+          ctx.drawImage(img, Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
+        } else {
+          const img = place_armor[3];
+          ctx.drawImage(img, Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
+        }
 
         ctx.fillStyle = "rgba(0, 0, 0, " + (15 - i[3])/15 + ")";
         ctx.fillRect(Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
@@ -1483,8 +1534,13 @@ function loop() {
       block_posy = Math.floor(i[1]/SIZE) % MAP_SIZE;
       ctx.filter = "brightness(" + land[block_posx][block_posy][3]/15 + ")";
       if (land[block_posx][block_posy][4] == 0) {
-        const rimg = place_armor[1];
-        ctx.drawImage(rimg, i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, SIZE, SIZE);
+        if (temp > 20) {
+          const rimg = place_armor[1];
+          ctx.drawImage(rimg, i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, SIZE, SIZE);
+        } else {
+          const rimg = place_armor[2];
+          ctx.drawImage(rimg, i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, SIZE, SIZE);
+        }
       }
       ctx.filter = "none";
     }
@@ -1511,6 +1567,9 @@ function loop() {
     ctx.drawImage(personimg, 600 - SIZE/2, 300 - SIZE*1.5, SIZE, SIZE*2);
     ctx.filter = "none";
 
+    ctx.fillStyle = "rgba(" + screen_glow[0] + ", " + screen_glow[1] + ", " + screen_glow[2] + ", " + screen_glow[3]/255 + ")"; // last value = transparency (0 to 1)
+    ctx.fillRect(0, 0, 2000, 1500);
+
     if (hit_bar > 0 && danger > 0) {
       ctx.fillStyle = "rgb(128, 128, 128)";
       ctx.fillRect(mouse.x - 25, mouse.y - 25, 50, 10);
@@ -1520,12 +1579,14 @@ function loop() {
     }
 
     ctx.fillStyle = "rgb(128, 128, 128)";
-    ctx.fillRect(400, 600, 400, 20);
+    ctx.fillRect(400, 600, 400, 30);
 
     ctx.fillStyle = "rgb(255, 0, 0)";
     ctx.fillRect(400, 600, health*4, 10);
     ctx.fillStyle = "rgb(0, 255, 0)";
     ctx.fillRect(400, 610, hunger*4, 10);
+    ctx.fillStyle = "rgb(255, 255, 0)";
+    ctx.fillRect(400, 620, cold*4, 10);
 
     if (open_inventory) {
     ctx.fillStyle = craft_color;
@@ -1552,6 +1613,9 @@ function loop() {
         }
       }
     }
+
+    ctx.fillStyle = "rgb(150, 150, 150)";
+    ctx.fillRect(1020, 48 + craft_scroll/crafts.length/250*400*2, 10, 50);
 
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 6; j++) {
@@ -1673,6 +1737,8 @@ function loop() {
       worlds[world_name].danger = danger;
 
       worlds[world_name].animals = animals;
+
+      worlds[world_name].temp = cold;
 
       localStorage.setItem("worlds", JSON.stringify(worlds));
 
