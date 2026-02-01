@@ -833,8 +833,6 @@ function loop() {
     if (cold > 70) {slow *= (100 - cold)/30*0.6 + 0.4;}
     if (cold < 30) {slow *= cold/30*0.6 + 0.4;}
 
-    console.log(slow);
-
     if (danger == 0) {slow = 3;}
     
     let lposy = posy;    
@@ -1272,7 +1270,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.16", 20, 50);
+    ctx.fillText("Version 1.4.17", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
