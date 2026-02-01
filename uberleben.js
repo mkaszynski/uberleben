@@ -21,6 +21,22 @@ if (localStorage.getItem("worlds") == null) {
   localStorage.setItem("worlds", JSON.stringify([]));
 }
 
+const music = {
+  rain: new Audio("rain.mp3"),
+  walking: new Audio("walking.mp3"),
+  mine: new Audio("mine.mp3"),
+  hit: new Audio("hit.mp3"),
+};
+
+music.rain.volume = 0.1;
+music.rain.loop = true;
+
+music.walking.volume = 0.4;
+music.walking.loop = true;
+
+music.mine.volume = 0.1;
+music.hit.volume = 0.2;
+
 let weather = [];
 for (let i = 0; i < 10; i++) {
   weather.push(
@@ -481,7 +497,7 @@ crafts.push([[[0, ALUMINUM, 0], [ALUMINUM, 0, ALUMINUM], [0, ALUMINUM, 0]], [[AL
 crafts.push([[[0, TUNGSTEN, 0], [TUNGSTEN, 0, TUNGSTEN], [0, TUNGSTEN, 0]], [[TUNGSTEN_ARMOR, 0, 0], [0, 0, 0], [0, 0, 0]], 1000])
 
 let woods = [LOG, PLANKS, WORKBENCH, DOOR, OPEN_DOOR, BED, CHEST, FLOOR, BRIDGE];
-let stones = [STONE, FURNACE, COAL, TIN_ORE, COPPER_ORE, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, STONE_BRICKS, STONE_PATH];
+let stones = [STONE, FURNACE, COAL, TIN_ORE, COPPER_ORE, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, STONE_BRICKS, STONE_PATH, FORGE, SALVAGER];
 let grasses = [GRASS, SEEDS, WHEAT];
 
 let axes = [WOODEN_AXE, STONE_AXE, TIN_AXE, COPPER_AXE, IRON_AXE, ALUMINUM_AXE, TUNGSTEN_AXE];
@@ -575,7 +591,14 @@ function loop() {
         rain.push([(block_posx + Math.random()*25 - 25/2)*SIZE, (block_posy + Math.random()*20 - 10)*SIZE]);
       }
       day -= 5;
+      if (temp > 20) {
+        music.rain.play();
+      } else {
+        music.rain.pause();
+      }
       if (Math.random() < 0.001) {day = 15;}
+    } else {
+      music.rain.pause();
     }
 
     if (rain.length > 50 || (height1 < 2 && rain.length > 0)) {
@@ -687,7 +710,9 @@ function loop() {
         if (dis([posx, posy], [i[0], i[1]]) < 50 && Math.random() > 0.05) {
           health -= i[9]*protections[armors.indexOf(armor)]*danger;
           screen_glow = [255, 0, 0, 150];
-          if (Math.random() < 1/durrability[armors.indexOf(armor)]) {armor = 0;}
+          music.hit.currentTime = 0;
+          music.hit.play();
+          if (Math.random() < 3/durrability[armors.indexOf(armor)]) {armor = 0;}
         }
       }
       if (dis([posx, posy], [i[0], i[1]]) < 300 && i[6] == 2) {
@@ -696,12 +721,14 @@ function loop() {
       if (Math.random() < 0.001) {i[7] = 0;}
 
 
-      if (mouse.held[2] && !held && dis([mouse.x - 600, mouse.y - 300], [i[0] - posx, i[1] - posy]) < 25 && dis([600, 300], [mouse.x, mouse.y]) < reach) {
+      if (mouse.held[2] && !held && dis([mouse.x - 600, mouse.y - 300], [i[0] - posx, i[1] - posy]) < 25 && dis([600, 300], [mouse.x, mouse.y]) < reach && !open_inventory) {
         let power3 = 1;
         if (swords.includes(courser)) {power3 = strengths[swords.indexOf(courser)];}
         if (danger == 2) {power3 *= 1/3;}
         i[4] -= power3;
         held = true;
+        music.hit.currentTime = 0;
+        music.hit.play();
         if (i[6] == 0) {i[7] = -1;}
         if (i[6] == 1) {i[7] = 1;}
         if (swords.includes(courser)) {if (Math.random() < 1/durrability[swords.indexOf(courser)]) {courser = 0;}}
@@ -838,13 +865,16 @@ function loop() {
     if (cold < 30) {slow *= cold/30*0.6 + 0.4;}
 
     if (danger == 0) {slow = 3;}
+
+    let move2 = false;
     
     let lposy = posy;    
     if (keys["w"] && !open_inventory) {
-        posy -= 3*slow;
-    }
-    if (keys["s"] && !open_inventory) {
-        posy += 3*slow;
+      posy -= 3*slow;
+      move2 = true;
+    } else if (keys["s"] && !open_inventory) {
+      posy += 3*slow;
+      move2 = true;
     }
     block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
     block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
@@ -855,11 +885,13 @@ function loop() {
     if (back) {posy = lposy;} 
     let lposx = posx;    
     if (keys["a"] && !open_inventory) {
-        posx -= 3*slow;
+      posx -= 3*slow;
+      move2 = true;
     }
     if (keys["d"] && !open_inventory) {
-        posx += 3*slow;
-    }    
+      posx += 3*slow;
+      move2 = true;
+    }
     block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
     block_posy = Math.floor(posy/SIZE) % MAP_SIZE;    
     back = false;
@@ -867,6 +899,8 @@ function loop() {
       back = true;
     }
     if (back) {posx = lposx;}
+
+    if (move2) {music.walking.play();} else {music.walking.pause();}
 
     if (!open_inventory) {
       if (mouse.held[0] && dis([mouse.x, mouse.y], [600, 300]) < reach) {
@@ -933,6 +967,8 @@ function loop() {
         hit_spot[1] = block_posy;
         if (land[block_posx][block_posy][2] > 0 && land[block_posx][block_posy][3] > 0) {
           if (hit_bar >= 100) {
+            music.mine.currentTime = 0;
+            music.mine.play();
             if (courser > 0) {
               for (let i = 0; i < 6; i++) {
                 for (let j = 0; j < 6; j++) {
@@ -1274,7 +1310,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.20", 20, 50);
+    ctx.fillText("Version 1.4.21", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
