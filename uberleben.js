@@ -607,12 +607,12 @@ function loop() {
       if (craft_scroll < 0) {craft_scroll = 0;}
     }
 
-    temp = Math.sin(time1/400000/20*Math.PI*2)*30 + 20;
+    temp = Math.sin(time1/400000*Math.PI*2)*25 + 20;
 
     block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
     block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
 
-    cold = cold*0.999 + 0.001*(temp + land[block_posx][block_posy][3]*2);
+    cold = cold*0.999 + 0.001*(temp + land[block_posx][block_posy][3]*2.5);
 
     if (cold > 70) {screen_glow = [255*0.01 + screen_glow[0]*0.99, 255*0.01 + screen_glow[1]*0.99, screen_glow[2]*0.99, (cold - 70)*15*0.01 + screen_glow[3]*0.99];}
     if (cold < 30) {screen_glow = [screen_glow[0]*0.99, 255*0.01 + screen_glow[1]*0.99, 255*0.01 + screen_glow[2]*0.99, (30 - cold)*15*0.01 + screen_glow[3]*0.99];}
@@ -1270,7 +1270,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.14", 20, 50);
+    ctx.fillText("Version 1.4.15", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
