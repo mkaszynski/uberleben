@@ -245,7 +245,7 @@ let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks"
 
 let foods = {25: 10, 26: 25, 68: 17};
 
-let glow = {10: 6, 55: 12, 11: 15, 76: 15};
+let glow = {10: 6, 55: 10, 11: 15, 76: 15};
 
 const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png", "torch.png", "leaves.png", "bed.png", "chest.png", "stone_bricks.png", "stone_path.png", "floor.png", "bridge.png", "salvager.png", "sapling.png", "seeds.png", "wheat.png", "compressed_wheat.png", "bread.png", "wooden_scythe.png", "stone_scythe.png", "tin_scythe.png", "copper_scythe.png", "iron_scythe.png", "aluminum_scythe.png", "tungsten_scythe.png", "fireplace.png"].map(src => {
   const img = new Image();
@@ -526,6 +526,8 @@ let tip = tips[Math.floor(Math.random()*tips.length)];
 
 land = run_land(50)[0];
 
+let time_power = 1;
+
 let running = true;
 function loop() {
   if (!running) return;
@@ -612,7 +614,7 @@ function loop() {
     block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
     block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
 
-    cold = cold*0.999 + 0.001*(temp + land[block_posx][block_posy][3]*2.5);
+    cold = cold*(1 - 0.001*time_power) + 0.001*time_power*(temp + land[block_posx][block_posy][3]*2.5);
 
     if (cold > 70) {screen_glow = [255*0.01 + screen_glow[0]*0.99, 255*0.01 + screen_glow[1]*0.99, screen_glow[2]*0.99, (cold - 70)*15*0.01 + screen_glow[3]*0.99];}
     if (cold < 30) {screen_glow = [screen_glow[0]*0.99, 255*0.01 + screen_glow[1]*0.99, 255*0.01 + screen_glow[2]*0.99, (30 - cold)*15*0.01 + screen_glow[3]*0.99];}
@@ -620,17 +622,17 @@ function loop() {
     screen_glow[3] *= 0.975;
 
     hunger -= 0.001*danger;
-    if (hunger <= 0) {hunger = 0; health -= 0.02*danger;}
-    if (hunger > 100) {hunger = 100;}
+    if (hunger <= 0) {hunger = 0; health -= 0.02*danger*time_power;}
+    if (hunger > 100) {hunger = 100*time_power;}
 
-    if (cold <= 10) {health -= 0.02*danger;}
-    if (cold >= 90) {health -= 0.02*danger;}
+    if (cold <= 10) {health -= 0.02*danger*time_power;}
+    if (cold >= 90) {health -= 0.02*danger*time_power;}
 
     if (cold <= 0) {cold = 0;}
     if (cold >= 100) {cold = 100;}
 
-    if (health < 100) {hunger -= 0.002; health += 0.004;}
-    if (health > 100) {health = 100;}
+    if (health < 100) {hunger -= 0.002*time_power; health += 0.004*time_power;}
+    if (health > 100) {health = 100*time_power;}
 
     if (health <= 0) {
       stage = "menue";
@@ -820,8 +822,10 @@ function loop() {
     if (land[block_posx][block_posy][2] in collide) {
       slow = collide[land[block_posx][block_posy][2]];
     }
+    time_power = 1;
     if (land[block_posx][block_posy][2] == BED && day < 10) {
       time1 += 100;
+      time_power = 100;
     }
     slow = 1 - slow;
     if (swords.includes(courser)) {slow *= weights[swords.indexOf(courser)]/2 + 1/2;}
@@ -1270,7 +1274,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.17", 20, 50);
+    ctx.fillText("Version 1.4.18", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
