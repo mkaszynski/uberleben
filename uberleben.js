@@ -621,7 +621,7 @@ function loop() {
 
     screen_glow[3] *= 0.975;
 
-    hunger -= 0.001*danger;
+    hunger -= 0.001*danger*time_power;
     if (hunger <= 0) {hunger = 0; health -= 0.02*danger*time_power;}
     if (hunger > 100) {hunger = 100*time_power;}
 
@@ -1274,7 +1274,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.18", 20, 50);
+    ctx.fillText("Version 1.4.19", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
