@@ -414,6 +414,7 @@ crafts.push([[[LOG, 0, 0], [0, 0, 0], [0, 0, 0]], [[PLANKS, 0, 0], [PLANKS, 0, 0
 crafts.push([[[PLANKS, PLANKS, 0], [0, 0, 0], [0, 0, 0]], [[STICKS, STICKS, 0], [STICKS, STICKS, 0], [0, 0, 0]], 30]);
 crafts.push([[[PLANKS, PLANKS, 0], [PLANKS, STICKS, 0], [0, 0, 0]], [[DOOR, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[FLAME, STICKS, 0], [0, 0, 0], [0, 0, 0]], [[TORCH, 0, 0], [TORCH, 0, 0], [0, 0, 0]], 50]);
+crafts.push([[[FLAME, LOG, 0], [FLAME, LOG, 0], [0, 0, 0]], [[FIREPLACE, 0, 0], [0, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[PLANKS, 0, 0], [PLANKS, 0, 0], [0, 0, 0]], [[WORKBENCH, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
 crafts.push([[[PLANKS, PLANKS, 0], [PLANKS, PLANKS, 0], [0, 0, 0]], [[CHEST, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[PLANKS, 0, 0], [0, PLANKS, 0], [0, 0, 0]], [[BRIDGE, 0, 0], [0, 0, 0], [0, 0, 0]], 100]);
@@ -1269,7 +1270,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.13", 20, 50);
+    ctx.fillText("Version 1.4.14", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
