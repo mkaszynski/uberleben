@@ -26,6 +26,7 @@ const music = {
   walking: new Audio("walking.mp3"),
   mine: new Audio("mine.mp3"),
   hit: new Audio("hit.mp3"),
+  lightning: new Audio("lightning.mp3"),
 };
 
 music.rain.volume = 0.1;
@@ -35,7 +36,10 @@ music.walking.volume = 0.4;
 music.walking.loop = true;
 
 music.mine.volume = 0.1;
-music.hit.volume = 0.2;
+
+music.hit.volume = 0.4;
+
+music.lightning.volume = 0.6;
 
 let weather = [];
 for (let i = 0; i < 10; i++) {
@@ -596,7 +600,11 @@ function loop() {
       } else {
         music.rain.pause();
       }
-      if (Math.random() < 0.001) {day = 15;}
+      if (Math.random() < 0.001) {
+        day = 15;
+        music.lightning.currentTime = 0;
+        music.lightning.play();
+      }
     } else {
       music.rain.pause();
     }
@@ -1310,7 +1318,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.21", 20, 50);
+    ctx.fillText("Version 1.4.22", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1781,6 +1789,10 @@ function loop() {
       worlds[world_name].animals = animals;
 
       worlds[world_name].temp = cold;
+
+      music.rain.pause();
+      music.lightning.pause();
+      music.walking.pause();
 
       localStorage.setItem("worlds", JSON.stringify(worlds));
 
