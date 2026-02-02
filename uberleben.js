@@ -26,8 +26,31 @@ const music = {
   walking: new Audio("walking.mp3"),
   mine: new Audio("mine.mp3"),
   hit: new Audio("hit.mp3"),
+  place: new Audio("place.mp3"),
+  eat: new Audio("eat.mp3"),
   lightning: new Audio("lightning.mp3"),
 };
+
+const tracks = ["song1.mp3", "song2.mp3", "song3.mp3", "song4.mp3", "song5.mp3", "song6.mp3", "song7.mp3"];
+const audio = new Audio();
+let last1 = -1;
+
+function playRandom() {
+  let i;
+  do {
+    i = Math.floor(Math.random() * tracks.length);
+  } while (i === last1 && tracks.length > 1);
+
+  last1 = i;
+  audio.src = tracks[i];
+  audio.play();
+}
+
+audio.volume = 0.3;
+
+audio.addEventListener("ended", playRandom);
+
+let first_click = false;
 
 music.rain.volume = 0.1;
 music.rain.loop = true;
@@ -37,7 +60,11 @@ music.walking.loop = true;
 
 music.mine.volume = 0.1;
 
-music.hit.volume = 0.4;
+music.hit.volume = 0.6;
+
+music.place.volume = 0.5;
+
+music.eat.volume = 0.4;
 
 music.lightning.volume = 0.6;
 
@@ -567,6 +594,8 @@ function loop() {
 
   if (day < 3) day = 3;
   if (day > 15) day = 15;
+
+  if (mouse.held[0] && !first_click) {first_click = true;playRandom();}
   
 
   ctx.fillStyle = "black";
@@ -600,7 +629,7 @@ function loop() {
       } else {
         music.rain.pause();
       }
-      if (Math.random() < 0.001) {
+      if (Math.random() < 0.001 && temp > 20) {
         day = 15;
         music.lightning.currentTime = 0;
         music.lightning.play();
@@ -915,24 +944,32 @@ function loop() {
         block_posx = Math.floor((posx - 600 + mouse.x)/SIZE) % MAP_SIZE;
         block_posy = Math.floor((posy - 300 + mouse.y)/SIZE) % MAP_SIZE;
         if (land[block_posx][block_posy][2] == WORKBENCH) {
+          music.place.currentTime = 0;
+          music.place.play();
           open_inventory = true;
           craft2 = [[1, 1, 0], [1, 1, 0], [0, 0, 0]];
           craft_color = "rgb(175, 75, 0)";
           craft_color2 = "rgb(200, 95, 0)";
         }
         if (land[block_posx][block_posy][2] == FURNACE) {
+          music.place.currentTime = 0;
+          music.place.play();
           open_inventory = true;
           craft2 = [[0, 0, 0], [1, 0, 1], [0, 0, 0]];
           craft_color = "rgb(100, 100, 100)";
           craft_color2 = "rgb(125, 125, 125)";
         }
         if (land[block_posx][block_posy][2] == FORGE) {
+          music.place.currentTime = 0;
+          music.place.play();
           open_inventory = true;
           craft2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
           craft_color = "rgb(35, 0, 50)";
           craft_color2 = "rgb(55, 0, 70)";
         }
         if (land[block_posx][block_posy][2] == SALVAGER) {
+          music.place.currentTime = 0;
+          music.place.play();
           open_inventory = true;
           craft2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
           salvage = true;
@@ -940,6 +977,8 @@ function loop() {
           craft_color2 = "rgb(180, 70, 0)";
         }
         if (land[block_posx][block_posy][2] == CHEST) {
+          music.place.currentTime = 0;
+          music.place.play();
           craft_color = "rgb(125, 65, 0)";
           craft_color2 = "rgb(155, 95, 0)";
           held = true;
@@ -954,9 +993,13 @@ function loop() {
           }
         }
         if (land[block_posx][block_posy][2] == DOOR && !held) {
+          music.place.currentTime = 0;
+          music.place.play();
           land[block_posx][block_posy][2] = OPEN_DOOR;
           held = true;
         } else if (land[block_posx][block_posy][2] == OPEN_DOOR && !held) {
+          music.place.currentTime = 0;
+          music.place.play();
           land[block_posx][block_posy][2] = DOOR;
           held = true;
         }
@@ -965,6 +1008,8 @@ function loop() {
       if (mouse.held[0] && courser in foods) {
         hunger += foods[courser];
         courser = 0;
+        music.eat.currentTime = 0;
+        music.eat.play();
       }
 
       if (mouse.held[2] && dis([mouse.x, mouse.y], [600, 300]) < reach) {
@@ -1068,6 +1113,10 @@ function loop() {
         block_posy = Math.floor((posy - 300 + mouse.y)/SIZE % MAP_SIZE);
         let cur_type = courser;
         if (land[block_posx][block_posy][2] == 0 && courser != BRIDGE) {
+          if (courser > 0) {
+            music.place.currentTime = 0;
+            music.place.play();
+          }
           land[block_posx][block_posy][2] = courser;
           if (courser == CHEST) {
             chests[block_posx + " " + block_posy] = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
@@ -1084,6 +1133,10 @@ function loop() {
             }
           }
         } else if (land[block_posx][block_posy][2] == WATER && courser == BRIDGE) {
+          if (courser > 0) {
+            music.place.currentTime = 0;
+            music.place.play();
+          }
           land[block_posx][block_posy][2] = courser;
           courser = 0;
           let found2 = true;
@@ -1318,7 +1371,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.22", 20, 50);
+    ctx.fillText("Version 1.4.23", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
