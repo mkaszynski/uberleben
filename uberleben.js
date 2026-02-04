@@ -479,7 +479,7 @@ crafts.push([[[FUR, PLANKS, 0], [FUR, PLANKS, 0], [0, 0, 0]], [[BED, 0, 0], [0, 
 crafts.push([[[0, 0, 0], [PLANKS, 0, PLANKS], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[0, 0, 0], [COMPRESSED_GRASS, 0, COMPRESSED_GRASS], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[0, 0, 0], [0, 0, COAL], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, FLAME], [0, 0, 0]], 50]);
-crafts.push([[[0, 0, 0], [0, 0, FUR], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, FLAME], [0, 0, 0]], 50]);
+crafts.push([[[0, 0, 0], [0, 0, FUR], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[0, 0, 0], [TIN_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [TIN, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[0, 0, 0], [COPPER_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [COPPER, 0, 0], [0, 0, 0]], 300]);
 crafts.push([[[0, 0, 0], [IRON_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [IRON, 0, 0], [0, 0, 0]], 600]);
@@ -536,6 +536,8 @@ let pickaxes = [WOODEN_PICKAXE, STONE_PICKAXE, TIN_PICKAXE, COPPER_PICKAXE, IRON
 let swords = [WOODEN_SWORD, STONE_SWORD, TIN_SWORD, COPPER_SWORD, IRON_SWORD, ALUMINUM_SWORD, TUNGSTEN_SWORD];
 let armors = [AIR, FUR_ARMOR, TIN_ARMOR, COPPER_ARMOR, IRON_ARMOR, ALUMINUM_ARMOR, TUNGSTEN_ARMOR];
 let scythes = [WOODEN_SCYTHE, STONE_SCYTHE, TIN_SCYTHE, COPPER_SCYTHE, IRON_SCYTHE, ALUMINUM_SCYTHE, TUNGSTEN_SCYTHE];
+
+let inven_crafts = [];
 
 let strengths = [2, 3, 4, 5, 8, 6, 12];
 
@@ -612,6 +614,21 @@ function loop() {
     }
     render1 = true;
 
+    if (time1 % 20 == 0) {
+      inven_crafts = [];
+      for (let k of crafts) {
+        let n5 = true;
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            if (!craft2[i][j] && k[0][i][j] > 0 || open_chest) {
+              n5 = false;
+            }
+          }
+        }
+        if (n5) {inven_crafts.push(k);}
+      }
+    }
+
     block_posx = Math.floor(posx/SIZE);
     block_posy = Math.floor(posy/SIZE);
 
@@ -664,9 +681,10 @@ function loop() {
 
     if (open_inventory) {
       if (mouse.x > 1000 && mouse.x < 1080 && mouse.y > 48 + 25 && mouse.y < 437 + 25 && mouse.held[0]) {
-        craft_scroll = (mouse.y - 25 - 48)/400*250/2*crafts.length - 100;
+        craft_scroll = (mouse.y - 25 - 48)/400*250/2*inven_crafts.length;
       }
       if (craft_scroll < 0) {craft_scroll = 0;}
+      if (craft_scroll > (437 - 48)/2*inven_crafts.length) {craft_scroll = 0;}
     }
 
     temp = Math.sin(time1/400000*Math.PI*2)*25 + 20;
@@ -1371,7 +1389,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.23", 20, 50);
+    ctx.fillText("Version 1.4.24", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1695,30 +1713,30 @@ function loop() {
     ctx.fillStyle = craft_color;
     ctx.fillRect(48, 48, 1000, 437);
 
-    for (let k = 0; k < crafts.length; k++) {
+    for (let k = 0; k < inven_crafts.length; k++) {
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
           if (-20 < (j*70 - craft_scroll*2 + k*250 - 5)/2 && (j*70 - craft_scroll*2 + k*250 - 5)/2 < 390) {
             ctx.fillStyle = craft_color2;
             ctx.fillRect(770 + (i*70 - 5)/2, 70 + (j*70 - craft_scroll*2 + k*250 - 5)/2, SIZE/2 + 5, SIZE/2 + 5);
-            const img = images[crafts[k][0][i][j]];
+            const img = images[inven_crafts[k][0][i][j]];
             ctx.drawImage(img, 770 + i*70/2, 70 + (j*70 - craft_scroll*2 + k*250)/2, SIZE/2, SIZE/2);
 
-            mouse_tips.push([770 + i*70/2 + SIZE/4, 70 + (j*70 - craft_scroll*2 + k*250)/2 + SIZE/4, crafts[k][0][i][j], true]);
+            mouse_tips.push([770 + i*70/2 + SIZE/4, 70 + (j*70 - craft_scroll*2 + k*250)/2 + SIZE/4, inven_crafts[k][0][i][j], true]);
 
             ctx.fillStyle = craft_color2;
             ctx.fillRect(920 + (i*70 - 5)/2, 70 + (j*70 - craft_scroll*2 + k*250 - 5)/2, SIZE/2 + 5, SIZE/2 + 5);
-            const img2 = images[crafts[k][1][i][j]];
+            const img2 = images[inven_crafts[k][1][i][j]];
             ctx.drawImage(img2, 920 + i*70/2, 70 + (j*70 - craft_scroll*2 + k*250)/2, SIZE/2, SIZE/2);
 
-            mouse_tips.push([920 + i*70/2 + SIZE/4, 70 + (j*70 - craft_scroll*2 + k*250)/2 + SIZE/4, crafts[k][1][i][j], true]);
+            mouse_tips.push([920 + i*70/2 + SIZE/4, 70 + (j*70 - craft_scroll*2 + k*250)/2 + SIZE/4, inven_crafts[k][1][i][j], true]);
           }
         }
       }
     }
 
     ctx.fillStyle = "rgb(150, 150, 150)";
-    ctx.fillRect(1020, 48 + craft_scroll/crafts.length/250*400*2, 10, 50);
+    ctx.fillRect(1020, 48 + craft_scroll/inven_crafts.length/250*400*2, 10, 50);
 
     for (let i = 0; i < 6; i++) {
       for (let j = 0; j < 6; j++) {
