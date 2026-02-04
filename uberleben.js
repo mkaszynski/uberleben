@@ -680,11 +680,11 @@ function loop() {
     mouse_tips = [];
 
     if (open_inventory) {
-      if (mouse.x > 1000 && mouse.x < 1080 && mouse.y > 48 + 25 && mouse.y < 437 + 25 && mouse.held[0]) {
+      if (mouse.x > 1000 && mouse.x < 1080 && mouse.held[0]) {
         craft_scroll = (mouse.y - 25 - 48)/400*250/2*inven_crafts.length;
       }
       if (craft_scroll < 0) {craft_scroll = 0;}
-      if (craft_scroll > (437 - 48)/2*inven_crafts.length) {craft_scroll = 0;}
+      if (craft_scroll > (437 - 48)/400*250/2*inven_crafts.length) {craft_scroll = (437 - 48)/400*250/2*inven_crafts.length;}
     }
 
     temp = Math.sin(time1/400000*Math.PI*2)*25 + 20;
@@ -1389,7 +1389,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.24", 20, 50);
+    ctx.fillText("Version 1.4.25", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
