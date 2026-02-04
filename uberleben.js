@@ -306,7 +306,7 @@ const animal_imgs = ["chicken.png", "rabbit.png", "fox.png", "deer.png", "wolf.p
   return img2;
 });
 
-const place_armor = ["place_armor.png", "drop.png", "snow.png", "snow_grass.png"].map(src => {
+const place_armor = ["place_armor.png", "drop.png", "snow.png", "snow_grass.png", "arrow_sign.png"].map(src => {
   const img3 = new Image();
   img3.src = src;
   return img3;
@@ -625,7 +625,9 @@ function loop() {
             }
           }
         }
-        if (n5) {inven_crafts.push(k);}
+        if (n5) {
+          if (!salvage) {inven_crafts.push(k);} else {inven_crafts.push([k[1], k[0]]);}
+        }
       }
     }
 
@@ -1389,7 +1391,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.25", 20, 50);
+    ctx.fillText("Version 1.4.26", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1716,7 +1718,7 @@ function loop() {
     for (let k = 0; k < inven_crafts.length; k++) {
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
-          if (-20 < (j*70 - craft_scroll*2 + k*250 - 5)/2 && (j*70 - craft_scroll*2 + k*250 - 5)/2 < 390) {
+          if (-20 < (j*70 - craft_scroll*2 + k*250 - 5)/2 && (j*70 - craft_scroll*2 + k*250 - 5)/2 < 390 && craft2[i][j]) {
             ctx.fillStyle = craft_color2;
             ctx.fillRect(770 + (i*70 - 5)/2, 70 + (j*70 - craft_scroll*2 + k*250 - 5)/2, SIZE/2 + 5, SIZE/2 + 5);
             const img = images[inven_crafts[k][0][i][j]];
@@ -1732,6 +1734,10 @@ function loop() {
             mouse_tips.push([920 + i*70/2 + SIZE/4, 70 + (j*70 - craft_scroll*2 + k*250)/2 + SIZE/4, inven_crafts[k][1][i][j], true]);
           }
         }
+      }
+      if (-20 < (70/2 - craft_scroll*2 + k*250 - 5)/2 && (70/2 - craft_scroll*2 + k*250 - 5)/2 < 390) {
+        const img = place_armor[4];
+        ctx.drawImage(img, 770 + 2.8*70/2, 70 + (0.5*70 - craft_scroll*2 + k*250)/2, SIZE, SIZE);
       }
     }
 
