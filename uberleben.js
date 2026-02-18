@@ -1335,6 +1335,8 @@ function loop() {
   // MAIN MENUE
 
   if (stage == "menue") {
+    posx += 0.3;
+    posy += 0.3;
     for (let u = Math.floor(posx/SIZE) - 30; u < Math.floor(posx/SIZE) + 30; u++) {
       for (let v = Math.floor(posy/SIZE) - 20; v < Math.floor(posy/SIZE) + 20; v++) {
         let i = land[u % 50][v % 50];
@@ -1391,7 +1393,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.26", 20, 50);
+    ctx.fillText("Version 1.4.27", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1478,6 +1480,8 @@ function loop() {
   // OPEN NEW WORLD
 
   if (stage == "new world") {
+    posx += 0.3;
+    posy += 0.3;
     for (let u = Math.floor(posx/SIZE) - 30; u < Math.floor(posx/SIZE) + 30; u++) {
       for (let v = Math.floor(posy/SIZE) - 20; v < Math.floor(posy/SIZE) + 20; v++) {
         let i = land[u % 50][v % 50];
