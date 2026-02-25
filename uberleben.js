@@ -859,7 +859,7 @@ function loop() {
       }
       if (Math.random() < 0.001) {i[7] = 0;}
 
-      if (i[8] == 6 && trade && i[7] == 0) {i[2] = 0; i[3] = 0;}
+      if (i[8] == 6 && dis([0, 0], [i[0] - posx, i[1] - posy]) < 150 && i[7] == 0) {i[2] = 0; i[3] = 0;}
 
       if (mouse.held[2] && !held && dis([mouse.x - 600, mouse.y - 300], [i[0] - posx, i[1] - posy]) < 25 && dis([600, 300], [mouse.x, mouse.y]) < reach && !open_inventory) {
         let power3 = 1;
@@ -1490,7 +1490,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.5.0", 20, 50);
+    ctx.fillText("Version 1.5.1", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
