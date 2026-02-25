@@ -437,7 +437,7 @@ let courser = 0;
 
 let inventory = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
 
-let tips = ["Wherever aluminum ore is, you can find tungsten.", "Use a salvager to salvage unused items!", "There are no hostile animals in peaceful mode.", "The world is 300 blocks wide, but only 50 in mini mode!", "Hold c to craft!", "Death mode is the most chalanging mode.", "Rare ruins can be found with loot!", "While iron is sharper than aluminum, aluminum is lighter!", "Watch out for the bears!", "Stand where a bed is to sleep durring the night.", "Right click to quickly send stuff over.", "Press e to open inventory!", "Tin is more durable than copper, but copper is sharper.", "Watch your hunger bar!", "Welcome to uberleben!", "Animals can break through blocks, so be careful!", "Have fun!", "The tungsten sword can hit 12x harder than the fist!", "Only forges can make iron and tungsten armor.", "Uberpowered!", "Uberleben means survive in German!", "That puppy will bite!", "Stay warm during the night!", "The fireplace is the warmest block.", "You can get food from animals, or from farming.", "Place saplings under leaves to grow trees!", "Traders from distant lands can be found!", "Traders are freindly... untill attack!", "Be nice to traders!", "Gold and rhodium can be used to trade with traders.", "Filled with riches of gold and rhodium!", "Tungsten can be mined or bought with rhodium!", "No more room for gold? Compress it into blocks!"];
+let tips = ["Wherever aluminum ore is, you can find tungsten.", "Use a salvager to salvage unused items!", "There are no hostile animals in peaceful mode.", "The world is 300 blocks wide, but only 50 in mini mode!", "Hold c to craft!", "Death mode is the most chalanging mode.", "Rare ruins can be found with loot!", "While iron is sharper than aluminum, aluminum is lighter!", "Watch out for the bears!", "Stand where a bed is to sleep durring the night.", "Right click to quickly send stuff over.", "Press e to open inventory!", "Tin is more durable than copper, but copper is sharper.", "Watch your hunger bar!", "Welcome to uberleben!", "Animals can break through blocks, so be careful!", "Have fun!", "The tungsten sword can hit 12x harder than the fist!", "Only forges can make iron and tungsten armor.", "Uberpowered!", "Uberleben means survive in German!", "That puppy will bite!", "Stay warm during the night!", "The fireplace is the warmest block.", "You can get food from animals, or from farming.", "Place saplings under leaves to grow trees!", "Traders from distant lands can be found!", "Traders are freindly... until you attack!", "Be nice to traders!", "Gold and rhodium can be used to trade with traders.", "Filled with riches of gold and rhodium!", "Tungsten can be mined or bought with rhodium!", "No more room for gold? Compress it into blocks!"];
 
 let torial = ["Welcome to Uberleben!", "In this game, you will have to build up resources, and survive the many dangers.", "Use wasd keys to move, right click to mine blocks and attack animsl, ", "and left click to place, eat, and use blocks.", "Press e to open and exit the inventory, and hold c to craft.", "In your inventory, right click to send stuff fast.", "On the right side you will see the crafting recipies.", "", "In most game modes, hostile animals will spawn at any time of day, ", "though the night is usually more dangerous.", "If you think that the normal dificulty is too hard, try peaceful mode.", "However, if it is too easy, death mode is a true chalenge.", "Explore all the blocks and items with creative mode, without any danger.", "Mini mode is a true chalange, where the space is limited, as the world is 36x smaller than normal!"];
 
@@ -610,7 +610,7 @@ trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[ALUMINUM_AXE, 0, 0], [0,
 trades.push([[[RHODIUM, RHODIUM, 0], [0, 0, 0], [0, 0, 0]], [[TUNGSTEN, 0, 0], [0, 0, 0], [0, 0, 0]]]);
 trades.push([[[RHODIUM, RHODIUM, RHODIUM], [RHODIUM, 0, 0], [0, 0, 0]], [[TUNGSTEN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]]]);
 trades.push([[[RHODIUM, RHODIUM, RHODIUM], [0, 0, 0], [0, 0, 0]], [[FORGE, 0, 0], [0, 0, 0], [0, 0, 0]]]);
-trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, GOLD, GOLD], [GOLD, GOLD, GOLD], [0, 0, 0]]]);
+trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, GOLD, GOLD], [GOLD, GOLD, GOLD], [GOLD, GOLD, GOLD]]]);
 
 let woods = [LOG, PLANKS, WORKBENCH, DOOR, OPEN_DOOR, BED, CHEST, FLOOR, BRIDGE];
 let stones = [STONE, FURNACE, COAL, TIN_ORE, COPPER_ORE, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, STONE_BRICKS, STONE_PATH, FORGE, SALVAGER, GOLD_ORE, RHODIUM_ORE];
@@ -1515,7 +1515,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.5.6", 20, 50);
+    ctx.fillText("Version 1.5.7", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
