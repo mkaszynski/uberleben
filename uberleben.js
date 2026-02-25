@@ -926,8 +926,12 @@ function loop() {
           }
         }
       }
+
+      let despawn_rate = 0.0001;
+      if (i[8] == 6) {despawn_rate = 0.00001;
       
-      if ((Math.random() < 0.0001 && dis([i[0], i[1]], [posx, posy]) > 1000) || i[4] <= 0) {
+      
+      if ((Math.random() < despawn_rate && dis([i[0], i[1]], [posx, posy]) > 1000) || i[4] <= 0) {
         if (i[4] <= 0) {
           let set1 = land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2];
           if (set1 == 0 || set1 == GRASS) {
@@ -1490,7 +1494,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.5.2", 20, 50);
+    ctx.fillText("Version 1.5.3", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
