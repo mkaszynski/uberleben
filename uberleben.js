@@ -579,7 +579,7 @@ trades.push([[[IRON_AXE, IRON_AXE, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, 0, 0], 
 trades.push([[[ALUMINUM, ALUMINUM, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]]]);
 trades.push([[[ALUMINUM_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]]]);
 trades.push([[[TUNGSTEN, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, RHODIUM, 0], [0, 0, 0], [0, 0, 0]]]);
-trades.push([[[TUNGSTEN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, RHODIUM, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[TUNGSTEN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, RHODIUM, RHODIUM], [RHODIUM, 0, 0], [0, 0, 0]]]);
 trades.push([[[FORGE, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, RHODIUM, RHODIUM], [0, 0, 0], [0, 0, 0]]]);
 
 trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[IRON, IRON, IRON], [IRON, 0, 0], [0, 0, 0]]]);
@@ -587,7 +587,7 @@ trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[IRON_AXE, IRON_AXE, 0], 
 trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[ALUMINUM, ALUMINUM, 0], [0, 0, 0], [0, 0, 0]]]);
 trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[ALUMINUM_AXE, 0, 0], [0, 0, 0], [0, 0, 0]]]);
 trades.push([[[RHODIUM, RHODIUM, 0], [0, 0, 0], [0, 0, 0]], [[TUNGSTEN, 0, 0], [0, 0, 0], [0, 0, 0]]]);
-trades.push([[[RHODIUM, RHODIUM, 0], [0, 0, 0], [0, 0, 0]], [[TUNGSTEN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[RHODIUM, RHODIUM, RHODIUM], [RHODIUM, 0, 0], [0, 0, 0]], [[TUNGSTEN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]]]);
 trades.push([[[RHODIUM, RHODIUM, RHODIUM], [0, 0, 0], [0, 0, 0]], [[FORGE, 0, 0], [0, 0, 0], [0, 0, 0]]]);
 trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, GOLD, GOLD], [GOLD, GOLD, GOLD], [0, 0, 0]]]);
 
@@ -1494,7 +1494,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.5.4", 20, 50);
+    ctx.fillText("Version 1.5.5", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
