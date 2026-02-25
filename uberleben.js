@@ -928,7 +928,7 @@ function loop() {
       }
 
       let despawn_rate = 0.0001;
-      if (i[8] == 6) {despawn_rate = 0.00001;
+      if (i[8] == 6) {despawn_rate = 0.00001;}
       
       
       if ((Math.random() < despawn_rate && dis([i[0], i[1]], [posx, posy]) > 1000) || i[4] <= 0) {
@@ -1494,7 +1494,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.5.3", 20, 50);
+    ctx.fillText("Version 1.5.4", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
