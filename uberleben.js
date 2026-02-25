@@ -1490,7 +1490,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.5.1", 20, 50);
+    ctx.fillText("Version 1.5.2", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1845,9 +1845,17 @@ function loop() {
         ctx.drawImage(img, 770 + 2.8*70/2, 70 + (0.5*70 - craft_scroll*2 + k*250)/2, SIZE, SIZE);
       }
       if (trade && mouse.x > 800 && mouse.x < 1000 && mouse.held[0] && mouse.y > 70 + (-craft_scroll*2 + k*250)/2 && mouse.y < 70 + (-craft_scroll*2 + k*250)/2 + 250/2 && stage == "play") {
+        let qn = true;
         for (let q = 0; q < 3; q++) {
           for (let r = 0; r < 3; r++) {
-            if (craft[q][r] == inven_crafts[k][0][q][r]) {
+            if (craft[q][r] != inven_crafts[k][0][q][r]) {
+              qn = false;
+            }
+          }
+        }
+        if (qn) {
+          for (let q = 0; q < 3; q++) {
+            for (let r = 0; r < 3; r++) {
               craft[q][r] = inven_crafts[k][1][q][r];
             }
           }
