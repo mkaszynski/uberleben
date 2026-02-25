@@ -82,7 +82,7 @@ let MAP_SIZE = 300;
 
 function Chester() {
   let n = [];
-  let items = [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, TIN_SCYTHE, COPPER_SCYTHE, IRON_SCYTHE, STONE, STONE, STONE, PLANKS, PLANKS, SAPLING, STICKS, STICKS, TIN, COPPER, GRASS, SEEDS, SEEDS, FUR_ARMOR, FUR, FUR, BRIDGE, BRIDGE, DOOR];
+  let items = [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, TIN_SCYTHE, COPPER_SCYTHE, IRON_SCYTHE, STONE, STONE, STONE, PLANKS, PLANKS, SAPLING, STICKS, STICKS, TIN, COPPER, GRASS, SEEDS, SEEDS, FUR_ARMOR, FUR, FUR, BRIDGE, BRIDGE, DOOR, GOLD, GOLD];
   for (let i = 0; i < 3; i++) {
     let o = [];
     for (let j = 0; j < 3; j++) {
@@ -149,12 +149,16 @@ function run_land(map_size) {
             column.push([i, j, COPPER_ORE, 0, STONE]);
           } else if (Math.random() < 0.025 && height > 3.5) {
             column.push([i, j, TIN_ORE, 0, STONE]);
-          } else if (Math.random() < 0.035 && height > 3.75) {
+          } else if (Math.random() < 0.05 && height > 3.75) {
             column.push([i, j, COAL, 0, STONE]);
           } else if (Math.random() < 0.01 && height > 4) {
             column.push([i, j, IRON_ORE, 0, STONE]);
+          } else if (Math.random() < 0.01 && height > 4) {
+            column.push([i, j, GOLD_ORE, 0, STONE]);
           } else if (Math.random() < 0.006 && height > 4.3) {
             column.push([i, j, ALUMINUM_ORE, 0, STONE]);
+          } else if (Math.random() < 0.004 && height > 4.3) {
+            column.push([i, j, RHODIUM_ORE, 0, STONE]);
           } else if (Math.random() < 0.002 && height > 4.3) {
             column.push([i, j, TUNGSTEN_ORE, 0, STONE]);
           } else {
@@ -285,22 +289,26 @@ let IRON_SCYTHE = 73;
 let ALUMINUM_SCYTHE = 74;
 let TUNGSTEN_SCYTHE = 75;
 let FIREPLACE = 76;
+let GOLD_ORE = 77;
+let RHODIUM_ORE = 78;
+let GOLD = 79;
+let RHODIUM = 80;
 
-let hardness = {1: 10, 2: 200, 3: 500, 4: 100, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200, 57: 100, 58: 100, 59: 1000, 60: 100, 61: 50, 62: 200, 63: 200, 64:30, 65: 10, 66: 20, 76: 100};
+let hardness = {1: 10, 2: 200, 3: 500, 4: 100, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200, 57: 100, 58: 100, 59: 1000, 60: 100, 61: 50, 62: 200, 63: 200, 64:30, 65: 10, 66: 20, 76: 100, 77: 750, 78: 1500};
 
-let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor", 55: "torch", 56: "leaves", 57: "bed", 58: "chest", 59: "stone bricks", 60: "stone path", 61: "floor", 62: "bridge", 63: "salvager", 64: "sapling", 65: "seeds", 66: "wheat", 67: "compressed wheat", 68: "bread", 69: "wooden scythe", 70: "stone scythe", 71: "tin scythe", 72: "copper scythe", 73: "iron scythe", 74: "aluminum scythe", 75: "tungsten scythe", 76: "fireplace"};
+let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor", 55: "torch", 56: "leaves", 57: "bed", 58: "chest", 59: "stone bricks", 60: "stone path", 61: "floor", 62: "bridge", 63: "salvager", 64: "sapling", 65: "seeds", 66: "wheat", 67: "compressed wheat", 68: "bread", 69: "wooden scythe", 70: "stone scythe", 71: "tin scythe", 72: "copper scythe", 73: "iron scythe", 74: "aluminum scythe", 75: "tungsten scythe", 76: "fireplace", 77: "gold ore", 78: "rhodium ore", 79: "gold coin", 80: "rhodium coin"};
 
 let foods = {25: 10, 26: 25, 68: 17};
 
 let glow = {10: 6, 55: 10, 11: 15, 76: 15};
 
-const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png", "torch.png", "leaves.png", "bed.png", "chest.png", "stone_bricks.png", "stone_path.png", "floor.png", "bridge.png", "salvager.png", "sapling.png", "seeds.png", "wheat.png", "compressed_wheat.png", "bread.png", "wooden_scythe.png", "stone_scythe.png", "tin_scythe.png", "copper_scythe.png", "iron_scythe.png", "aluminum_scythe.png", "tungsten_scythe.png", "fireplace.png"].map(src => {
+const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png", "torch.png", "leaves.png", "bed.png", "chest.png", "stone_bricks.png", "stone_path.png", "floor.png", "bridge.png", "salvager.png", "sapling.png", "seeds.png", "wheat.png", "compressed_wheat.png", "bread.png", "wooden_scythe.png", "stone_scythe.png", "tin_scythe.png", "copper_scythe.png", "iron_scythe.png", "aluminum_scythe.png", "tungsten_scythe.png", "fireplace.png", "gold_ore.png", "rhodium_ore.png", "gold.png", "rhodium.png"].map(src => {
   const img = new Image();
   img.src = src;
   return img;
 });
 
-const animal_imgs = ["chicken.png", "rabbit.png", "fox.png", "deer.png", "wolf.png", "bear.png"].map(src => {
+const animal_imgs = ["chicken.png", "rabbit.png", "fox.png", "deer.png", "wolf.png", "bear.png", "trader.png"].map(src => {
   const img2 = new Image();
   img2.src = src;
   return img2;
@@ -318,7 +326,7 @@ const persons = ["person.png", "person_fur.png", "person_tin.png", "person_coppe
   return img4;
 });
 
-let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, COMPRESSED_GRASS, COMPRESSED_WHEAT, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, COAL, LEAVES, CHEST, STONE_BRICKS, SALVAGER];
+let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, COMPRESSED_GRASS, COMPRESSED_WHEAT, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, GOLD_ORE, RHODIUM_ORE, COAL, LEAVES, CHEST, STONE_BRICKS, SALVAGER];
 
 let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0, 55: 0, 57: 0.5, 60: -0.3, 61: -0.3, 62: -0.3, 65: 0, 66: 0.4}
 
@@ -411,6 +419,8 @@ let held = false;
 
 let salvage = false;
 
+let trade = false;
+
 let open_chest = false;
 
 let chest_open = "";
@@ -421,7 +431,7 @@ let courser = 0;
 
 let inventory = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
 
-let tips = ["Wherever aluminum ore is, you can find tungsten.", "Use a salvager to salvage unused items!", "There are no hostile animals in peaceful mode.", "The world is 300 blocks wide, but only 50 in mini mode!", "Hold c to craft!", "Death mode is the most chalanging mode.", "Rare ruins can be found with loot!", "While iron is sharper than aluminum, aluminum is lighter!", "Watch out for the bears!", "Stand where a bed is to sleep durring the night.", "Right click to quickly send stuff over.", "Press e to open inventory!", "Tin is more durable than copper, but copper is sharper.", "Watch your hunger bar!", "Welcome to uberleben!", "Animals can break through blocks, so be careful!", "Have fun!", "The tungsten sword can hit 12x harder than the fist!", "Only forges can make iron and tungsten armor.", "Uberpowered!", "Uberleben means survive in German!", "That puppy will bite!", "Stay warm during the night!", "The fireplace is the warmest block.", "You can get food from animals, or from farming."];
+let tips = ["Wherever aluminum ore is, you can find tungsten.", "Use a salvager to salvage unused items!", "There are no hostile animals in peaceful mode.", "The world is 300 blocks wide, but only 50 in mini mode!", "Hold c to craft!", "Death mode is the most chalanging mode.", "Rare ruins can be found with loot!", "While iron is sharper than aluminum, aluminum is lighter!", "Watch out for the bears!", "Stand where a bed is to sleep durring the night.", "Right click to quickly send stuff over.", "Press e to open inventory!", "Tin is more durable than copper, but copper is sharper.", "Watch your hunger bar!", "Welcome to uberleben!", "Animals can break through blocks, so be careful!", "Have fun!", "The tungsten sword can hit 12x harder than the fist!", "Only forges can make iron and tungsten armor.", "Uberpowered!", "Uberleben means survive in German!", "That puppy will bite!", "Stay warm during the night!", "The fireplace is the warmest block.", "You can get food from animals, or from farming.", "Place saplings under leaves to grow trees!"];
 
 let torial = ["Welcome to Uberleben!", "In this game, you will have to build up resources, and survive the many dangers.", "Use wasd keys to move, right click to mine blocks and attack animsl, ", "and left click to place, eat, and use blocks.", "Press e to open and exit the inventory, and hold c to craft.", "In your inventory, right click to send stuff fast.", "On the right side you will see the crafting recipies.", "", "In most game modes, hostile animals will spawn at any time of day, ", "though the night is usually more dangerous.", "If you think that the normal dificulty is too hard, try peaceful mode.", "However, if it is too easy, death mode is a true chalenge.", "Explore all the blocks and items with creative mode, without any danger.", "Mini mode is a true chalange, where the space is limited, as the world is 36x smaller than normal!"];
 
@@ -483,8 +493,10 @@ crafts.push([[[0, 0, 0], [0, 0, FUR], [0, 0, 0]], [[0, 0, 0], [FLAME, 0, 0], [0,
 crafts.push([[[0, 0, 0], [TIN_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [TIN, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[0, 0, 0], [COPPER_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [COPPER, 0, 0], [0, 0, 0]], 300]);
 crafts.push([[[0, 0, 0], [IRON_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [IRON, 0, 0], [0, 0, 0]], 600]);
+crafts.push([[[0, 0, 0], [GOLD_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [GOLD, 0, 0], [0, 0, 0]], 600]);
 crafts.push([[[0, 0, 0], [ALUMINUM_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [ALUMINUM, 0, 0], [0, 0, 0]], 1000]);
 crafts.push([[[0, 0, 0], [TUNGSTEN_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [TUNGSTEN, 0, 0], [0, 0, 0]], 1500]);
+crafts.push([[[0, 0, 0], [RHODIUM_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [RHODIUM, 0, 0], [0, 0, 0]], 1000]);
 crafts.push([[[0, 0, 0], [MEAT, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [COOKED_MEAT, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[0, 0, 0], [COMPRESSED_WHEAT, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [BREAD, 0, 0], [0, 0, 0]], 70]);
 crafts.push([[[PLANKS, STICKS, 0], [PLANKS, PLANKS, 0], [0, 0, 0]], [[WOODEN_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
@@ -527,8 +539,60 @@ crafts.push([[[0, IRON, 0], [IRON, 0, IRON], [0, IRON, 0]], [[IRON_ARMOR, 0, 0],
 crafts.push([[[0, ALUMINUM, 0], [ALUMINUM, 0, ALUMINUM], [0, ALUMINUM, 0]], [[ALUMINUM_ARMOR, 0, 0], [0, 0, 0], [0, 0, 0]], 400])
 crafts.push([[[0, TUNGSTEN, 0], [TUNGSTEN, 0, TUNGSTEN], [0, TUNGSTEN, 0]], [[TUNGSTEN_ARMOR, 0, 0], [0, 0, 0], [0, 0, 0]], 1000])
 
+
+
+trades = [];
+trades.push([[[LOG, LOG, LOG], [LOG, LOG, LOG], [0, 0, 0]], [[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[STONE, STONE, STONE], [STONE, STONE, STONE], [STONE, STONE, 0]], [[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[STONE_BRICKS, STONE_BRICKS, STONE_BRICKS], [STONE_BRICKS, STONE_BRICKS, STONE_BRICKS], [STONE_BRICKS, STONE_BRICKS, 0]], [[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[BRIDGE, BRIDGE, BRIDGE], [BRIDGE, BRIDGE, BRIDGE], [0, 0, 0]], [[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[COAL, COAL, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[TIN, 0, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, GOLD, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[TIN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, GOLD, GOLD], [GOLD, 0, 0], [0, 0, 0]]]);
+trades.push([[[COPPER, 0, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, GOLD, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[COPPER_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, GOLD, GOLD], [GOLD, 0, 0], [0, 0, 0]]]);
+trades.push([[[FUR, 0, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[COMPRESSED_WHEAT, COMPRESSED_WHEAT, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[COMPRESSED_GRASS, COMPRESSED_GRASS, COMPRESSED_GRASS], [COMPRESSED_GRASS, 0, 0], [0, 0, 0]], [[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[COOKED_MEAT, 0, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[FURNACE, FURNACE, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[SALVAGER, 0, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, GOLD, 0], [GOLD, GOLD, 0], [0, 0, 0]]]);
+
+trades.push([[[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]], [[LOG, LOG, LOG], [LOG, LOG, LOG], [0, 0, 0]]]);
+trades.push([[[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]], [[STONE, STONE, STONE], [STONE, STONE, STONE], [STONE, STONE, 0]]]);
+trades.push([[[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]], [[STONE_BRICKS, STONE_BRICKS, STONE_BRICKS], [STONE_BRICKS, STONE_BRICKS, STONE_BRICKS], [STONE_BRICKS, STONE_BRICKS, 0]]]);
+trades.push([[[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]], [[BRIDGE, BRIDGE, BRIDGE], [BRIDGE, BRIDGE, BRIDGE], [0, 0, 0]]]);
+trades.push([[[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]], [[COAL, COAL, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[GOLD, GOLD, 0], [0, 0, 0], [0, 0, 0]], [[TIN, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[GOLD, GOLD, GOLD], [GOLD, 0, 0], [0, 0, 0]], [[TIN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[GOLD, GOLD, 0], [0, 0, 0], [0, 0, 0]], [[COPPER, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[GOLD, GOLD, GOLD], [GOLD, 0, 0], [0, 0, 0]], [[COPPER_AXE, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]], [[FUR, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]], [[COMPRESSED_WHEAT, COMPRESSED_WHEAT, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]], [[COMPRESSED_GRASS, COMPRESSED_GRASS, COMPRESSED_GRASS], [COMPRESSED_GRASS, 0, 0], [0, 0, 0]]]);
+trades.push([[[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]], [[COOKED_MEAT, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[GOLD, 0, 0], [0, 0, 0], [0, 0, 0]], [[FURNACE, FURNACE, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[GOLD, GOLD, 0], [GOLD, GOLD, 0], [0, 0, 0]], [[SALVAGER, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+
+trades.push([[[IRON, IRON, IRON], [IRON, 0, 0], [0, 0, 0]], [[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[IRON_AXE, IRON_AXE, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[ALUMINUM, ALUMINUM, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[ALUMINUM_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[TUNGSTEN, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, RHODIUM, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[TUNGSTEN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, RHODIUM, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[FORGE, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, RHODIUM, RHODIUM], [0, 0, 0], [0, 0, 0]]]);
+
+trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[IRON, IRON, IRON], [IRON, 0, 0], [0, 0, 0]]]);
+trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[IRON_AXE, IRON_AXE, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[ALUMINUM, ALUMINUM, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[ALUMINUM_AXE, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[RHODIUM, RHODIUM, 0], [0, 0, 0], [0, 0, 0]], [[TUNGSTEN, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[RHODIUM, RHODIUM, 0], [0, 0, 0], [0, 0, 0]], [[TUNGSTEN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[RHODIUM, RHODIUM, RHODIUM], [0, 0, 0], [0, 0, 0]], [[FORGE, 0, 0], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[GOLD, GOLD, GOLD], [GOLD, GOLD, GOLD], [0, 0, 0]]]);
+
 let woods = [LOG, PLANKS, WORKBENCH, DOOR, OPEN_DOOR, BED, CHEST, FLOOR, BRIDGE];
-let stones = [STONE, FURNACE, COAL, TIN_ORE, COPPER_ORE, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, STONE_BRICKS, STONE_PATH, FORGE, SALVAGER];
+let stones = [STONE, FURNACE, COAL, TIN_ORE, COPPER_ORE, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, STONE_BRICKS, STONE_PATH, FORGE, SALVAGER, GOLD_ORE, RHODIUM_ORE];
 let grasses = [GRASS, SEEDS, WHEAT];
 
 let axes = [WOODEN_AXE, STONE_AXE, TIN_AXE, COPPER_AXE, IRON_AXE, ALUMINUM_AXE, TUNGSTEN_AXE];
@@ -553,6 +617,8 @@ let danger = 1;
 
 let hit_bar = 0;
 let hit_spot = [-1, -1];
+
+let barters = [];
 
 let craft_bar = 0;
 
@@ -614,22 +680,30 @@ function loop() {
     }
     render1 = true;
 
-    if (time1 % 20 == 0) {
+    if (time1 % 20 == 0 && open_inventory) {
       inven_crafts = [];
-      for (let k of crafts) {
-        let n5 = true;
-        for (let i = 0; i < 3; i++) {
-          for (let j = 0; j < 3; j++) {
-            if (!craft2[i][j] && k[0][i][j] > 0 || open_chest) {
-              n5 = false;
+      if (!trade) {
+        for (let k of crafts) {
+          let n5 = true;
+          for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+              if (!craft2[i][j] && k[0][i][j] > 0 || open_chest) {
+                n5 = false;
+              }
             }
           }
+          if (n5) {
+            if (!salvage) {inven_crafts.push(k);} else {inven_crafts.push([k[1], k[0]]);}
+          }
         }
-        if (n5) {
-          if (!salvage) {inven_crafts.push(k);} else {inven_crafts.push([k[1], k[0]]);}
+      } else {
+        for (let k of barters) {
+          inven_crafts.push(k);
         }
       }
     }
+
+    if (!open_inventory) {barters = [];}
 
     block_posx = Math.floor(posx/SIZE);
     block_posy = Math.floor(posy/SIZE);
@@ -731,6 +805,12 @@ function loop() {
     if (Math.random() < 0.004) {
       let animalx = Math.floor(posx/SIZE + (Math.random()*100 - 50));
       let animaly = Math.floor(posy/SIZE + (Math.random()*100 - 50));
+      let ptrades = [];
+      for (let m of trades) {
+        if (Math.random() < 0.25) {
+          ptrades.push(m);
+        }
+      }
       if (land[animalx % MAP_SIZE][animaly % MAP_SIZE][2] == 0 && dis([animalx*SIZE, animaly*SIZE], [posx, posy]) > 700) {
         let an_rand = Math.random();
         if (an_rand < 0.3) {
@@ -742,10 +822,12 @@ function loop() {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 12, 4, 1, 0, 2, 5, 12]);
         } else if (an_rand < 0.90) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 2, 1, 0, 3, 7, 24]);
-        } else if (an_rand < 0.95 && danger != 0.5) {
+        } else if (an_rand < 0.94 && danger != 0.5) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 24, 4, 2, 0, 4, 13, 24]);
-        } else if (an_rand < 1 && danger != 0.5) {
+        } else if (an_rand < 0.98 && danger != 0.5) {
           animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 48, 3, 2, 0, 5, 17, 48]);
+        } else if (an_rand < 1) {
+          animals.push([animalx*SIZE + SIZE/2, animaly*SIZE + SIZE/2, 0, 0, 144, 4, 1, 0, 6, 34, 144, ptrades]);
         }
       }
     }
@@ -777,6 +859,7 @@ function loop() {
       }
       if (Math.random() < 0.001) {i[7] = 0;}
 
+      if (i[8] == 6 && trade && i[7] == 0) {i[2] = 0; i[3] = 0;}
 
       if (mouse.held[2] && !held && dis([mouse.x - 600, mouse.y - 300], [i[0] - posx, i[1] - posy]) < 25 && dis([600, 300], [mouse.x, mouse.y]) < reach && !open_inventory) {
         let power3 = 1;
@@ -789,6 +872,15 @@ function loop() {
         if (i[6] == 0) {i[7] = -1;}
         if (i[6] == 1) {i[7] = 1;}
         if (swords.includes(courser)) {if (Math.random() < 1/durrability[swords.indexOf(courser)]) {courser = 0;}}
+
+      if (i[4] < i[9] && Math.random() < 0.003) {i[4] += 1;}
+      }
+      if (mouse.held[0] && !held && dis([mouse.x - 600, mouse.y - 300], [i[0] - posx, i[1] - posy]) < 25 && dis([600, 300], [mouse.x, mouse.y]) < reach && !open_inventory && i[8] == 6 && i[7] == 0) {
+        craft2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
+        barters = i[11];
+        console.log(barters);
+        trade = true;
+        open_inventory = true;
       }
       
       let slow2 = 1;
@@ -839,7 +931,9 @@ function loop() {
         if (i[4] <= 0) {
           let set1 = land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2];
           if (set1 == 0 || set1 == GRASS) {
-            if (i[6] == 0) {
+            if (i[8] == 6) {
+              land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2] = RHODIUM;
+            } else if (i[6] == 0) {
               land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2] = MEAT;
             } else if (i[6] == 1) {
               if (Math.random() > 0.5) {
@@ -854,6 +948,8 @@ function loop() {
         if (index !== -1) animals.splice(index, 1);
       }
     }
+
+    if (!open_inventory) {inven_crafts = [];}
 
     block_posx = Math.floor(posx/SIZE + Math.random()*150 - 75) % MAP_SIZE;
     block_posy = Math.floor(posy/SIZE + Math.random()*150 - 75) % MAP_SIZE;
@@ -875,6 +971,7 @@ function loop() {
         }
         if (no_craft && !open_chest) {open_inventory = false;
           salvage = false;
+          trade = false;
           craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
           craft_bar = 0;
           craft_color = "rgb(150, 75, 0)";
@@ -1276,7 +1373,7 @@ function loop() {
         }
       }
 
-      if (keys["c"] && !open_chest && !held) {
+      if (keys["c"] && !open_chest && !held && !trade) {
         if (!salvage) {
           let s = false;
           for (let m of crafts) {
@@ -1393,7 +1490,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.4.27", 20, 50);
+    ctx.fillText("Version 1.5.0", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1677,7 +1774,11 @@ function loop() {
       block_posy = Math.floor(i[1]/SIZE) % MAP_SIZE;
       ctx.filter = "brightness(" + land[block_posx][block_posy][3]/15 + ")";
       const aimg = animal_imgs[i[8]];
-      ctx.drawImage(aimg, i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, SIZE, SIZE);
+      if (i[8] != 6) {
+        ctx.drawImage(aimg, i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, SIZE, SIZE);
+      } else {
+        ctx.drawImage(aimg, i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, SIZE, SIZE*2);
+      }
       if (i[4] < i[10]) {
         ctx.fillStyle = "rgb(255, 0, 0)";
         ctx.fillRect(i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, 50, 10);
@@ -1742,6 +1843,15 @@ function loop() {
       if (-20 < (70/2 - craft_scroll*2 + k*250 - 5)/2 && (70/2 - craft_scroll*2 + k*250 - 5)/2 < 390) {
         const img = place_armor[4];
         ctx.drawImage(img, 770 + 2.8*70/2, 70 + (0.5*70 - craft_scroll*2 + k*250)/2, SIZE, SIZE);
+      }
+      if (trade && mouse.x > 800 && mouse.x < 1000 && mouse.held[0] && mouse.y > 70 + (-craft_scroll*2 + k*250)/2 && mouse.y < 70 + (-craft_scroll*2 + k*250)/2 + 250/2 && stage == "play") {
+        for (let q = 0; q < 3; q++) {
+          for (let r = 0; r < 3; r++) {
+            if (craft[q][r] == inven_crafts[k][0][q][r]) {
+              craft[q][r] = inven_crafts[k][1][q][r];
+            }
+          }
+        }
       }
     }
 
