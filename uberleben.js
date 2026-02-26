@@ -1001,6 +1001,7 @@ function loop() {
 
     if (keys["e"] && !held) {
       if (!open_inventory) {open_inventory = true;} else {
+        if (!open_chest) {
         for (let i = 0; i < 3; i++) {
           for (let j = 0; j < 3; j++) {
             let m3 = false;
@@ -1014,6 +1015,7 @@ function loop() {
               }
             }
           }
+        }
         }
         let no_craft = true;
         for (let i = 0; i < 3; i++) {
@@ -1542,7 +1544,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.5.12", 20, 50);
+    ctx.fillText("Version 1.5.13", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
