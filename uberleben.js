@@ -708,7 +708,7 @@ function loop() {
           let n5 = true;
           for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
-              if (!craft2[i][j] && k[0][i][j] > 0 || open_chest) {
+              if ((!craft2[i][j] && k[0][i][j] > 0) || (!craft2[i][j] && k[1][i][j] > 0) || open_chest) {
                 n5 = false;
               }
             }
@@ -1515,7 +1515,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.5.7", 20, 50);
+    ctx.fillText("Version 1.5.8", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
