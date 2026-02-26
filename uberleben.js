@@ -335,6 +335,8 @@ const persons = ["person.png", "person_fur.png", "person_tin.png", "person_coppe
 
 let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, COMPRESSED_GRASS, COMPRESSED_WHEAT, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, GOLD_ORE, RHODIUM_ORE, COAL, LEAVES, CHEST, STONE_BRICKS, SALVAGER, COPPER_BLOCK, TIN_BLOCK, IRON_BLOCK, ALUMINUM_BLOCK, TUNGSTEN_BLOCK, GOLD_BLOCK, RHODIUM_BLOCK];
 
+let solid_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, COMPRESSED_GRASS, COMPRESSED_WHEAT, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, GOLD_ORE, RHODIUM_ORE, COAL, LEAVES, CHEST, STONE_BRICKS, SALVAGER, COPPER_BLOCK, TIN_BLOCK, IRON_BLOCK, ALUMINUM_BLOCK, TUNGSTEN_BLOCK, GOLD_BLOCK, RHODIUM_BLOCK, FORGE, FURNACE, FIREPLACE, SAPLING, CHEST, DOOR];
+
 let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0, 55: 0, 57: 0.5, 60: -0.3, 61: -0.3, 62: -0.3, 65: 0, 66: 0.4}
 
 let SIZE = 40;
@@ -904,7 +906,7 @@ function loop() {
         open_inventory = true;
       }
       
-      let slow2 = 1;
+      let slow2 = 0;
       block_posx = Math.floor(i[0]/SIZE) % MAP_SIZE;
       block_posy = Math.floor(i[1]/SIZE) % MAP_SIZE;
       if (land[block_posx][block_posy][2] in collide) {
@@ -914,7 +916,7 @@ function loop() {
       
       block_posx = Math.floor(i[0]/SIZE) % MAP_SIZE;
       block_posy = Math.floor((i[1] + i[3]*slow2)/SIZE) % MAP_SIZE;
-      if (land[block_posx][block_posy][2] in collide) {
+      if (!solid_blocks.includes(land[block_posx][block_posy][2])) {
         i[1] += i[3]*slow2;
       } else {
         i[2] = Math.floor(Math.random()*3 - 1)*i[5];
@@ -932,7 +934,7 @@ function loop() {
       
       block_posx = Math.floor((i[0] + i[2]*slow2)/SIZE) % MAP_SIZE;
       block_posy = Math.floor(i[1]/SIZE) % MAP_SIZE;
-      if (land[block_posx][block_posy][2] in collide) {
+      if (!solid_blocks.includes(land[block_posx][block_posy][2])) {
         i[0] += i[2]*slow2;
       } else {
         i[2] = Math.floor(Math.random()*3 - 1)*i[5];
@@ -1045,7 +1047,7 @@ function loop() {
 
     if (!mouse.held[2]) hit_bar = 0;
 
-    let slow = 1;
+    let slow = 0;
     block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
     block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
     if (land[block_posx][block_posy][2] in collide) {
@@ -1081,7 +1083,7 @@ function loop() {
     block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
     block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
     let back = false;
-    if (!(land[block_posx][block_posy][2] in collide) && danger > 0) {
+    if (solid_blocks.includes(land[block_posx][block_posy][2]) && danger > 0) {
       back = true;
     }
     if (back) {posy = lposy;} 
@@ -1095,9 +1097,9 @@ function loop() {
       move2 = true;
     }
     block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
-    block_posy = Math.floor(posy/SIZE) % MAP_SIZE;    
+    block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
     back = false;
-    if (!(land[block_posx][block_posy][2] in collide) && danger > 0) {
+    if (solid_blocks.includes(land[block_posx][block_posy][2]) && danger > 0) {
       back = true;
     }
     if (back) {posx = lposx;}
@@ -1538,7 +1540,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.5.9", 20, 50);
+    ctx.fillText("Version 1.5.10", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
