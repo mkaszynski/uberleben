@@ -988,6 +988,20 @@ function loop() {
 
     if (keys["e"] && !held) {
       if (!open_inventory) {open_inventory = true;} else {
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            let m3 = false;
+            for (let s = 0; s < 6; s++) {
+              for (let m = 0; m < 6; m++) {
+                if (inventory[s][m] == 0 && !m3) {
+                  m3 = true;
+                  inventory[s][m] = craft[i][j];
+                  craft[i][j] = 0;
+                }
+              }
+            }
+          }
+        }
         let no_craft = true;
         for (let i = 0; i < 3; i++) {
           for (let j = 0; j < 3; j++) {
