@@ -951,23 +951,32 @@ function loop() {
       let despawn_rate = 0.0001;
       if (i[8] == 6) {despawn_rate = 0.00001;}
       
-      
+      let drop = MEAT
       if ((Math.random() < despawn_rate && dis([i[0], i[1]], [posx, posy]) > 1000) || i[4] <= 0) {
-        if (i[4] <= 0) {
-          let set1 = land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2];
-          if (set1 == 0 || set1 == GRASS) {
-            if (i[8] == 6) {
-              land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2] = RHODIUM;
+        let set1 = land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2];
+          if (i[8] == 6) {
+              drop = RHODIUM;
             } else if (i[6] == 0) {
-              land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2] = MEAT;
+              drop = MEAT;
             } else if (i[6] == 1) {
               if (Math.random() > 0.5) {
-                land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2] = MEAT;
+                drop = MEAT;
               } else {
-                land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2] = FUR;
+                drop = FUR;
               }
             } else {land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2] = FUR;}
-          }
+        let m3 = false;
+            for (let s = 0; s < 6; s++) {
+              for (let m = 0; m < 6; m++) {
+                if (inventory[s][m] == 0 && !m3) {
+                  m3 = true;
+                  inventory[s][m] = drop;
+                  drop = 0;
+                }
+              }
+            }
+        if (drop > 0 && set1 != WATER && set1 != BRIDGE) {
+          land[Math.floor(i[0]/SIZE) % MAP_SIZE][Math.floor(i[1]/SIZE) % MAP_SIZE][2] = drop;
         }
         let index = animals.indexOf(i);
         if (index !== -1) animals.splice(index, 1);
@@ -1529,7 +1538,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.5.8", 20, 50);
+    ctx.fillText("Version 1.5.9", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
