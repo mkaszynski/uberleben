@@ -694,7 +694,8 @@ function loop() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  if (!keys["e"] && !mouse.held[0] && !mouse.held[2] && !keys["c"]) held = false;
+  if (!keys["e"] && !mouse.held[0] && !mouse.held[2] && !keys["c"] && !keys["1"] && !keys["2"] && !keys["3"] && !keys["4"] && !keys["5"] && !keys["6"]) held = false;
+
 
 
   // PLAY MODE
@@ -999,7 +1000,7 @@ function loop() {
       land[block_posx][block_posy][2] = WHEAT;
     }
 
-    if (!keys["e"] && !mouse.held[0] && !mouse.held[2] && !keys["c"]) held = false;
+    if (!keys["e"] && !mouse.held[0] && !mouse.held[2] && !keys["c"] && !keys["1"] && !keys["2"] && !keys["3"] && !keys["4"] && !keys["5"] && !keys["6"]) held = false;
 
     if (keys["e"] && !held) {
       if (!open_inventory) {open_inventory = true;} else {
@@ -1281,6 +1282,52 @@ function loop() {
           }
         }
       }
+      let o1 = 0;
+      for (let i = 0; i < 6; i++) {
+        if (!held && mouse.held[0] && mouse.x > 400 + i*70 - 5 && mouse.x < 470 + i*70 - 5 && mouse.y > 600 && mouse.y < 670) {
+          o1 = courser;
+          courser = inventory[0][i];
+          inventory[0][i] = o1;
+          held = true;
+        }
+      }
+      if (keys["1"] && !held) {
+        o1 = courser;
+        courser = inventory[0][0];
+        inventory[0][0] = o1;
+        held = true;
+      }
+      if (keys["2"] && !held) {
+        o1 = courser;
+        courser = inventory[0][1];
+        inventory[0][1] = o1;
+        held = true;
+      }
+      if (keys["3"] && !held) {
+        o1 = courser;
+        courser = inventory[0][2];
+        inventory[0][2] = o1;
+        held = true;
+      }
+      if (keys["4"] && !held) {
+        o1 = courser;
+        courser = inventory[0][3];
+        inventory[0][3] = o1;
+        held = true;
+      }
+      if (keys["5"] && !held) {
+        o1 = courser;
+        courser = inventory[0][4];
+        inventory[0][4] = o1;
+        held = true;
+      }
+      if (keys["6"] && !held) {
+        o1 = courser;
+        courser = inventory[0][5];
+        inventory[0][5] = o1;
+        held = true;
+      }
+        
       if (mouse.held[0] && courser > 0 && dis([mouse.x, mouse.y], [600, 300]) < reach) {
         block_posx = Math.floor((posx - 600 + mouse.x)/SIZE % MAP_SIZE);
         block_posy = Math.floor((posy - 300 + mouse.y)/SIZE % MAP_SIZE);
@@ -1546,7 +1593,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.5.14", 20, 50);
+    ctx.fillText("Version 1.5.15", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1863,14 +1910,25 @@ function loop() {
     }
 
     ctx.fillStyle = "rgb(128, 128, 128)";
-    ctx.fillRect(400, 600, 400, 30);
+    ctx.fillRect(400, 550, 400, 30);
 
     ctx.fillStyle = "rgb(255, 0, 0)";
-    ctx.fillRect(400, 600, health*4, 10);
+    ctx.fillRect(400, 550, health*4, 10);
     ctx.fillStyle = "rgb(0, 255, 0)";
-    ctx.fillRect(400, 610, hunger*4, 10);
+    ctx.fillRect(400, 560, hunger*4, 10);
     ctx.fillStyle = "rgb(255, 255, 0)";
-    ctx.fillRect(400, 620, cold*4, 10);
+    ctx.fillRect(400, 570, cold*4, 10);
+
+    if (!open_inventory) {
+      for (let i = 0; i < 6; i++) {
+        ctx.fillStyle = craft_color2;
+        ctx.fillRect(400 + i*70 - 5, 600 - 5, SIZE + 10, SIZE + 10);
+        if (inventory[0][i] > 0) {
+          const img = images[inventory[0][i]];
+          ctx.drawImage(img, 400 + i*70, 600, SIZE, SIZE);
+        }
+      }
+    }
 
     if (open_inventory) {
     ctx.fillStyle = craft_color;
