@@ -93,6 +93,27 @@ function Chester() {
   return n;
 }
 
+function open_world1(map1) {
+  for (let i = 0; i < map1.length; i++) {
+    for (let j = 0; j < map1.length; j++) {
+      if (map1[i][j].length == 4) {
+        map1[i][j] = [map1[i][j][0], map1[i][j][1], map1[i][j][2], 0, map1[i][j][3], 0];
+      }
+    }
+  }
+  return map1;
+}
+
+function close_world1(map1) {
+  for (let i = 0; i < map1.length; i++) {
+    for (let j = 0; j < map1.length; j++) {
+      if (map1[i][j].length > 4) {
+        map1[i][j] = [map1[i][j][0], map1[i][j][1], map1[i][j][2], map1[i][j][4]];
+      }
+    }
+  }
+  return map1;
+}
 
 function run_land(map_size) {
   let seed = [];
@@ -167,7 +188,7 @@ function run_land(map_size) {
         } else {
           if (!ruin) {
           if (Math.random() < 0.1 && height3 + height4 > 2) {
-          column.push([i, j, LOG, 0, leave]);
+            column.push([i, j, LOG, 0, leave]);
         } else if (Math.random() < 0.2) {
           column.push([i, j, GRASS, 0, leave]);
         } else {
@@ -334,7 +355,7 @@ const persons = ["person.png", "person_fur.png", "person_tin.png", "person_coppe
   return img4;
 });
 
-let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, COMPRESSED_GRASS, COMPRESSED_WHEAT, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, GOLD_ORE, RHODIUM_ORE, COAL, LEAVES, CHEST, STONE_BRICKS, SALVAGER, COPPER_BLOCK, TIN_BLOCK, IRON_BLOCK, ALUMINUM_BLOCK, TUNGSTEN_BLOCK, GOLD_BLOCK, RHODIUM_BLOCK];
+let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, COMPRESSED_GRASS, COMPRESSED_WHEAT, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, GOLD_ORE, RHODIUM_ORE, COAL, LEAVES, CHEST, STONE_BRICKS, SALVAGER, COPPER_BLOCK, TIN_BLOCK, IRON_BLOCK, ALUMINUM_BLOCK, TUNGSTEN_BLOCK, GOLD_BLOCK, RHODIUM_BLOCK, DOOR];
 
 let solid_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, COMPRESSED_GRASS, COMPRESSED_WHEAT, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, GOLD_ORE, RHODIUM_ORE, COAL, LEAVES, CHEST, STONE_BRICKS, SALVAGER, COPPER_BLOCK, TIN_BLOCK, IRON_BLOCK, ALUMINUM_BLOCK, TUNGSTEN_BLOCK, GOLD_BLOCK, RHODIUM_BLOCK, FORGE, FURNACE, FIREPLACE, SAPLING, CHEST, DOOR];
 
@@ -664,7 +685,7 @@ let screen_glow = [0, 0, 0, 0];
 
 let tip = tips[Math.floor(Math.random()*tips.length)];
 
-land = run_land(50)[0];
+land = open_world1(run_land(50)[0]);
 
 let time_power = 1;
 
@@ -776,6 +797,11 @@ function loop() {
       }
     }
 
+    block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
+    block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
+
+    land[block_posx][block_posy][5] = 30;
+
     if (day < 2) day = 2;
     if (day > 15) day = 15;
 
@@ -859,6 +885,8 @@ function loop() {
     }
 
     for (let i of animals) {
+      block_posx = Math.floor(i[0]/SIZE) % MAP_SIZE;
+      block_posy = Math.floor(i[1]/SIZE) % MAP_SIZE;
       if (Math.random() < 0.01) {
         if (Math.random() > 0.5) {
           i[2] = Math.floor(Math.random()*3 - 1)*i[5];
@@ -866,12 +894,36 @@ function loop() {
         } else {i[2] = 0; i[3] = 0;}
       }
       if (i[7] == -1 && Math.random() < 0.1) {
-        if (posx < i[0]) {i[2] = i[5];} else {i[2] = -i[5];}
-        if (posy < i[1]) {i[3] = i[5];} else {i[3] = -i[5];}
+        let sight = 0;
+        let find_pos = [0, 0]
+        for (let k = 0; k < 3; k++) {
+          for (let l = 0; l < 3; l++) {
+            if (dis([k, l], [1, 1]) < 1.1) {
+              let k3 = land[(block_posx + k - 1) % MAP_SIZE][(block_posy + l - 1) % MAP_SIZE];
+              if (!dark_blocks.includes(k3[2])) {
+                if (k3[5] - 1 > sight) {sight = k3[5] - 1;find_pos = [k - 1, l - 1]}
+              }
+            }
+          }
+        }
+        if (find_pos[0] < Math.random()/10 - 0.05) {i[2] = i[5];} else {i[2] = -i[5];}
+        if (find_pos[1] < Math.random()/10 - 0.05) {i[3] = i[5];} else {i[3] = -i[5];}
       }
-      if (i[7] == 1 && Math.random() < 0.05) {
-        if (posx < i[0]) {i[2] = -i[5];} else {i[2] = i[5];}
-        if (posy < i[1]) {i[3] = -i[5];} else {i[3] = i[5];}
+      if (i[7] == 1 && Math.random() < 0.1) {
+        let sight = 0;
+        let find_pos = [0, 0]
+        for (let k = 0; k < 3; k++) {
+          for (let l = 0; l < 3; l++) {
+            if (dis([k, l], [1, 1]) < 1.1) {
+              let k3 = land[(block_posx + k - 1) % MAP_SIZE][(block_posy + l - 1) % MAP_SIZE];
+              if (!dark_blocks.includes(k3[2])) {
+                if (k3[5] - 1 > sight) {sight = k3[5] - 1;find_pos = [k - 1, l - 1]}
+              }
+            }
+          }
+        }
+        if (find_pos[0] < Math.random()/10 - 0.05) {i[2] = -i[5];} else {i[2] = i[5];}
+        if (find_pos[1] < Math.random()/10 - 0.05) {i[3] = -i[5];} else {i[3] = i[5];}
         if (dis([posx, posy], [i[0], i[1]]) < 50 && Math.random() > 0.05) {
           health -= i[9]*protections[armors.indexOf(armor)]*danger;
           screen_glow = [255, 0, 0, 150];
@@ -880,12 +932,12 @@ function loop() {
           if (Math.random() < 3/durrability[armors.indexOf(armor)]) {armor = 0;}
         }
       }
-      if (dis([posx, posy], [i[0], i[1]]) < 300 && i[6] == 2) {
+      if (land[block_posx][block_posy][5] > 15 && i[6] == 2) {
         i[7] = 1;
       }
       if (Math.random() < 0.001) {i[7] = 0;}
 
-      if (i[8] == 6 && dis([0, 0], [i[0] - posx, i[1] - posy]) < 150 && i[7] == 0) {i[2] = 0; i[3] = 0;}
+      if (i[8] == 6 && land[block_posx][block_posy][5] > 23 && i[7] == 0) {i[2] = 0; i[3] = 0;}
 
       if (mouse.held[2] && !held && dis([mouse.x - 600, mouse.y - 300], [i[0] - posx, i[1] - posy]) < 25 && dis([600, 300], [mouse.x, mouse.y]) < reach && !open_inventory) {
         let power3 = 1;
@@ -1046,6 +1098,8 @@ function loop() {
           chest_open = "";
           craft2 = [[1, 0, 0], [1, 0, 0], [0, 0, 0]];
           craft = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+          craft_color = "rgb(150, 75, 0)";
+          craft_color2 = "rgb(200, 100, 0)"
         }
       }
       held = true;
@@ -1593,7 +1647,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.5.15", 20, 50);
+    ctx.fillText("Version 1.5.16", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1659,7 +1713,7 @@ function loop() {
           hunger = worlds[i].hunger;
 
           chests = worlds[i].chests;
-          land = worlds[i].land;
+          land = open_world1(worlds[i].land);
 
           danger = worlds[i].danger;
 
@@ -1830,11 +1884,32 @@ function loop() {
         ctx.fillStyle = "rgba(0, 0, 0, " + (15 - i[3])/15 + ")";
         ctx.fillRect(Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
 
+        if (i[5] == 0 && !(danger == 0 && !(land[block_posx][block_posy][2] in collide))) {
+          ctx.fillStyle = "rgba(0, 0, 0, 1)";
+          ctx.fillRect(Math.floor(u*SIZE - posx + 600), Math.floor(v*SIZE - posy + 300), SIZE, SIZE);
+        }
+
         block_posx = Math.floor(posx/SIZE) % MAP_SIZE;
         block_posy = Math.floor(posy/SIZE) % MAP_SIZE;
 
         if (i[2] in glow) {if (i[3] < glow[i[2]]) {i[3] = glow[i[2]];}}
         if (courser in glow) {if (i[3] < glow[courser] && i[0] == block_posx && i[1] == block_posy) {i[3] = glow[courser];}}
+
+        let sight = 0;
+        for (let k = 0; k < 3; k++) {
+          for (let l = 0; l < 3; l++) {
+            if (dis([k, l], [1, 1]) < 1.1) {
+              let k3 = land[(u + k - 1) % MAP_SIZE][(v + l - 1) % MAP_SIZE];
+              if (!dark_blocks.includes(k3[2])) {
+                if (k3[5] - 1 > sight) {sight = k3[5] - 1;}
+              }
+            }
+          }
+        }
+
+        if (stage == "play") {
+          i[5] = sight;
+        }
         
         let suround = true;
         let dark = 0;
@@ -1849,7 +1924,9 @@ function loop() {
             }
           }
         }
+        
         i[3] = dark;
+        
         if (!dark_blocks.includes(i[2]) && !dark_blocks.includes(i[4]) && day > i[3]) {i[3] = day;}
         if (suround) {i[3] = 0;}
         if (danger == 0 && !(land[block_posx][block_posy][2] in collide)) {i[3] = 15;}
@@ -1860,6 +1937,9 @@ function loop() {
       block_posx = Math.floor(i[0]/SIZE) % MAP_SIZE;
       block_posy = Math.floor(i[1]/SIZE) % MAP_SIZE;
       ctx.filter = "brightness(" + land[block_posx][block_posy][3]/15 + ")";
+      if (land[block_posx][block_posy][5] == 0) {
+        ctx.filter = "brightness(0)";
+      }
       if (land[block_posx][block_posy][4] == 0) {
         if (temp > 20) {
           const rimg = place_armor[1];
@@ -1876,6 +1956,9 @@ function loop() {
       block_posx = Math.floor(i[0]/SIZE) % MAP_SIZE;
       block_posy = Math.floor(i[1]/SIZE) % MAP_SIZE;
       ctx.filter = "brightness(" + land[block_posx][block_posy][3]/15 + ")";
+      if (land[block_posx][block_posy][5] == 0) {
+        ctx.filter = "brightness(0)";
+      }
       const aimg = animal_imgs[i[8]];
       if (i[8] != 6) {
         ctx.drawImage(aimg, i[0] - posx + 600 - SIZE/2, i[1] - posy + 300 - SIZE/2, SIZE, SIZE);
@@ -2095,7 +2178,7 @@ function loop() {
       worlds[world_name].hunger = hunger;
 
       worlds[world_name].chests = chests;
-      worlds[world_name].land = land;
+      worlds[world_name].land = close_world1(land);
 
       worlds[world_name].danger = danger;
 
@@ -2109,7 +2192,7 @@ function loop() {
 
       localStorage.setItem("worlds", JSON.stringify(worlds));
 
-      land = run_land(50)[0];
+      land = open_world1(run_land(50)[0]);
 
       let tip = tips[Math.floor(Math.random()*tips.length)];
     }
