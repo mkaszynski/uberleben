@@ -1286,7 +1286,7 @@ function loop() {
                 }
               }
             } else {
-              if (!WATERS.includes(land[block_posx][block_posy][2]) && land[block_posx][block_posy][2] != BRIDGE) {
+              if (!waters.includes(land[block_posx][block_posy][2]) && land[block_posx][block_posy][2] != BRIDGE) {
               if (land[block_posx][block_posy][2] != CHEST) {
                 courser = land[block_posx][block_posy][2];land[block_posx][block_posy][2] = 0;
               } else {
@@ -1650,7 +1650,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.6.1", 20, 50);
+    ctx.fillText("Version 1.6.2", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
