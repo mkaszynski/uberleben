@@ -574,7 +574,7 @@ crafts.push([[[0, 0, FLAME], [GOLD_ORE, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [GOLD
 crafts.push([[[0, 0, FLAME], [ALUMINUM_ORE, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [ALUMINUM, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[0, 0, FLAME], [TUNGSTEN_ORE, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [TUNGSTEN, 0, 0], [0, 0, 0]], 300]);
 crafts.push([[[0, 0, FLAME], [RHODIUM_ORE, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [RHODIUM, 0, 0], [0, 0, 0]], 200]);
-crafts.push([[[0, 0, FLAME], [MEAT, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [COOKED_MEAT, 0, 0], [0, 0, 0]], 50]);
+crafts.push([[[0, 0, FLAME], [MEAT, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [COOKED_MEAT, 0, 0], [0, 0, 0]], 50]);
 crafts.push([[[0, 0, FLAME], [COMPRESSED_WHEAT, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [BREAD, 0, 0], [0, 0, 0]], 20]);
 crafts.push([[[FUR, FUR, 0], [FUR, FUR, 0], [0, 0, 0]], [[FUR_ARMOR, 0, 0], [0, 0, 0], [0, 0, 0]], 300]);
 crafts.push([[[TIN, TIN, 0], [TIN, TIN, 0], [0, 0, 0]], [[TIN_ARMOR, 0, 0], [0, 0, 0], [0, 0, 0]], 400]);
@@ -639,7 +639,7 @@ trades.push([[[ALUMINUM, ALUMINUM, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, 0, 0], 
 trades.push([[[ALUMINUM_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]]]);
 trades.push([[[TUNGSTEN, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, RHODIUM, 0], [0, 0, 0], [0, 0, 0]]]);
 trades.push([[[TUNGSTEN_AXE, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, RHODIUM, RHODIUM], [RHODIUM, 0, 0], [0, 0, 0]]]);
-trades.push([[[FORGE, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, RHODIUM, RHODIUM], [0, 0, 0], [0, 0, 0]]]);
+trades.push([[[FORGE, 0, 0], [0, 0, 0], [0, 0, 0]], [[RHODIUM, RHODIUM, 0], [0, 0, 0], [0, 0, 0]]]);
 
 trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[IRON, IRON, IRON], [IRON, 0, 0], [0, 0, 0]]]);
 trades.push([[[RHODIUM, 0, 0], [0, 0, 0], [0, 0, 0]], [[IRON_AXE, IRON_AXE, 0], [0, 0, 0], [0, 0, 0]]]);
@@ -1660,7 +1660,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.6.4", 20, 50);
+    ctx.fillText("Version 1.6.5", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
