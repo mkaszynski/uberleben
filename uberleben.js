@@ -82,7 +82,7 @@ let MAP_SIZE = 300;
 
 function Chester() {
   let n = [];
-  let items = [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, TIN_SCYTHE, COPPER_SCYTHE, IRON_SCYTHE, STONE, STONE, STONE, PLANKS, PLANKS, SAPLING, STICKS, STICKS, TIN, COPPER, GRASS, SEEDS, SEEDS, FUR_ARMOR, FUR, FUR, BRIDGE, BRIDGE, DOOR, GOLD, GOLD];
+  let items = [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, TIN_SCYTHE, COPPER_SCYTHE, IRON_SCYTHE, STONE, STONE, STONE, PLANKS, PLANKS, SAPLING, STICKS, STICKS, TIN, COPPER, GRASS, SEEDS, SEEDS, FUR_ARMOR, FUR, FUR, BRIDGE, DOOR, GOLD, GOLD];
   for (let i = 0; i < 3; i++) {
     let o = [];
     for (let j = 0; j < 3; j++) {
@@ -464,7 +464,7 @@ let courser = 0;
 
 let inventory = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]];
 
-let tips = ["Wherever aluminum ore is, you can find tungsten.", "Use a salvager to salvage unused items!", "There are no hostile animals in peaceful mode.", "The world is 300 blocks wide, but only 50 in mini mode!", "Hold c to craft!", "Death mode is the most chalanging mode.", "Rare ruins can be found with loot!", "While iron is sharper than aluminum, aluminum is lighter!", "Watch out for the bears!", "Stand where a bed is to sleep durring the night.", "Right click to quickly send stuff over.", "Press e to open inventory!", "Tin is more durable than copper, but copper is sharper.", "Watch your hunger bar!", "Welcome to uberleben!", "Animals can break through blocks, so be careful!", "Have fun!", "The tungsten sword can hit 12x harder than the fist!", "Only forges can make iron and tungsten armor.", "Uberpowered!", "Uberleben means survive in German!", "That puppy will bite!", "Stay warm during the night!", "The fireplace is the warmest block.", "You can get food from animals, or from farming.", "Place saplings under leaves to grow trees!", "Traders from distant lands can be found!", "Traders are freindly... until you attack!", "Be nice to traders!", "Gold and rhodium can be used to trade with traders.", "Filled with riches of gold and rhodium!", "Tungsten can be mined or bought with rhodium!", "No more room for gold? Compress it into blocks!"];
+let tips = ["Wherever aluminum ore is, you can find tungsten.", "Use a salvager to salvage unused items!", "There are no hostile animals in peaceful mode.", "The world is 300 blocks wide, but only 50 in mini mode!", "Hold c to craft!", "Death mode is the most chalanging mode.", "Rare ruins can be found with loot!", "While iron is sharper than aluminum, aluminum is lighter!", "Watch out for the bears!", "Stand where a bed is to sleep durring the night.", "Right click to quickly send stuff over.", "Press e to open inventory!", "Tin is more durable than copper, but copper is sharper.", "Watch your hunger bar!", "Welcome to uberleben!", "Animals can break through blocks, so be careful!", "Have fun!", "The tungsten sword can hit 12x harder than the fist!", "Only forges can make iron and tungsten armor.", "Uberpowered!", "Uberleben means survive in German!", "That puppy will bite!", "Stay warm during the night!", "The fireplace is the warmest block.", "You can get food from animals, or from farming.", "Place saplings under leaves to grow trees!", "Traders from distant lands can be found!", "Traders are freindly... until you attack!", "Be nice to traders!", "Gold and rhodium can be used to trade with traders.", "Filled with riches of gold and rhodium!", "Tungsten can be mined or bought with rhodium!", "No more room for gold? Compress it into blocks!", "Don't like hunting? Try farming with seed!", "Need a chalenge? Try death mode!", "The world too dangerous? Try peaceful mode.", "Use forges to cook faster!"];
 
 let torial = ["Welcome to Uberleben!", "In this game, you will have to build up resources, and survive the many dangers.", "Use wasd keys to move, right click to mine blocks and attack animsl, ", "and left click to place, eat, and use blocks.", "Press e to open and exit the inventory, and hold c to craft.", "In your inventory, right click to send stuff fast.", "On the right side you will see the crafting recipies.", "", "In most game modes, hostile animals will spawn at any time of day, ", "though the night is usually more dangerous.", "If you think that the normal dificulty is too hard, try peaceful mode.", "However, if it is too easy, death mode is a true chalenge.", "Explore all the blocks and items with creative mode, without any danger.", "Mini mode is a true chalange, where the space is limited, as the world is 36x smaller than normal!"];
 
@@ -533,6 +533,7 @@ crafts.push([[[0, 0, 0], [TUNGSTEN_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [TUNG
 crafts.push([[[0, 0, 0], [RHODIUM_ORE, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [RHODIUM, 0, 0], [0, 0, 0]], 1000]);
 crafts.push([[[0, 0, 0], [MEAT, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [COOKED_MEAT, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[0, 0, 0], [COMPRESSED_WHEAT, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [BREAD, 0, 0], [0, 0, 0]], 70]);
+
 crafts.push([[[PLANKS, STICKS, 0], [PLANKS, PLANKS, 0], [0, 0, 0]], [[WOODEN_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
 crafts.push([[[STONE, STICKS, 0], [STONE, STONE, 0], [0, 0, 0]], [[STONE_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
 crafts.push([[[TIN, STICKS, 0], [TIN, TIN, 0], [0, 0, 0]], [[TIN_PICKAXE, 0, 0], [0, 0, 0], [0, 0, 0]], 150]);
@@ -566,6 +567,15 @@ crafts.push([[[ALUMINUM, STICKS, 0], [ALUMINUM, 0, 0], [0, 0, 0]], [[ALUMINUM_SC
 crafts.push([[[TUNGSTEN, STICKS, 0], [TUNGSTEN, 0, 0], [0, 0, 0]], [[TUNGSTEN_SCYTHE, 0, 0], [0, 0, 0], [0, 0, 0]], 400]);
 
 crafts.push([[[FURNACE, ALUMINUM, 0], [TUNGSTEN, WORKBENCH, 0], [0, 0, 0]], [[FORGE, 0, 0], [0, 0, 0], [0, 0, 0]], 400]);
+crafts.push([[[0, 0, FLAME], [TIN_ORE, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [TIN, 0, 0], [0, 0, 0]], 50]);
+crafts.push([[[0, 0, FLAME], [COPPER_ORE, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [COPPER, 0, 0], [0, 0, 0]], 75]);
+crafts.push([[[0, 0, FLAME], [IRON_ORE, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [IRON, 0, 0], [0, 0, 0]], 150]);
+crafts.push([[[0, 0, FLAME], [GOLD_ORE, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [GOLD, 0, 0], [0, 0, 0]], 150]);
+crafts.push([[[0, 0, FLAME], [ALUMINUM_ORE, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [ALUMINUM, 0, 0], [0, 0, 0]], 200]);
+crafts.push([[[0, 0, FLAME], [TUNGSTEN_ORE, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [TUNGSTEN, 0, 0], [0, 0, 0]], 300]);
+crafts.push([[[0, 0, FLAME], [RHODIUM_ORE, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [RHODIUM, 0, 0], [0, 0, 0]], 200]);
+crafts.push([[[0, 0, FLAME], [MEAT, 0, FLAME], [0, 0, 0]], [[0, 0, 0], [COOKED_MEAT, 0, 0], [0, 0, 0]], 50]);
+crafts.push([[[0, 0, FLAME], [COMPRESSED_WHEAT, 0, 0], [0, 0, FLAME]], [[0, 0, 0], [BREAD, 0, 0], [0, 0, 0]], 20]);
 crafts.push([[[FUR, FUR, 0], [FUR, FUR, 0], [0, 0, 0]], [[FUR_ARMOR, 0, 0], [0, 0, 0], [0, 0, 0]], 300]);
 crafts.push([[[TIN, TIN, 0], [TIN, TIN, 0], [0, 0, 0]], [[TIN_ARMOR, 0, 0], [0, 0, 0], [0, 0, 0]], 400]);
 crafts.push([[[COPPER, COPPER, 0], [COPPER, COPPER, 0], [0, 0, 0]], [[COPPER_ARMOR, 0, 0], [0, 0, 0], [0, 0, 0]], 400]);
@@ -927,7 +937,7 @@ function loop() {
         }
         if (find_pos[0] < Math.random()/10 - 0.05) {i[2] = -i[5];} else {i[2] = i[5];}
         if (find_pos[1] < Math.random()/10 - 0.05) {i[3] = -i[5];} else {i[3] = i[5];}
-        if (dis([posx, posy], [i[0], i[1]]) < 50 && Math.random() > 0.05) {
+        if (dis([posx, posy], [i[0], i[1]]) < 100 && Math.random() > 0.05) {
           health -= i[9]*protections[armors.indexOf(armor)]*danger;
           screen_glow = [255, 0, 0, 150];
           music.hit.currentTime = 0;
@@ -1650,7 +1660,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.6.3", 20, 50);
+    ctx.fillText("Version 1.6.4", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
@@ -1789,7 +1799,7 @@ function loop() {
     if (550 < mouse.x && mouse.x < 650 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
       n = run_land(300)
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 1, animals: [], temp: 50});
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 800001000, posy: 800001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 1, animals: [], temp: 50});
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(550, 450, 100, 100);
@@ -1802,7 +1812,7 @@ function loop() {
     if (400 < mouse.x && mouse.x < 500 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
       n = run_land(300)
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 2, animals: [], temp: 50});
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 800001000, posy: 800001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 2, animals: [], temp: 50});
       localStorage.setItem("worlds", JSON.stringify(worlds))
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
@@ -1816,7 +1826,7 @@ function loop() {
     if (850 < mouse.x && mouse.x < 950 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
       n = run_land(300)
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 0, animals: [], temp: 50});
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 800001000, posy: 800001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 0, animals: [], temp: 50});
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(850, 450, 100, 100);
@@ -1828,7 +1838,7 @@ function loop() {
     if (700 < mouse.x && mouse.x < 800 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
       n = run_land(300)
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 0.5, animals: [], temp: 50});
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 800001000, posy: 800001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 0.5, animals: [], temp: 50});
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
     ctx.fillRect(700, 450, 100, 100);
@@ -1840,7 +1850,7 @@ function loop() {
     if (250 < mouse.x && mouse.x < 350 && 450 < mouse.y && mouse.y < 550 && mouse.held[0]) {
       stage = "menue";
       n = run_land(50)
-      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 80001000, posy: 80001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 1, animals: [], temp: 50});
+      worlds.push({courser: 0, inventory: [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], armor: 0, posx: 800001000, posy: 800001000, health: 100, hunger: 100, chests: n[1], time1: 2000, land: n[0], danger: 1, animals: [], temp: 50});
       localStorage.setItem("worlds", JSON.stringify(worlds))
     }
     ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // last value = transparency (0 to 1)
