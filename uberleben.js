@@ -162,9 +162,15 @@ function run_land(map_size) {
         let leave = 0;
         if (height3 + height4 > 2) {leave = LEAVES;}
         if (-0.5 < height2 && height2 < 0.5) {
-          if (height < 3) {
-            column.push([i, j, WATER, 0, leave]);
-          } else {column.push([i, j, WATER, 0, STONE]);}
+          if (-0.45 < height2 && height2 < 0.45) {
+            if (height < 3) {
+              column.push([i, j, WATER, 0, leave]);
+            } else {column.push([i, j, WATER, 0, STONE]);}
+          } else {
+            if (height < 3) {
+              column.push([i, j, SEAGRASS, 0, leave]);
+            } else {column.push([i, j, SEAGRASS, 0, STONE]);}
+          }
         } else if (height > 3) {
           if (Math.random() < 0.02 && height > 3.5) {
             column.push([i, j, COPPER_ORE, 0, STONE]);
@@ -324,16 +330,17 @@ let RHODIUM_BLOCK = 87;
 let COAL_CHUNK = 88;
 let ICE = 89;
 let WATER_LAMP = 90;
+let SEAGRASS = 91;
 
-let hardness = {1: 10, 2: 200, 3: 500, 4: 10000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200, 57: 100, 58: 100, 59: 1000, 60: 100, 61: 50, 62: 200, 63: 200, 64:30, 65: 10, 66: 20, 76: 100, 77: 750, 78: 1500, 81: 2000, 82: 1500, 83: 3000, 84: 2500, 85: 5000, 86: 200, 87: 400, 89: 10000};
+let hardness = {1: 10, 2: 200, 3: 500, 4: 10000, 5: 200, 7: 600, 8: 550, 9: 100, 10: 250, 11: 1000, 13: 20, 14: 300, 31: 750, 32: 750, 33: 2000, 46: 200, 47: 200, 57: 100, 58: 100, 59: 1000, 60: 100, 61: 50, 62: 200, 63: 200, 64:30, 65: 10, 66: 20, 76: 100, 77: 750, 78: 1500, 81: 2000, 82: 1500, 83: 3000, 84: 2500, 85: 5000, 86: 200, 87: 400, 89: 10000, 91: 20};
 
-let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor", 55: "torch", 56: "leaves", 57: "bed", 58: "chest", 59: "stone bricks", 60: "stone path", 61: "floor", 62: "bridge", 63: "salvager", 64: "sapling", 65: "seeds", 66: "wheat", 67: "compressed wheat", 68: "bread", 69: "wooden scythe", 70: "stone scythe", 71: "tin scythe", 72: "copper scythe", 73: "iron scythe", 74: "aluminum scythe", 75: "tungsten scythe", 76: "fireplace", 77: "gold ore", 78: "rhodium ore", 79: "gold coin", 80: "rhodium coin", 81: "copper block", 82: "tin block", 83: "iron block", 84: "aluminum block", 85: "tungsten block", 86: "gold block", 87: "rhodium block", 88: "coal chunk", 89: "ice", 90: "water lamp"};
+let names = {0: "air", 1: "grass", 2: "log", 3: "stone", 4: "water", 5: "planks", 6: "sticks", 7: "copper ore", 8: "tin ore", 9: "work bench", 10: "furnace", 11: "forge", 12: "flame", 13: "compressed grass", 14: "coal", 15: "tin", 16: "copper", 17: "wooden axe", 18: "stone axe", 19: "tin axe", 20: "copper axe", 21: "wooden pickaxe", 22: "stone pickaxe", 23: "tin pickaxe", 24: "copper pickaxe", 25: "raw meat", 26: "cooked meat", 27: "wooden sword", 28: "stone sword", 29: "tin sword", 30: "copper sword", 31: "iron ore", 32: "aluminum ore", 33: "tungsten ore", 34: "iron", 35: "aluminum", 36: "tungsten", 37: "iron sword", 38: "iron axe", 39: "iron pickaxe", 40: "aluminum sword", 41: "aluminum axe", 42: "aluminum pickaxe", 43: "tungsten sword", 44: "tungsten axe", 45: "tungsten pickaxe", 46: "door", 47: "open door", 48: "fur", 49: "fur armor", 50: "tin armor", 51: "copper armor", 52: "iron armor", 53: "aluminum armor", 54: "tungsten armor", 55: "torch", 56: "leaves", 57: "bed", 58: "chest", 59: "stone bricks", 60: "stone path", 61: "floor", 62: "bridge", 63: "salvager", 64: "sapling", 65: "seeds", 66: "wheat", 67: "compressed wheat", 68: "bread", 69: "wooden scythe", 70: "stone scythe", 71: "tin scythe", 72: "copper scythe", 73: "iron scythe", 74: "aluminum scythe", 75: "tungsten scythe", 76: "fireplace", 77: "gold ore", 78: "rhodium ore", 79: "gold coin", 80: "rhodium coin", 81: "copper block", 82: "tin block", 83: "iron block", 84: "aluminum block", 85: "tungsten block", 86: "gold block", 87: "rhodium block", 88: "coal chunk", 89: "ice", 90: "water lamp", 91: "seagrass"};
 
 let foods = {25: 10, 26: 25, 68: 17};
 
 let glow = {10: 6, 55: 10, 11: 15, 76: 15, 90: 12};
 
-const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png", "torch.png", "leaves.png", "bed.png", "chest.png", "stone_bricks.png", "stone_path.png", "floor.png", "bridge.png", "salvager.png", "sapling.png", "seeds.png", "wheat.png", "compressed_wheat.png", "bread.png", "wooden_scythe.png", "stone_scythe.png", "tin_scythe.png", "copper_scythe.png", "iron_scythe.png", "aluminum_scythe.png", "tungsten_scythe.png", "fireplace.png", "gold_ore.png", "rhodium_ore.png", "gold.png", "rhodium.png", "copper_block.png", "tin_block.png", "iron_block.png", "aluminum_block.png", "tungsten_block.png", "gold_block.png", "rhodium_block.png", "coal_chunk.png", "ice.png", "water_lamp.png"].map(src => {
+const images = ["air.png", "grass.png", "log.png", "stone.png", "water.png", "planks.png", "sticks.png", "copper_ore.png", "tin_ore.png", "workbench.png", "furnace.png", "forge.png", "flame.png", "compressed_grass.png", "coal.png", "tin.png", "copper.png", "wooden_axe.png", "stone_axe.png", "tin_axe.png", "copper_axe.png", "wooden_pickaxe.png", "stone_pickaxe.png", "tin_pickaxe.png", "copper_pickaxe.png", "meat.png", "cooked_meat.png", "wooden_sword.png", "stone_sword.png", "tin_sword.png", "copper_sword.png", "iron_ore.png", "aluminum_ore.png", "tungsten_ore.png", "iron.png", "aluminum.png", "tungsten.png", "iron_sword.png", "iron_axe.png", "iron_pickaxe.png", "aluminum_sword.png", "aluminum_axe.png", "aluminum_pickaxe.png", "tungsten_sword.png", "tungsten_axe.png", "tungsten_pickaxe.png", "door.png", "open_door.png", "fur.png", "fur_armor.png", "tin_armor.png", "copper_armor.png", "iron_armor.png", "aluminum_armor.png", "tungsten_armor.png", "torch.png", "leaves.png", "bed.png", "chest.png", "stone_bricks.png", "stone_path.png", "floor.png", "bridge.png", "salvager.png", "sapling.png", "seeds.png", "wheat.png", "compressed_wheat.png", "bread.png", "wooden_scythe.png", "stone_scythe.png", "tin_scythe.png", "copper_scythe.png", "iron_scythe.png", "aluminum_scythe.png", "tungsten_scythe.png", "fireplace.png", "gold_ore.png", "rhodium_ore.png", "gold.png", "rhodium.png", "copper_block.png", "tin_block.png", "iron_block.png", "aluminum_block.png", "tungsten_block.png", "gold_block.png", "rhodium_block.png", "coal_chunk.png", "ice.png", "water_lamp.png", "seagrass.png"].map(src => {
   const img = new Image();
   img.src = src;
   return img;
@@ -361,10 +368,10 @@ let dark_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, COMPRESSE
 
 let solid_blocks = [LOG, STONE, PLANKS, COPPER_ORE, TIN_ORE, WORKBENCH, COMPRESSED_GRASS, COMPRESSED_WHEAT, IRON_ORE, ALUMINUM_ORE, TUNGSTEN_ORE, GOLD_ORE, RHODIUM_ORE, COAL, LEAVES, CHEST, STONE_BRICKS, SALVAGER, COPPER_BLOCK, TIN_BLOCK, IRON_BLOCK, ALUMINUM_BLOCK, TUNGSTEN_BLOCK, GOLD_BLOCK, RHODIUM_BLOCK, FORGE, FURNACE, FIREPLACE, SAPLING, CHEST, DOOR];
 
-let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0, 55: 0, 57: 0.5, 60: -0.3, 61: -0.3, 62: -0.3, 65: 0, 66: 0.4, 89: 0, 90: 0.7};
+let collide = {0: 0, 1: 0.4, 4: 0.7, 47: 0, 55: 0, 57: 0.5, 60: -0.3, 61: -0.3, 62: -0.3, 65: 0, 66: 0.4, 89: 0, 90: 0.7, 91: 0.8};
 
 let waters = [WATER, ICE];
-let water_blocks = [BRIDGE, WATER_LAMP];
+let water_blocks = [BRIDGE, WATER_LAMP, SEAGRASS];
 
 let SIZE = 40;
 
@@ -516,6 +523,7 @@ crafts.push([[[STONE_BRICKS, 0, 0], [0, 0, 0], [0, 0, 0]], [[STONE_PATH, STONE_P
 crafts.push([[[STONE, STONE, 0], [STONE, STONE, 0], [0, 0, 0]], [[FURNACE, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[TIN, FURNACE, 0], [PLANKS, TIN, 0], [0, 0, 0]], [[SALVAGER, 0, 0], [0, 0, 0], [0, 0, 0]], 200]);
 crafts.push([[[GRASS, GRASS, 0], [GRASS, GRASS, 0], [0, 0, 0]], [[COMPRESSED_GRASS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
+crafts.push([[[SEAGRASS, SEAGRASS, 0], [SEAGRASS, SEAGRASS, 0], [0, 0, 0]], [[COMPRESSED_GRASS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
 crafts.push([[[COMPRESSED_GRASS, COMPRESSED_GRASS, 0], [0, 0, 0], [0, 0, 0]], [[SEEDS, 0, 0], [0, 0, 0], [0, 0, 0]], 30]);
 crafts.push([[[PLANKS, 0, 0], [0, 0, 0], [0, 0, 0]], [[SAPLING, 0, 0], [SAPLING, 0, 0], [0, 0, 0]], 30]);
 crafts.push([[[WHEAT, 0, 0], [0, 0, 0], [0, 0, 0]], [[SEEDS, 0, 0], [SEEDS, 0, 0], [0, 0, 0]], 30]);
@@ -1664,7 +1672,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.6.6", 20, 50);
+    ctx.fillText("Version 1.6.7", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
