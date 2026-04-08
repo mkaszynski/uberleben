@@ -960,7 +960,8 @@ function loop() {
           for (let l = 0; l < 3; l++) {
             if (dis([k, l], [1, 1]) < 1.1) {
               let k3 = land[(block_posx + k - 1) % MAP_SIZE][(block_posy + l - 1) % MAP_SIZE];
-              console.log((block_posx + k - 1) % MAP_SIZE, (block_posy + l - 1) % MAP_SIZE);
+              console.log((block_posx + k - 1) % MAP_SIZE);
+              console.log((block_posy + l - 1) % MAP_SIZE);
               if (!dark_blocks.includes(k3[2])) {
                 if (k3[5] - 1 > sight) {sight = k3[5] - 1;find_pos = [k - 1, l - 1]}
               }
