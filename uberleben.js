@@ -960,8 +960,6 @@ function loop() {
           for (let l = 0; l < 3; l++) {
             if (dis([k, l], [1, 1]) < 1.1) {
               let k3 = land[(block_posx + k - 1) % MAP_SIZE][(block_posy + l - 1) % MAP_SIZE];
-              console.log((block_posx + k - 1) % MAP_SIZE);
-              console.log((block_posy + l - 1) % MAP_SIZE);
               if (!dark_blocks.includes(k3[2])) {
                 if (k3[5] - 1 > sight) {sight = k3[5] - 1;find_pos = [k - 1, l - 1]}
               }
@@ -1208,7 +1206,7 @@ function loop() {
         if (land[block_posx][(block_posy - 1) % MAP_SIZE][2] == GEARCHAIN_ON) {
           n = true;
         }
-        if (land[block_posx][(block_posy - 1) % MAP_SIZE][2] == GEARCHAIN_ON) {
+        if (land[block_posx][(block_posy + 1) % MAP_SIZE][2] == GEARCHAIN_ON) {
           n = true;
         }
         if (n) {
@@ -1243,7 +1241,7 @@ function loop() {
         if (land[block_posx][(block_posy - 1) % MAP_SIZE][2] == GEARCHAIN_ON) {
           n = true;
         }
-        if (land[block_posx][(block_posy - 1) % MAP_SIZE][2] == GEARCHAIN_ON) {
+        if (land[block_posx][(block_posy + 1) % MAP_SIZE][2] == GEARCHAIN_ON) {
           n = true;
         }
         if (!n) {
@@ -1875,7 +1873,7 @@ function loop() {
     
     ctx.fillStyle = "white";          // text color
     ctx.font = "12px Arial";          // font size and family
-    ctx.fillText("Version 1.7.1", 20, 50);
+    ctx.fillText("Version 1.7.2", 20, 50);
 
     
     if (550 < mouse.x && mouse.x < 650 && 350 < mouse.y && mouse.y < 450 && mouse.held[0]) {
